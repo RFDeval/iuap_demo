@@ -1,0 +1,38 @@
+:root {
+    /* 测试样式 by 房帅中*/
+    --main-color: red;
+    /* 1.按钮部分 */
+    /* 按钮背景 */
+    --button_bg_color: rgba(3, 155, 229, 1);
+    /* 按钮边框 */
+    --button_bd_color: rgba(3, 155, 229, 1);
+    /* 按钮字体颜色 */
+    --button_fc_color: rgba(255, 255, 255, 1);
+    /* 按钮悬浮态 */
+    --button_hover_color: rgba(3, 155, 229, 0.7);
+    /* 按钮悬浮态边框 */
+    --button_hover_bd_color: rgba(3, 155, 229, 0.7);
+    /* 2.表格部分 */
+    /* 表格行悬浮态 */
+    --table_hover_tr_color: rgba(244, 248, 251, 1);
+    /* 表格表头字体颜色 */
+    --table_fs_color: rgba(102, 102, 102, 1);
+    /* 表格选中颜色 */
+    --table_tr_select_color: rgba(233, 247, 252, 1);
+    /* 表格边框 */
+    --table_tr_bd_color: rgba(0, 0, 0, 0.12);
+    /* 3.分页部分 */
+    /* 分页背景 */
+    --page_bg_color: rgba(3, 155, 229, 1);
+    /* 分页边框*/
+    --page_bd_color: rgba(3, 155, 229, 1);
+    /* 分页悬浮态 */
+    --page_hover_color: rgba(238, 238, 238, 1);
+    /* 悬浮态字体颜色 */
+    --page_fs_color: rgba(0, 0, 0, 0.5);
+}
+
+* {
+    font-family: "Open Sans", "Helvetica Neue", Arial, "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+

@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+
+
+        <RefViewModelVO code="common_ref_treecard" i18nkey="ja.res.ref.0005" name="组织人员" path="org.demo.ref" type="3">
+		<thead>
+			<field code="peocode" i18nkey="ja.res.ref.0006">人员编码</field>
+			<field code="peoname" i18nkey="ja.res.ref.0007">人员名称</field>
+		</thead>
+		<table name="EXAMPLE_CONTACTS">
+			<field code="id">ID</field>
+			<field code="refpk">ID</field>
+			<field code="refcode">peocode</field>
+			<field code="refname">peoname</field>
+			<field code="pid">INSTITID</field>
+			<field code="fid">INSTITID</field>
+			<field code="extension">peocode</field>
+			<field code="extension">peoname</field>
+		</table>
+
+		<tableTree name="EXAMPLE_ORGANIZATION">
+			<field code="id">ID</field>
+			<field code="refpk">ID</field>
+			<field code="refcode">INSTIT_CODE</field>
+			<field code="refname">INSTIT_NAME</field>
+			<field code="pid">PARENT_ID</field>
+			<field code="fid"/>
+		</tableTree>
+	</RefViewModelVO>
+
+        <RefViewModelVO code="train_user" type="6" i18nkey="ja.res.ref.0017" name="培训用户" path="org.train.user">
+		<thead>
+			<field code="login_name" i18nkey="ja.res.ref.0018">用户编码</field>
+			<field code="name" i18nkey="ja.res.ref.0019">用户名称</field>
+		</thead>
+		<table name="APP_USER">
+			<field code="id">ID</field>
+			<field code="refpk">id</field>
+			<field code="refcode">login_name</field>
+			<field code="refname">name</field>
+			<field code="extension">login_name</field>
+			<field code="extension">name</field>
+		</table>
+	</RefViewModelVO>
+
+        <RefViewModelVO code="common_ref_tree" type="1" i18nkey="ja.res.ref.0022" name="组织机构" path="org.demo.ref">
+		<thead>
+			<field code="INSTIT_CODE" i18nkey="ja.res.ref.0023">机构编码</field>
+			<field code="INSTIT_NAME" i18nkey="ja.res.ref.0024">机构名称</field>
+		</thead>
+		<tableTree name="EXAMPLE_ORGANIZATION">
+			<field code="id">ID</field>
+			<field code="refpk">INSTITID</field>
+			<field code="refcode">INSTIT_CODE</field>
+			<field code="refname">INSTIT_NAME</field>
+			<field code="pid">PARENT_ID</field>
+			<field code="extension">INSTIT_CODE</field>
+			<field code="extension">INSTIT_NAME</field>
+		</tableTree>
+	</RefViewModelVO>
+
+        <RefViewModelVO code="neworganizition" i18nkey="ja.res.ref.0020" name="组织-平台" type="1">
+		<thead>
+			<field code="code" i18nkey="ja.res.ref.0012">组织编码</field>
+			<field code="name" i18nkey="ja.res.ref.0013">组织名称</field>
+		</thead>
+		<tableTree name="ORG_ORGANIZATION">
+			<field code="id">ID</field>
+			<field code="refpk">ID</field>
+			<field code="refcode">code</field>
+			<field code="refname">name</field>
+			<field code="pid">PARENT_ID</field>
+			<field code="extension">code</field>
+			<field code="extension">name</field>
+		</tableTree>
+	</RefViewModelVO>
+
+        <RefViewModelVO code="common_ref" i18nkey="ja.res.ref.0005" name="组织人员" path="org.demo.ref" type="5">
+		<thead>
+			<field code="peocode" i18nkey="ja.res.ref.0006">人员编码</field>
+			<field code="peoname" i18nkey="ja.res.ref.0007">人员名称</field>
+		</thead>
+		<table name="EXAMPLE_CONTACTS">
+			<field code="id">ID</field>
+			<field code="refpk">ID</field>
+			<field code="refcode">peocode</field>
+			<field code="refname">peoname</field>
+			<field code="pid">INSTITID</field>
+			<field code="fid">INSTITID</field>
+			<field code="extension">peocode</field>
+			<field code="extension">peoname</field>
+		</table>
+
+		<tableTree name="EXAMPLE_ORGANIZATION">
+			<field code="id">ID</field>
+			<field code="refpk">ID</field>
+			<field code="refcode">INSTIT_CODE</field>
+			<field code="refname">INSTIT_NAME</field>
+			<field code="pid">PARENT_ID</field>
+			<field code="fid"/>
+		</tableTree>
+	</RefViewModelVO>
+
+        <RefViewModelVO code="bd_common_user_table" i18nkey="ja.res.ref.0027" name="用户" type="6">
+		<thead>
+			<field code="login_name" i18nkey="ja.res.ref.0028">登录名</field>
+			<field code="name" i18nkey="ja.res.ref.0029">用户姓名</field>
+		</thead>
+		<table name="APP_USER">
+			<field code="id">ID</field>
+			<field code="refpk">id</field>
+			<field code="refcode">login_name</field>
+			<field code="refname">name</field>
+			<field code="extension">login_name</field>
+			<field code="extension">name</field>
+		</table>
+	</RefViewModelVO>
+
+        <RefViewModelVO code="common_ref_table" type="2" i18nkey="ja.res.ref.0026" name="人员" path="org.demo.ref">
+		<thead>
+			<field code="peocode" i18nkey="ja.res.ref.0006">人员编码</field>
+			<field code="peoname" i18nkey="ja.res.ref.0007">人员名称</field>
+		</thead>
+		<table name="EXAMPLE_CONTACTS">
+			<field code="id">id</field>
+			<field code="refpk">ID</field>
+			<field code="refcode">peocode</field>
+			<field code="refname">peoname</field>
+			<field code="extension">peocode</field>
+			<field code="extension">peoname</field>
+		</table>
+	</RefViewModelVO>
+
+        <RefViewModelVO code="bd_common_dept" i18nkey="ja.res.ref.0008" name="部门" type="6">
+		<thead>
+			<field code="code" i18nkey="ja.res.ref.0009">部门编码</field>
+			<field code="name" i18nkey="ja.res.ref.0010">部门名称</field>
+		</thead>
+		<table name="ORG_DEPARTMENT">
+			<field code="id">ID</field>
+			<field code="refpk">ID</field>
+			<field code="refcode">code</field>
+			<field code="refname">name</field>
+			<field code="extension">code</field>
+			<field code="extension">name</field>
+		</table>
+	</RefViewModelVO>
+
+        <RefViewModelVO code="bd_common_currency" i18nkey="ja.res.ref.0002" name="货币" path="org.demo.currency" type="6">
+		<thead>
+			<field code="code" i18nkey="ja.res.ref.0003">币种编码</field>
+			<field code="name" i18nkey="ja.res.ref.0004">币种名称</field>
+		</thead>
+		<table name="EXAMPLE_currency">
+			<field code="id">ID</field>
+			<field code="refpk">ID</field>
+			<field code="refcode">code</field>
+			<field code="refname">name</field>
+			<field code="extension">code</field>
+			<field code="extension">name</field>
+		</table>
+	</RefViewModelVO>
+
+        <RefViewModelVO code="bd_common_user" i18nkey="ja.res.ref.0021" name="员工" path="org.demo.user" type="6">
+		<thead>
+			<field code="code" i18nkey="ja.res.ref.0006">人员编码</field>
+			<field code="name" i18nkey="ja.res.ref.0007">人员名称</field>
+		</thead>
+
+		<table name="BD_STAFF">
+			<field code="id">ID</field>
+			<field code="refpk">ID</field>
+			<field code="refcode">code</field>
+			<field code="refname">name</field>
+			<field code="extension">code</field>
+			<field code="extension">name</field>
+			<filters>
+				<filter code="code" value="=" />
+				<filter code="name" value="=" />
+			</filters>
+		</table>
+	</RefViewModelVO>
+
+        <RefViewModelVO code="bd_common_vessel" i18nkey="ja.res.ref.0014" name="船公司" type="6">
+		<thead>
+			<field code="vessel_code" i18nkey="ja.res.ref.0015">船公司编码</field>
+			<field code="vessel_name" i18nkey="ja.res.ref.0016">船公司名称</field>
+		</thead>
+		<table name="SALE_VESSEL">
+			<field code="id">ID</field>
+			<field code="refpk">ID</field>
+			<field code="refcode">vessel_code</field>
+			<field code="refname">vessel_name</field>
+			<field code="extension">vessel_code</field>
+			<field code="extension">vessel_name</field>
+		</table>
+	</RefViewModelVO>
+
+        <RefViewModelVO code="checkbox_ref" type="4" name="checkbox_ref" path="org.demo.ref">
+		<thead>
+			<field code="peocode" i18nkey="ja.res.ref.0006">人员编码</field>
+			<field code="peoname" i18nkey="ja.res.ref.0007">人员名称</field>
+		</thead>
+		<!-- name是数据库表名称 -->
+		<table name="EXAMPLE_CONTACTS">
+			<field code="id">id</field>
+			<field code="refpk">id</field>
+			<field code="refcode">peocode</field>
+			<field code="refname">peoname</field>
+			<field code="extension">peocode</field>
+			<field code="extension">peoname</field>
+		</table>
+	</RefViewModelVO>
+
+        <RefViewModelVO code="newdept" i18nkey="ja.res.ref.0008" name="部门" type="1">
+		<thead>
+			<field code="code" i18nkey="ja.res.ref.0009">部门编码</field>
+			<field code="name" i18nkey="ja.res.ref.0010">部门名称</field>
+		</thead>
+		<tableTree name="ORG_DEPARTMENT">
+			<field code="id">ID</field>
+			<field code="refpk">ID</field>
+			<field code="refcode">code</field>
+			<field code="refname">name</field>
+			<field code="pid">PARENT_ID</field>
+			<field code="extension">code</field>
+			<field code="extension">name</field>
+		</tableTree>
+	</RefViewModelVO>
+
+        <RefViewModelVO code="bd_common_org" i18nkey="ja.res.ref.0011" name="组织" path="org.demo.org" type="6">
+		<thead>
+			<field code="code" i18nkey="ja.res.ref.0012">组织编码</field>
+			<field code="name" i18nkey="ja.res.ref.0013">组织名称</field>
+		</thead>
+		<table name="ORG_ORGANIZATION">
+			<field code="id">ID</field>
+			<field code="refpk">ID</field>
+			<field code="refcode">code</field>
+			<field code="refname">name</field>
+			<field code="extension">code</field>
+			<field code="extension">name</field>
+		</table>
+	</RefViewModelVO>
+
+    
+</root>

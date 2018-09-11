@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	    http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd"
+	default-lazy-init="true">
+
+	<description>zookeeper lock config</description>
+
+	<!-- 手动配置AOP update*环绕 -->
+	<bean id="distributeLock" class="com.yonyou.iuap.lock.zookeeper.DistributeLock">
+		<!-- <property name="" value=""></property> -->
+	</bean>
+	<bean id="optimisticLock" class="com.yonyou.iuap.lock.optimistic.OptimisticLock">
+		<!-- <property name="" value=""></property> -->
+	</bean>
+
+	<aop:config>
+		<aop:pointcut
+			expression="execution(* com.yonyou.iuap.example.service.Ygdemo_yw_infoService.batchSubmit*(..))"
+			id="disLock" />
+
+		<aop:pointcut
+			expression="execution(* com.yonyou.iuap.example.service.Ygdemo_yw_infoService.save*(..)) ||
+	    						  execution(* com.yonyou.iuap.example.service.Ygdemo_yw_infoService.batchDelete*(..))"
+			id="optLock" />
+
+		<aop:aspect ref="distributeLock">
+			<aop:around method="doAround" pointcut-ref="disLock" />
+		</aop:aspect>
+		<aop:aspect ref="optimisticLock">
+			<aop:around method="beforeCheck" pointcut-ref="optLock" />
+		</aop:aspect>
+	</aop:config>
+
+
+	<bean id="zkPoolConfig" class="org.apache.commons.pool2.impl.GenericObjectPoolConfig">
+		<property name="maxTotal" value="50" />
+		<property name="maxIdle" value="20" />
+		<property name="minIdle" value="5" />
+		<property name="maxWaitMillis" value="60000" />
+
+		<!--timeBetweenEvictionRunsMillis毫秒检查一次连接池中空闲的连接,把空闲时间超过minEvictableIdleTimeMillis毫秒的连接断开,直到连接池中的连接数到minIdle为止 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<property name="numTestsPerEvictionRun" value="-1" />
+		<property name="minEvictableIdleTimeMillis" value="30000" />
+	</bean>
+
+</beans>

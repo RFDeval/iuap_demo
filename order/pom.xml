@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.yonyou.iuap.pap</groupId>
+        <artifactId>iuap-pap-parent</artifactId>
+        <version>3.6.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>order</artifactId>
+
+    <groupId>com.yonyou.iuap.pap</groupId>
+    <packaging>war</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>order</name>
+    <url>http://maven.apache.org</url>
+    <build>
+        <finalName>order</finalName>
+    </build>
+
+    <dependencies>
+    	 <dependency>
+             <groupId>com.yonyou.iuap.pap</groupId>
+             <artifactId>iuap-pap-starter</artifactId>
+             <version>3.6.0-SNAPSHOT</version>
+         </dependency>
+         <dependency>
+             <groupId>com.yonyou.iuap.middleware</groupId>
+             <version>3.5.1-SNAPSHOT</version>
+             <artifactId>starter</artifactId>
+             <scope>provided</scope>
+         </dependency>
+    </dependencies>
+
+    <!-- 以下为profile示例 -->
+    <profiles>
+
+        <profile>
+            <!-- 本地开发环境 -->
+            <id>development</id>
+            <properties>
+                <profiles.active>development</profiles.active>
+                <deploy.url>http://host:port/manager/text</deploy.url>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <!-- 测试环境 -->
+            <id>testcase</id>
+            <properties>
+                <profiles.active>testcase</profiles.active>
+                <deploy.url>http://host:port/manager/text</deploy.url>
+            </properties>
+        </profile>
+        <profile>
+            <!-- 生产环境 -->
+            <id>production</id>
+            <properties>
+                <profiles.active>production</profiles.active>
+                <deploy.url>http://host:port/manager/text</deploy.url>
+            </properties>
+        </profile>
+
+
+        <profile>
+            <id>develop</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+
+                <!-- 事件 -->
+                <pom.mq.address>172.20.18.24:5672</pom.mq.address>
+                <pom.mq.username>admin</pom.mq.username>
+                <pom.mq.password>admin</pom.mq.password>
+                <pom.log.clusterCode>SERURITYLOG</pom.log.clusterCode>
+                <pom.msg.clusterCode>APP_INIT_CLUSTER</pom.msg.clusterCode>
+                <pom.event.manager.url>https://uastest.yyuap.com/event/eventmanager/eventinfo/index.do</pom.event.manager.url>
+
+                <!-- fastDFS -->
+                <pom.fdfs.tracker_server>172.20.18.16:22122</pom.fdfs.tracker_server>
+
+                <!-- mybatis -->
+                <pom.jdbc.url>jdbc:mysql://172.20.14.148:3306/tenant?useUnicode=true&amp;characterEncoding=utf-8</pom.jdbc.url>
+                <pom.jdbc.username>6eLJVbeWA/E=</pom.jdbc.username>
+                <pom.jdbc.password>6eLJVbeWA/E=</pom.jdbc.password>
+
+                <!-- Redis -->
+                <pom.redis.url>direct://172.20.14.149:6379?poolName=mypool&amp;masterName=mymaster&amp;poolSize=100</pom.redis.url>
+
+                <!-- URL -->
+                <pom.cas.server>http://idtest.yyuap.com</pom.cas.server>
+                <pom.tenantuser.server>http://idtest.yyuap.com</pom.tenantuser.server>
+                <pom.yht.redisSessionStore>com.yonyou.yht.cache.RedisSessionStore</pom.yht.redisSessionStore>
+
+                <pom.tenant.server>http://localhost:8080</pom.tenant.server>
+                <pom.tenant.openappserver>http://localhost:8080</pom.tenant.openappserver>
+                <!-- 租户登录的url -->
+                <pom.tenant.login>https://uastest.yyuap.com/apptenant</pom.tenant.login>
+                <apps.tenant.base.url>https://uastest.yyuap.com</apps.tenant.base.url>
+
+                <pom.clientCredentialPath>D:/authfile.txt</pom.clientCredentialPath>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <!-- 事件 -->
+                <pom.mq.address>172.20.18.24:5672</pom.mq.address>
+                <pom.mq.username>admin</pom.mq.username>
+                <pom.mq.password>admin</pom.mq.password>
+                <pom.msg.clusterCode>APP_INIT_CLUSTER</pom.msg.clusterCode>
+                <pom.event.manager.url>https://uastest.yyuap.com/event/eventmanager/eventinfo/index.do</pom.event.manager.url>
+
+
+                <!-- mybatis -->
+                <pom.jdbc.url>jdbc:mysql://172.20.14.148:3306/tenant?useUnicode=true&amp;characterEncoding=utf-8</pom.jdbc.url>
+                <pom.jdbc.username>6eLJVbeWA/E=</pom.jdbc.username>
+                <pom.jdbc.password>6eLJVbeWA/E=</pom.jdbc.password>
+
+                <!-- redis -->
+                <pom.redis.url>direct://172.20.14.149:6379?poolName=mypool&amp;masterName=mymaster&amp;poolSize=100</pom.redis.url>
+
+                <!-- URL -->
+                <pom.cas.server>http://idtest.yyuap.com</pom.cas.server>
+                <pom.tenant.server>https://uastest.yyuap.com</pom.tenant.server>
+                <pom.tenantuser.server>http://idtest.yyuap.com</pom.tenantuser.server>
+                <pom.tenantauth.server>http://uastest.yyuap.com</pom.tenantauth.server>
+                <pom.tenant.login>https://uastest.yyuap.com/apptenant</pom.tenant.login>
+                <apps.tenant.base.url>https://uastest.yyuap.com</apps.tenant.base.url>
+                <pom.yht.redisSessionStore>com.yonyou.yht.cache.RedisSessionStore</pom.yht.redisSessionStore>
+
+                <!-- clientCredentialPath -->
+                <pom.clientCredentialPath>/data/authfile.txt</pom.clientCredentialPath>
+            </properties>
+        </profile>
+        <profile>
+            <id>release</id>
+            <properties>
+                <!-- 事件中心配置 -->
+                <pom.mq.address>172.20.18.24:5672</pom.mq.address>
+                <pom.mq.username>yonyouuser</pom.mq.username>
+                <pom.mq.password>admin</pom.mq.password>
+                <pom.msg.clusterCode>SSO_CLUSTER</pom.msg.clusterCode>
+                <pom.event.manager.url>https://uastest.yyuap.com:6272/event/eventmanager/eventinfo/index.do</pom.event.manager.url>
+                <pom.log.clusterCode>SERURITYLOG</pom.log.clusterCode>
+
+                <!-- 数据库 -->
+                <pom.jdbc.url>jdbc:mysql://172.20.4.211:3307/usercenter?useUnicode=true&amp;characterEncoding=utf-8</pom.jdbc.url>
+                <pom.jdbc.username>COuXQLiIZ2fG1YgSwKzwEQ==</pom.jdbc.username>
+                <pom.jdbc.password>COuXQLiIZ2d8K+l//nJFgV0ZrNgf9NFG</pom.jdbc.password>
+
+
+                <!-- Redis -->
+                <pom.redis.url>direct://172.20.4.212:6380?poolName=mypool&amp;masterName=mymaster&amp;poolSize=300</pom.redis.url>
+
+                <!-- URL -->
+                <pom.cas.server>https://uastest.yyuap.com:6272</pom.cas.server>
+                <pom.tenant.server>https://uastest.yyuap.com:6272</pom.tenant.server>
+                <pom.tenantuser.server>https://uastest.yyuap.com:6272</pom.tenantuser.server>
+                <pom.tenantauth.server>https://uastest.yyuap.com:6272</pom.tenantauth.server>
+
+                <!-- clientCredentialPath -->
+                <pom.clientCredentialPath>/usr/local/tomcat/webapps/cas/WEB-INF/authfile.txt</pom.clientCredentialPath>
+            </properties>
+        </profile>
+
+    </profiles>
+
+
+</project>

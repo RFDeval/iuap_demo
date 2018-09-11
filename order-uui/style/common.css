@@ -1,0 +1,278 @@
+:root {
+    /* 测试样式 by 房帅中*/
+    --main-color: red;
+    /* 1.按钮部分 */
+    /* 按钮背景 */
+    --button_bg_color: rgba(3, 155, 229, 1);
+    /* 按钮边框 */
+    --button_bd_color: rgba(3, 155, 229, 1);
+    /* 按钮字体颜色 */
+    --button_fc_color: rgba(255, 255, 255, 1);
+    /* 按钮悬浮态 */
+    --button_hover_color: rgba(3, 155, 229, 0.7);
+    /* 按钮悬浮态边框 */
+    --button_hover_bd_color: rgba(3, 155, 229, 0.7);
+    /* 2.表格部分 */
+    /* 表格行悬浮态 */
+    --table_hover_tr_color: rgba(244, 248, 251, 1);
+    /* 表格表头字体颜色 */
+    --table_fs_color: rgba(102, 102, 102, 1);
+    /* 表格选中颜色 */
+    --table_tr_select_color: rgba(233, 247, 252, 1);
+    /* 表格边框 */
+    --table_tr_bd_color: rgba(0, 0, 0, 0.12);
+    /* 3.分页部分 */
+    /* 分页背景 */
+    --page_bg_color: rgba(3, 155, 229, 1);
+    /* 分页边框*/
+    --page_bd_color: rgba(3, 155, 229, 1);
+    /* 分页悬浮态 */
+    --page_hover_color: rgba(238, 238, 238, 1);
+    /* 悬浮态字体颜色 */
+    --page_fs_color: rgba(0, 0, 0, 0.5);
+}
+
+* {
+    font-family: "Open Sans", "Helvetica Neue", Arial, "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+/* 文字对齐方式 */
+
+.aline-left {
+    text-align: left;
+}
+
+.aline-center {
+    text-align: center;
+}
+
+.aline-right {
+    text-align: right;
+}
+
+/* 元素浮动 */
+
+.float-right {
+    float: right;
+}
+
+.float-left {
+    float: left;
+}
+
+/* 隐藏元素 */
+
+.hide {
+    display: none;
+}
+
+/* 搜索 */
+
+.form-search {
+    background-color: #f4f4f4;
+    overflow: hidden;
+}
+
+.form-search #condition-toggle {
+    padding: 15px;
+}
+
+.form-search #condition-text,
+.form-search #condition-icon {
+    color: #039BE5;
+}
+
+.b-searech-open {
+    -webkit-transition: height 0.35s ease-in-out;
+    -moz-transition: height 0.35s ease-in-out;
+    -ms-transition: height 0.35s ease-in-out;
+    -o-transition: height 0.35s ease-in-out;
+    transition: height 0.35s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    min-height: 32px;
+    height: 32px !important;
+}
+
+.b-searech-close {
+    -webkit-transition: height 0.35s ease-in-out;
+    -moz-transition: height 0.35s ease-in-out;
+    -ms-transition: height 0.35s ease-in-out;
+    -o-transition: height 0.35s ease-in-out;
+    transition: height 0.35s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    height: 0 !important;
+}
+
+
+.b-ref{
+    position: relative;
+}
+.goback{
+    border: none;
+    color: #039BE5;
+	background: none;
+}
+#form-div {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: #fff;
+    /* overflow-y: auto; */
+}
+#form-div #form-div-header{
+    border-bottom: 4px solid #f4f4f4;
+    padding: 0 15px;
+    line-height: 39px;
+}
+#form-div #form-div-body{
+    margin: 15px 0;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+/* 重写 U.css 样式 */
+
+.u-input-group-before {
+    z-index: 1;
+    color: red;
+}
+
+.u-button-group {
+    margin: 0 15px;
+}
+
+.u-mdlayout-page-section {
+    top: 0px;
+    position: relative;
+}
+
+.u-grid-header-multi-select {
+    margin: 0;
+}
+
+.u-pagination {
+    display: inline-block !important;
+}
+
+.u-button {
+    cursor: pointer;
+    background-color: #039BE5;
+    font-size: 12px;
+    padding: 0 7px;
+    height: 30px;
+    line-height: 30px;
+    outline: 0;
+    -webkit-border-radius: 0;
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #fff;
+    margin-left: 0;
+    border: none;
+    min-width: 72px;
+    margin-right: 10px;
+}
+
+.u-button:hover {
+    background-color: rgba(3, 155, 229, 0.8);
+    color: #fff;
+}
+
+.u-mdlayout-detail,
+.u-mdlayout-page {
+    background: #fff;
+    position: relative;
+}
+
+.page.side-page>.container-fluid {
+    height: 100%;
+}
+
+.u-form-control-feedback.refer {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.ztree li a:hover{
+    color: #039BE5;
+
+}
+.ztree li a.focusNode{
+    color: #fff;
+    background-color: #039BE5;
+}
+
+.tree-tool-btn{
+    width: 32%;
+    margin-right: 1%;
+    background-color: #039BE5;  
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0 7px;
+    height: 30px;
+    line-height: 30px;
+    outline: 0;
+    -webkit-border-radius: 0;
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #fff;
+    margin-left: 0;
+    border: none;
+}
+
+.tree-tool-btn:hover {
+    background-color: rgba(3, 155, 229, 0.8);
+    color: #fff;
+}
+
+.tree-tool-btn:active {
+    background-color: rgb(189,189,189);
+}
+
+
+/* 重写搜索区背景颜色 */
+.u-container-fluid{
+    background-color:#f5f5f5
+}
+
+/* 重写搜索区域内部面板距离 从30变成15 看着更紧凑 */
+#collapse-body{
+    display:none;
+    padding: 15px 15px;
+    padding-top: 15px;
+}
+
+/* 自定义按钮区域 */
+.tool-button{
+    height: 40px; 
+    padding: 5px;
+}

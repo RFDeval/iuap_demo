@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+	<jmxConfigurator />
+    <property name="log_name" value="iuap-example"/>
+    
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%date{HH:mm:ss.SSS} [%X{call_thread_id}] [%X{current_user_name}] [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!--<appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logs/${log_name}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logs/${log_name}.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%date{HH:mm:ss.SSS} [%X{call_thread_id}] [%X{current_user_name}] [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>-->
+
+	<!-- 自定义特殊包的日志级别 -->
+	<logger name="com.yonyou.iuap" level="debug" />
+	<logger name="com.yonyou.uap.ieop.busilog.writer.BusiLogRestWriter" level="debug" />
+	
+	<!--
+	log4j.logger.com.ibatis=DEBUG
+	log4j.logger.com.ibatis.common.jdbc.SimpleDataSource=DEBUG
+	log4j.logger.com.ibatis.common.jdbc.ScriptRunner=DEBUG
+	log4j.logger.com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate=DEBUG
+	log4j.logger.Java.sql.Connection=DEBUG
+	log4j.logger.java.sql.Statement=DEBUG
+	log4j.logger.java.sql.PreparedStatement=DEBUG
+	-->
+	<!-- mybatis
+	<logger name="com.ibatis" level="debug" />
+	<logger name="java.sql" level="debug" />-->
+	<logger name="com.yonyou.iuap" level="debug" />
+
+	<!--log4jdbc 选项，默认关闭
+
+	<logger name="jdbc.connection" level="debug" />
+	<logger name="jdbc.audit" level="debug" />
+	<logger name="jdbc.resultset" level="debug" />
+	<logger name="jdbc.sqlonly" level="debug" />
+	<logger name="jdbc.sqltiming" level="debug" />
+-->
+
+	<root level="info">
+		<appender-ref ref="console" />
+		<appender-ref ref="rollingFile" />
+	</root>
+</configuration>

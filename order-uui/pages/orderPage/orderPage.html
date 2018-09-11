@@ -1,0 +1,156 @@
+<div class="u-mdlayout" id="myLayout">
+    <!-- 主页面显示区域 -->
+    <div class="u-mdlayout-detail width-full" style="overflow-y: auto">
+        <!-- 标题区域 -->
+        <div class="aline-center b-margin">
+            <h4>请购单管理</h4>
+        </div>
+        <!-- 搜索区域 -->
+        <div class="u-container-fluid" style="background-color:#f5f5f5">
+            <div class="u-row">
+                <div class="u-col-md-12">
+                    <div class="u-widget-fluid">
+                        <div class="u-widget-heading" id="collapse">
+                            <h3 class="u-widget-title">查询与筛选
+                                <a class="u-link u-widget-more">
+                                    <i class="icon uf uf-2arrow-down" id="icon"></i>
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="u-widget-body" id="collapse-body" style="display:none;">
+                            <div class="u-row">
+                                <div class="u-col-4">
+                                    <div class="u-col-4 u-col-sm-4">编码:</div>
+                                    <div class="u-col-8 u-col-sm-8" u-meta='{"id":"search_code","type":"string","data":"condition","field":"search_code"}'>
+                                        <input class="u-form-control search-enter" name="code" autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="u-col-4">
+                                    <div class="u-col-4 u-col-sm-4">名称:</div>
+                                    <div class="u-col-8 u-col-sm-8" u-meta='{"id":"search_name","type":"string","data":"condition","field":"search_name"}'>
+                                        <input class="u-form-control search-enter" name="name" />
+                                    </div>
+                                </div>
+                                <div class="u-col-4">
+                                    <div class=" float-right">
+                                        <button class="u-button" data-bind="click: event.cleanSearch">清空</button>
+                                        <button class="u-button" data-bind="click: event.search">搜索</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 按钮区域 -->
+        <div class="padding-5">
+            <button class="u-button" data-bind="click:event.addBtnClicked">增加</button>
+            <button class="u-button" data-bind="click:event.editBtnClicked">编辑</button>
+            <button class="u-button" data-bind="click: event.delRows">删除</button>
+        </div>
+        <!-- 表格区域 -->
+        <div type="text" id="gridDiv" class="padding-3" u-meta='{"id":"gridData","data":"gridData","type":"grid","editable":false,"editType":"default","rowHeight":"40px","multiSelect":true,"canDrag":false,"canSwap":false}'>
+            <div options='{"field":"code","dataType":"String","title":"编码","editType":"string","editOptions":{"validType":"string","required":true}}'></div>
+            <div options='{"field":"name","dataType":"String","title":"名称","editType":"string","editOptions":{"validType":"string","required":true},"renderType":"event.renderName"}'></div>
+            <div options='{"field":"sys","dataType":"String","title":"系统预置","editType":"combo","editOptions":{"datasource":"yesOrNo","type":"combo","onlySelect":true},"renderType":"event.showValue"}'></div>
+            <div options='{"field":"creator","dataType":"String","title":"创建人","editType":"string"}'></div>
+            <div options='{"field":"createtime","dataType":"date","title":"创建时间","editType":"date","renderType":"dateRender","format":"YYYY-MM-DD"}'></div>
+            <div options='{"field":"remark","dataType":"String","title":"备注","editType":"string"}'></div>
+            <div options='{"field":"operate","dataType":"String","title":"","renderType":"event.optFun","editable":true}'></div>
+        </div>
+        <!-- 分页区域 -->
+        <div class="aline-center margin-top-5">
+            <div id='mainPagingtion' class='u-pagination pagination' u-meta='{"type":"pagination","data":"gridData","pageChange":"event.pageChange","sizeChange":"event.sizeChange"}'></div>
+        </div>
+    </div>
+    <!-- 隐藏的表单区域 -->
+    <div id="form-div" style="display: none">
+        <!-- 固定头部 -->
+        <div id="form-div-header">
+            <div class="u-row">
+                <div class="u-col-md-4 aline-let paddingL30 ">
+                    <button type="button " class="goback" data-bind="click:event.backBtnClick">
+                        <i class="uf uf-arrow-left"></i>返回</button>
+                </div>
+                <div class="u-col-md-4 aline-center">
+                    <h4 id="myTitle">新增记录</h4>
+                </div>
+                <div class="u-col-md-4 aline-right paddingR30 ">
+                    <button id="save" type="button" class="u-button" data-bind="click:event.saveClick">保存</button>
+                </div>
+            </div>
+        </div>
+        <!-- 表单体 -->
+        <div id="form-div-body">
+            <div class="u-row margin-top-20">
+                <div class="u-col-md-4">
+                    <div class="u-col-3 aline-right">
+                        编码
+                    </div>
+                    <div class="u-col-9">
+                        <div u-meta='{"id":"code","type":"u-text","data":"formData","field":"code"}'>
+                            <input type="text" class="u-form-control padding-left-20" placeholder="编码不能为空">
+                        </div>
+                    </div>
+                </div>
+                <div class="u-col-md-4">
+                    <div class="u-col-3 aline-right">
+                        创建日期
+                    </div>
+                    <div class="u-col-9">
+                        <div u-meta='{"type":"u-date","data":"formData","field":"createtime"}'>
+                            <input type="text" class="u-form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="u-col-md-4">
+                    <div class="u-col-3 aline-right">
+                        名称
+                    </div>
+                    <div class="u-col-9 ">
+                        <div u-meta='{"id":"name","type":"u-text","data":"formData","field":"name"}'>
+                            <input type="text" class="u-form-control padding-left-20" placeholder="名称">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="u-row margin-top-20">
+                <div class="u-col-md-4">
+                    <div class="u-col-3 aline-right">
+                        系统预置
+                    </div>
+                    <div class="u-col-9">
+                        <div class="u-combo" id="combo1">
+                            <div class="u-input-group ">
+                                <div u-meta='{"id":"sys","type":"u-combobox","data":"formData","field":"sys","datasource":"yesOrNo"}'>
+                                    <input class="u-form-control" />
+                                    <span class="u-form-control-feedback uf uf-arrow-down" data-role="combo-button"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="u-col-md-4">
+                    <div class="u-col-3 aline-right">
+                        创建人
+                    </div>
+                    <div class="u-col-9">
+                        <div u-meta='{"id":"creator","type":"u-text","data":"formData","field":"creator","display":"creator"}'>
+                            <input type="text" class="u-form-control padding-left-20" placeholder="创建人">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="u-col-md-4">
+                    <div class="u-col-3 aline-right">备注</div>
+                    <div class="u-col-9">
+                        <div u-meta='{"id":"remark","type":"u-text","data":"formData","field":"remark"}'>
+                            <input type="text" class="u-form-control padding-left-20" placeholder="备注">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
