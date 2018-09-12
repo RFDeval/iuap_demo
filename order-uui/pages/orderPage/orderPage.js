@@ -12,9 +12,9 @@ define(['text!./orderPage.html',
         function init(element) {
             element = element;
             $(element).html(template);
-            listRowUrl = "/example_dictionary/list"; //列表查询URL
-            saveRowUrl = "/example_dictionary/save"; //新增和修改URL， 有id为修改 无id为新增
-            delRowUrl = "/example_dictionary/delete"; //刪除URL
+            listRowUrl = "/demo_order/list"; //列表查询URL
+            saveRowUrl = "/demo_order/save"; //新增和修改URL， 有id为修改 无id为新增
+            delRowUrl = "/demo_order/delete"; //刪除URL
             viewModel.event.pageinit(element);
             //撑满高度布局
             $("#myLayout").height(document.body.scrollHeight);

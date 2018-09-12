@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-
-
         <RefViewModelVO code="common_ref_treecard" i18nkey="ja.res.ref.0005" name="组织人员" path="org.demo.ref" type="3">
 		<thead>
 			<field code="peocode" i18nkey="ja.res.ref.0006">人员编码</field>
@@ -242,6 +240,4 @@
 			<field code="extension">name</field>
 		</table>
 	</RefViewModelVO>
-
-    
 </root>

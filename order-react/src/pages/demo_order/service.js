@@ -9,7 +9,6 @@ const URL = {
     // 打印
     "GET_QUERYPRINTTEMPLATEALLOCATE":  `/eiap-plus/appResAllocate/queryPrintTemplateAllocate`,
     "PRINTSERVER": '/print_service/print/preview',
-
     "GET_TOEXPORTEXCEL":  `${GROBAL_HTTP_CTX}/demo_order/toExportExcel`,
 }
 
