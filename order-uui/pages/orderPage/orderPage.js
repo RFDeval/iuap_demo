@@ -4,8 +4,10 @@ define(['text!./orderPage.html',
    '../../config/sys_const.js',
     "../../utils/utils.js",
     "../../utils/pjt-common.js",
-    "./viewModel.js"
-	
+    "./viewModel.js",
+    '/iuap-saas-filesystem-service/resources/js/ajaxfileupload.js',
+    '/iuap-saas-filesystem-service/resources/js/ossupload.js',
+    'interfaceFileImpl'
 	],
     function (template) {
         var listRowUrl, saveRowUrl, delRowUrl, element;
@@ -14,7 +16,11 @@ define(['text!./orderPage.html',
             $(element).html(template);
             listRowUrl = "/demo_order/list"; //列表查询URL
             saveRowUrl = "/demo_order/save"; //新增和修改URL， 有id为修改 无id为新增
-            delRowUrl = "/demo_order/delete"; //刪除URL
+            delRowUrl = "/demo_order/deleteBatch"; //刪除URL
+            downTemplateUrl="/demo_order/excelTemplateDownload"; //下载excel模板
+            expDataUrl="/demo_order/toExportExcel";
+            impDataUrl="/demo_order/toImportExcel";
+
             viewModel.event.pageinit(element);
             //撑满高度布局
             $("#myLayout").height(document.body.scrollHeight);
@@ -110,8 +116,9 @@ define(['text!./orderPage.html',
                 }
                 var data = viewModel.formData.getSimpleData()[0];
                 //由于后台要求传递list对象。所以做了list组装，如果后台没有则不需要组装list
-                var listData = pjt.genDataList(data);
-                pjt.ajaxSaveData(saveRowUrl, listData, function (result) {
+                // var listData = pjt.genDataList(data);
+
+                pjt.ajaxSaveData(saveRowUrl, data, function (result) {
                     viewModel.formData.clear();
                     pjt.hideDiv('#form-div');
                     viewModel.event.queryData();
@@ -135,7 +142,6 @@ define(['text!./orderPage.html',
                     pjt.message("请选择要删除的数据！");
                 }
             },
-
             //真正删除逻辑
             del: function (data) {
                 var arr = [];
@@ -165,6 +171,25 @@ define(['text!./orderPage.html',
                 viewModel.condition.setRowSelect(0);
                 viewModel.gridData.addParams(null);
             },
+
+            downTemplate:function(){
+               // pjt.downloadTemple($('#myLayout'),downTemplateUrl);
+               pjt.downloadTemple(downTemplateUrl);
+            },
+            exportData:function(){
+                pjt.expData(expDataUrl);
+            },
+            impExcelData:function(){
+
+
+                
+                pjt.excelDataImp($("#myLayout"), impDataUrl,function(){
+                    viewModel.event.queryData();
+                });  
+            }
+
+            
+
         }
         return {
             template: template,

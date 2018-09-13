@@ -306,6 +306,21 @@ pjt.downloadTemple = function (mainPage, url) {
 }
 
 
+/**
+ * 下载excel模板
+ * @param {*} url 后台下载模板地址
+ */
+pjt.downloadTemple = function (url) {
+	window.open(appCtx+url);
+}
+
+pjt.expData = function (url) {
+	window.open(appCtx+url);
+}
+
+
+
+
 
 
 /**

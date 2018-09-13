@@ -41,5 +41,6 @@ var viewModel = {
   condition: new u.DataTable(conditionMeta),//查询条件
   gridData: new u.DataTable(meta),  //表格数据
   formData: new u.DataTable(meta),  //表单数据
+  orderTypeE: [{name: "办公用品", value: "1"}, {name: "生活用品", value: "2"}, {name: "学习用品", value: "3"}]
 };
 
