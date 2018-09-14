@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-        <RefViewModelVO code="common_ref_treecard" i18nkey="ja.res.ref.0005" name="组织人员" path="org.demo.ref" type="3">
+
+     <RefViewModelVO code="common_ref_treecard" i18nkey="ja.res.ref.0005" name="组织人员" path="org.demo.ref" type="3">
 		<thead>
 			<field code="peocode" i18nkey="ja.res.ref.0006">人员编码</field>
 			<field code="peoname" i18nkey="ja.res.ref.0007">人员名称</field>
@@ -210,7 +211,7 @@
 		</table>
 	</RefViewModelVO>
 
-        <RefViewModelVO code="newdept" i18nkey="ja.res.ref.0008" name="部门" type="1">
+    <RefViewModelVO code="newdept" i18nkey="ja.res.ref.0008" name="部门" type="1">
 		<thead>
 			<field code="code" i18nkey="ja.res.ref.0009">部门编码</field>
 			<field code="name" i18nkey="ja.res.ref.0010">部门名称</field>

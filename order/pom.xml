@@ -72,7 +72,7 @@
             <properties>
 
                 <!-- 事件 -->
-                <pom.mq.address>172.20.18.24:5672</pom.mq.address>
+                <pom.mq.address>127.0.0.1:5672</pom.mq.address>
                 <pom.mq.username>admin</pom.mq.username>
                 <pom.mq.password>admin</pom.mq.password>
                 <pom.log.clusterCode>SERURITYLOG</pom.log.clusterCode>
@@ -80,15 +80,15 @@
                 <pom.event.manager.url>https://uastest.yyuap.com/event/eventmanager/eventinfo/index.do</pom.event.manager.url>
 
                 <!-- fastDFS -->
-                <pom.fdfs.tracker_server>172.20.18.16:22122</pom.fdfs.tracker_server>
+                <pom.fdfs.tracker_server>127.0.0.1:22122</pom.fdfs.tracker_server>
 
                 <!-- mybatis -->
-                <pom.jdbc.url>jdbc:mysql://172.20.14.148:3306/tenant?useUnicode=true&amp;characterEncoding=utf-8</pom.jdbc.url>
+                <pom.jdbc.url>jdbc:mysql://127.0.0.1:3306/tenant?useUnicode=true&amp;characterEncoding=utf-8</pom.jdbc.url>
                 <pom.jdbc.username>6eLJVbeWA/E=</pom.jdbc.username>
                 <pom.jdbc.password>6eLJVbeWA/E=</pom.jdbc.password>
 
                 <!-- Redis -->
-                <pom.redis.url>direct://172.20.14.149:6379?poolName=mypool&amp;masterName=mymaster&amp;poolSize=100</pom.redis.url>
+                <pom.redis.url>direct://127.0.0.1:6379?poolName=mypool&amp;masterName=mymaster&amp;poolSize=100</pom.redis.url>
 
                 <!-- URL -->
                 <pom.cas.server>http://idtest.yyuap.com</pom.cas.server>
@@ -108,7 +108,7 @@
             <id>test</id>
             <properties>
                 <!-- 事件 -->
-                <pom.mq.address>172.20.18.24:5672</pom.mq.address>
+                <pom.mq.address>127.0.0.1:5672</pom.mq.address>
                 <pom.mq.username>admin</pom.mq.username>
                 <pom.mq.password>admin</pom.mq.password>
                 <pom.msg.clusterCode>APP_INIT_CLUSTER</pom.msg.clusterCode>
@@ -116,12 +116,12 @@
 
 
                 <!-- mybatis -->
-                <pom.jdbc.url>jdbc:mysql://172.20.14.148:3306/tenant?useUnicode=true&amp;characterEncoding=utf-8</pom.jdbc.url>
+                <pom.jdbc.url>jdbc:mysql://127.0.0.1:3306/tenant?useUnicode=true&amp;characterEncoding=utf-8</pom.jdbc.url>
                 <pom.jdbc.username>6eLJVbeWA/E=</pom.jdbc.username>
                 <pom.jdbc.password>6eLJVbeWA/E=</pom.jdbc.password>
 
                 <!-- redis -->
-                <pom.redis.url>direct://172.20.14.149:6379?poolName=mypool&amp;masterName=mymaster&amp;poolSize=100</pom.redis.url>
+                <pom.redis.url>direct://127.0.0.1:6379?poolName=mypool&amp;masterName=mymaster&amp;poolSize=100</pom.redis.url>
 
                 <!-- URL -->
                 <pom.cas.server>http://idtest.yyuap.com</pom.cas.server>
@@ -140,7 +140,7 @@
             <id>release</id>
             <properties>
                 <!-- 事件中心配置 -->
-                <pom.mq.address>172.20.18.24:5672</pom.mq.address>
+                <pom.mq.address>127.0.0.1:5672</pom.mq.address>
                 <pom.mq.username>yonyouuser</pom.mq.username>
                 <pom.mq.password>admin</pom.mq.password>
                 <pom.msg.clusterCode>SSO_CLUSTER</pom.msg.clusterCode>
@@ -148,13 +148,13 @@
                 <pom.log.clusterCode>SERURITYLOG</pom.log.clusterCode>
 
                 <!-- 数据库 -->
-                <pom.jdbc.url>jdbc:mysql://172.20.4.211:3307/usercenter?useUnicode=true&amp;characterEncoding=utf-8</pom.jdbc.url>
+                <pom.jdbc.url>jdbc:mysql://127.0.0.1:3307/usercenter?useUnicode=true&amp;characterEncoding=utf-8</pom.jdbc.url>
                 <pom.jdbc.username>COuXQLiIZ2fG1YgSwKzwEQ==</pom.jdbc.username>
                 <pom.jdbc.password>COuXQLiIZ2d8K+l//nJFgV0ZrNgf9NFG</pom.jdbc.password>
 
 
                 <!-- Redis -->
-                <pom.redis.url>direct://172.20.4.212:6380?poolName=mypool&amp;masterName=mymaster&amp;poolSize=300</pom.redis.url>
+                <pom.redis.url>direct://127.0.0.1:6380?poolName=mypool&amp;masterName=mymaster&amp;poolSize=300</pom.redis.url>
 
                 <!-- URL -->
                 <pom.cas.server>https://uastest.yyuap.com:6272</pom.cas.server>
