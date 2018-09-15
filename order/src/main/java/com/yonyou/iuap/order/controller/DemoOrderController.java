@@ -3,6 +3,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 
+import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
+import com.yonyou.iuap.mvc.type.JsonResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +50,18 @@ public class DemoOrderController extends GenericController<DemoOrder>{
         this.DemoOrderService = DemoOrderService;
         super.setService(DemoOrderService);
     }
+    @Override
+    public Object save(@RequestBody DemoOrder entity) {
+        JsonResponse jsonResp;
+        try {
+            DemoOrderService.insert(entity);
+            jsonResp = this.buildSuccess(entity);
+        } catch (Exception var4) {
+            jsonResp = this.buildError("msg", var4.getMessage(), RequestStatusEnum.FAIL_FIELD);
+        }
 
+        return jsonResp;
+    }
         @Override
         public Object list(PageRequest pageRequest,
                                            @FrontModelExchange(modelType = DemoOrder.class) SearchParams searchParams) {
