@@ -92,6 +92,9 @@ export default {
                         res.content[i].orderBy = temp.orderBy+"";
                     
                         
+                        res.content[i].checkByName = temp.checkByName+"";
+                    
+                        
                         res.content[i].remark = temp.remark+"";
                     
                         
@@ -102,6 +105,9 @@ export default {
                     
                         
                         res.content[i].orderAmount = temp.orderAmount+"";
+                    
+                        
+                        res.content[i].orderByName = temp.orderByName+"";
                     
                         
                         res.content[i].purchaseDeptByName = temp.purchaseDeptByName+"";
@@ -117,6 +123,9 @@ export default {
                     
                         
                         res.content[i].orderName = temp.orderName+"";
+                    
+                        
+                        res.content[i].financialAuditName = temp.financialAuditName+"";
                     
                     }
                 }

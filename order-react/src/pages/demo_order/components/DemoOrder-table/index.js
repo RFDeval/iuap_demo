@@ -91,6 +91,12 @@ class DemoOrderTable extends Component {
                     width: 100,
                 },
                 {
+                    title: "复核人员",
+                    dataIndex: "checkByName",
+                    key: "checkByName",
+                    width: 100,
+                },
+                {
                     title: "备注信息",
                     dataIndex: "remark",
                     key: "remark",
@@ -112,6 +118,12 @@ class DemoOrderTable extends Component {
                     title: "订单金额",
                     dataIndex: "orderAmount",
                     key: "orderAmount",
+                    width: 100,
+                },
+                {
+                    title: "请购人员",
+                    dataIndex: "orderByName",
+                    key: "orderByName",
                     width: 100,
                 },
                 {
@@ -142,6 +154,12 @@ class DemoOrderTable extends Component {
                     title: "订单名称",
                     dataIndex: "orderName",
                     key: "orderName",
+                    width: 100,
+                },
+                {
+                    title: "财务审核人员",
+                    dataIndex: "financialAuditName",
+                    key: "financialAuditName",
                     width: 100,
                 },
             {

@@ -26,6 +26,12 @@ class Edit extends Component {
         super(props);
         this.state = {
             rowData: {},
+                refKeyArraycheckBy:[],
+                refKeyArraydeptCheckBy:[],
+                refKeyArrayorderBy:[],
+                refKeyArrayorderDept:[],
+                refKeyArraypurchaseDeptBy:[],
+                refKeyArrayfinancialAudit:[],
             fileNameData: props.rowData.attachment || [],//上传附件数据
         }
     }
@@ -61,11 +67,23 @@ class Edit extends Component {
                 Message.create({ content: '数据填写错误', color: 'danger' });
             } else {
                 let {rowData,
+                    refKeyArraycheckBy,
+                    refKeyArraydeptCheckBy,
+                    refKeyArrayorderBy,
+                    refKeyArrayorderDept,
+                    refKeyArraypurchaseDeptBy,
+                    refKeyArrayfinancialAudit,
                 } = this.state;
                 if (rowData && rowData.id) {
                     values.id = rowData.id;
                     values.ts = rowData.ts;
                 }
+                values.checkBy = refKeyArraycheckBy.join();
+                values.deptCheckBy = refKeyArraydeptCheckBy.join();
+                values.orderBy = refKeyArrayorderBy.join();
+                values.orderDept = refKeyArrayorderDept.join();
+                values.purchaseDeptBy = refKeyArraypurchaseDeptBy.join();
+                values.financialAudit = refKeyArrayfinancialAudit.join();
                 values.orderDate = values.orderDate.format(format);
 
                 await actions.DemoOrder.save(
@@ -81,12 +99,30 @@ class Edit extends Component {
         if(tempRowData){
 
             let {
+                checkBy,checkByName,
+                deptCheckBy,deptCheckByName,
+                orderBy,orderByName,
+                orderDept,orderDeptName,
+                purchaseDeptBy,purchaseDeptByName,
+                financialAudit,financialAuditName,
             } = tempRowData;
 
             this.setState({
+                refKeyArraycheckBy: checkBy?checkBy.split(','):[],
+                refKeyArraydeptCheckBy: deptCheckBy?deptCheckBy.split(','):[],
+                refKeyArrayorderBy: orderBy?orderBy.split(','):[],
+                refKeyArrayorderDept: orderDept?orderDept.split(','):[],
+                refKeyArraypurchaseDeptBy: purchaseDeptBy?purchaseDeptBy.split(','):[],
+                refKeyArrayfinancialAudit: financialAudit?financialAudit.split(','):[],
             })
             rowData = Object.assign({},tempRowData,
                 {
+                    checkBy:checkByName,
+                    deptCheckBy:deptCheckByName,
+                    orderBy:orderByName,
+                    orderDept:orderDeptName,
+                    purchaseDeptBy:purchaseDeptByName,
+                    financialAudit:financialAuditName,
                 }
             )
         }
@@ -103,25 +139,15 @@ class Edit extends Component {
         return titleArr[btnFlag]||'新增';
     }
     //上传成功后的回调
-    handlerUploadSuccess = (data) => {
+    handlerUploadSuccess = (res) => {
         Message.create({content: '上传成功', color: 'success'});
-        let searchObj = queryString.parse(this.props.location.search);
-        let id = searchObj.search_id;
-        if (searchObj.btnFlag == 0) {
-
-        } else if (searchObj.btnFlag == 1) {
-            // if (data.length > 0) {
-            //     data[0]['id'] = id;
-            // }
-        }
 
         this.setState(({ fileNameData }) => {
             //拿到当前原始对象
             let newFileList = [];
             //找到历史数据合并
-            newFileList = newFileList.concat(fileNameData);
-            //原始数据合并新数据
-            newFileList = newFileList.concat(data);
+            newFileList = newFileList.concat(fileNameData,res.data);
+
             return {
                 fileNameData: newFileList
             };
@@ -217,11 +243,17 @@ class Edit extends Component {
         let { btnFlag,appType, id, processDefinitionId, processInstanceId } = queryString.parse(this.props.location.search);
         btnFlag = Number(btnFlag);
         let {rowData,
+                    refKeyArraycheckBy,
+                    refKeyArraydeptCheckBy,
+                    refKeyArrayorderBy,
+                    refKeyArrayorderDept,
+                    refKeyArraypurchaseDeptBy,
+                    refKeyArrayfinancialAudit,
         } = this.state;
 
 
         let title = this.onChangeHead(btnFlag);
-        let { orderType,orderDeptName,checkBy,orderNo,deptCheckBy,orderCount,orderBy,remark,deptCheckByName,orderDept,orderAmount,purchaseDeptByName,purchaseDeptBy,orderDate,financialAudit,orderName, } = rowData;
+        let { orderType,orderDeptName,checkBy,orderNo,deptCheckBy,orderCount,orderBy,checkByName,remark,deptCheckByName,orderDept,orderAmount,orderByName,purchaseDeptByName,purchaseDeptBy,orderDate,financialAudit,orderName,financialAuditName, } = rowData;
         const { getFieldProps, getFieldError } = this.props.form;
 
         return (
@@ -272,17 +304,32 @@ class Edit extends Component {
                                 <Label>
                                     复核人员：
                                 </Label>
-                                    <FormControl disabled={btnFlag == 2||false}
-                                        {
-                                        ...getFieldProps('checkBy', {
-                                            validateTrigger: 'onBlur',
-                                            initialValue: checkBy || '',
-                                            rules: [{
-                                                type:'string',required: true, message: '请输入复核人员',
-                                            }],
-                                        }
-                                        )}
-                                    />
+                                    <RefWithInput disabled={btnFlag == 2} option={options({
+                                                  title: '复核人员',
+                                        refType: 6,//1:树形 2.单表 3.树卡型 4.多选 5.default
+                                        className: '',
+                                        param: {//url请求参数
+                                            refCode: 'bd_common_dept',
+                                            tenantId: '',
+                                            sysId: '',
+                                            transmitParam: '6',
+                                            locale:getCookie('u_locale'),
+                                        },
+
+                                        keyList:refKeyArraycheckBy,//选中的key
+                                        onSave: function (sels) {
+                                            console.log(sels);
+                                            var temp = sels.map(v => v.id)
+                                            console.log("temp",temp);
+                                            self.setState({
+                                                refKeyArraycheckBy: temp,
+                                            })
+                                        },
+                                        showKey:'name',
+                                        verification:true,//是否进行校验
+                                        verKey:'checkBy',//校验字段
+                                        verVal:checkBy
+                                    })} form={this.props.form}/>
 
 
                                 <span className='error'>
@@ -314,17 +361,32 @@ class Edit extends Component {
                                 <Label>
                                     部门审核人：
                                 </Label>
-                                    <FormControl disabled={btnFlag == 2||false}
-                                        {
-                                        ...getFieldProps('deptCheckBy', {
-                                            validateTrigger: 'onBlur',
-                                            initialValue: deptCheckBy || '',
-                                            rules: [{
-                                                type:'string',required: true, message: '请输入部门审核人',
-                                            }],
-                                        }
-                                        )}
-                                    />
+                                    <RefWithInput disabled={btnFlag == 2} option={options({
+                                                  title: '部门审核人',
+                                        refType: 4,//1:树形 2.单表 3.树卡型 4.多选 5.default
+                                        className: '',
+                                        param: {//url请求参数
+                                            refCode: 'checkbox_ref',
+                                            tenantId: '',
+                                            sysId: '',
+                                            transmitParam: '4',
+                                            locale:getCookie('u_locale'),
+                                        },
+
+                                        keyList:refKeyArraydeptCheckBy,//选中的key
+                                        onSave: function (sels) {
+                                            console.log(sels);
+                                            var temp = sels.map(v => v.id)
+                                            console.log("temp",temp);
+                                            self.setState({
+                                                refKeyArraydeptCheckBy: temp,
+                                            })
+                                        },
+                                        showKey:'peoname',
+                                        verification:true,//是否进行校验
+                                        verKey:'deptCheckBy',//校验字段
+                                        verVal:deptCheckBy
+                                    })} form={this.props.form}/>
 
 
                                 <span className='error'>
@@ -358,17 +420,32 @@ class Edit extends Component {
                                 <Label>
                                     请购人员：
                                 </Label>
-                                    <FormControl disabled={btnFlag == 2||false}
-                                        {
-                                        ...getFieldProps('orderBy', {
-                                            validateTrigger: 'onBlur',
-                                            initialValue: orderBy || '',
-                                            rules: [{
-                                                type:'string',required: true, message: '请输入请购人员',
-                                            }],
-                                        }
-                                        )}
-                                    />
+                                    <RefWithInput disabled={btnFlag == 2} option={options({
+                                                  title: '请购人员',
+                                        refType: 3,//1:树形 2.单表 3.树卡型 4.多选 5.default
+                                        className: '',
+                                        param: {//url请求参数
+                                            refCode: 'common_ref_treecard',
+                                            tenantId: '',
+                                            sysId: '',
+                                            transmitParam: '3',
+                                            locale:getCookie('u_locale'),
+                                        },
+
+                                        keyList:refKeyArrayorderBy,//选中的key
+                                        onSave: function (sels) {
+                                            console.log(sels);
+                                            var temp = sels.map(v => v.id)
+                                            console.log("temp",temp);
+                                            self.setState({
+                                                refKeyArrayorderBy: temp,
+                                            })
+                                        },
+                                        showKey:'peoname',
+                                        verification:true,//是否进行校验
+                                        verKey:'orderBy',//校验字段
+                                        verVal:orderBy
+                                    })} form={this.props.form}/>
 
 
                                 <span className='error'>
@@ -400,17 +477,32 @@ class Edit extends Component {
                                 <Label>
                                     请购部门：
                                 </Label>
-                                    <FormControl disabled={btnFlag == 2||false}
-                                        {
-                                        ...getFieldProps('orderDept', {
-                                            validateTrigger: 'onBlur',
-                                            initialValue: orderDept || '',
-                                            rules: [{
-                                                type:'string',required: true, message: '请输入请购部门',
-                                            }],
-                                        }
-                                        )}
-                                    />
+                                    <RefWithInput disabled={btnFlag == 2} option={options({
+                                                  title: '请购部门',
+                                        refType: 1,//1:树形 2.单表 3.树卡型 4.多选 5.default
+                                        className: '',
+                                        param: {//url请求参数
+                                            refCode: 'neworganizition',
+                                            tenantId: '',
+                                            sysId: '',
+                                            transmitParam: '1',
+                                            locale:getCookie('u_locale'),
+                                        },
+
+                                        keyList:refKeyArrayorderDept,//选中的key
+                                        onSave: function (sels) {
+                                            console.log(sels);
+                                            var temp = sels.map(v => v.id)
+                                            console.log("temp",temp);
+                                            self.setState({
+                                                refKeyArrayorderDept: temp,
+                                            })
+                                        },
+                                        showKey:'refname',
+                                        verification:true,//是否进行校验
+                                        verKey:'orderDept',//校验字段
+                                        verVal:orderDept
+                                    })} form={this.props.form}/>
 
 
                                 <span className='error'>
@@ -443,17 +535,32 @@ class Edit extends Component {
                                 <Label>
                                     采购部审核人：
                                 </Label>
-                                    <FormControl disabled={btnFlag == 2||false}
-                                        {
-                                        ...getFieldProps('purchaseDeptBy', {
-                                            validateTrigger: 'onBlur',
-                                            initialValue: purchaseDeptBy || '',
-                                            rules: [{
-                                                type:'string',required: true, message: '请输入采购部审核人',
-                                            }],
-                                        }
-                                        )}
-                                    />
+                                    <RefWithInput disabled={btnFlag == 2} option={options({
+                                                  title: '采购部审核人',
+                                        refType: 2,//1:树形 2.单表 3.树卡型 4.多选 5.default
+                                        className: '',
+                                        param: {//url请求参数
+                                            refCode: 'common_ref_table',
+                                            tenantId: '',
+                                            sysId: '',
+                                            transmitParam: '2',
+                                            locale:getCookie('u_locale'),
+                                        },
+
+                                        keyList:refKeyArraypurchaseDeptBy,//选中的key
+                                        onSave: function (sels) {
+                                            console.log(sels);
+                                            var temp = sels.map(v => v.id)
+                                            console.log("temp",temp);
+                                            self.setState({
+                                                refKeyArraypurchaseDeptBy: temp,
+                                            })
+                                        },
+                                        showKey:'peoname',
+                                        verification:true,//是否进行校验
+                                        verKey:'purchaseDeptBy',//校验字段
+                                        verVal:purchaseDeptBy
+                                    })} form={this.props.form}/>
 
 
                                 <span className='error'>
@@ -486,17 +593,32 @@ class Edit extends Component {
                                 <Label>
                                     财务审核人：
                                 </Label>
-                                    <FormControl disabled={btnFlag == 2||false}
-                                        {
-                                        ...getFieldProps('financialAudit', {
-                                            validateTrigger: 'onBlur',
-                                            initialValue: financialAudit || '',
-                                            rules: [{
-                                                type:'string',required: true, message: '请输入财务审核人',
-                                            }],
-                                        }
-                                        )}
-                                    />
+                                    <RefWithInput disabled={btnFlag == 2} option={options({
+                                                  title: '财务审核人',
+                                        refType: 5,//1:树形 2.单表 3.树卡型 4.多选 5.default
+                                        className: '',
+                                        param: {//url请求参数
+                                            refCode: 'common_ref',
+                                            tenantId: '',
+                                            sysId: '',
+                                            transmitParam: '5',
+                                            locale:getCookie('u_locale'),
+                                        },
+
+                                        keyList:refKeyArrayfinancialAudit,//选中的key
+                                        onSave: function (sels) {
+                                            console.log(sels);
+                                            var temp = sels.map(v => v.id)
+                                            console.log("temp",temp);
+                                            self.setState({
+                                                refKeyArrayfinancialAudit: temp,
+                                            })
+                                        },
+                                        showKey:'peoname',
+                                        verification:true,//是否进行校验
+                                        verKey:'financialAudit',//校验字段
+                                        verVal:financialAudit
+                                    })} form={this.props.form}/>
 
 
                                 <span className='error'>
