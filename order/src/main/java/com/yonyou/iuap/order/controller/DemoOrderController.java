@@ -3,6 +3,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 
+import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
+import com.yonyou.iuap.mvc.type.JsonResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +43,12 @@ public class DemoOrderController extends GenericController<DemoOrder>{
 
         private Logger logger = LoggerFactory.getLogger(DemoOrderController.class);
 
-        private DemoOrderService DemoOrderService;
-        
-        @Autowired
-    public void setDemoOrderService(DemoOrderService DemoOrderService) {
-        this.DemoOrderService = DemoOrderService;
-        super.setService(DemoOrderService);
+        private DemoOrderService demoOrderService;
+
+         @Autowired
+    public void setDemoOrderService(DemoOrderService demoOrderService) {
+        this.demoOrderService = demoOrderService;
+        super.setService(demoOrderService);
     }
 
         @Override
@@ -54,8 +56,21 @@ public class DemoOrderController extends GenericController<DemoOrder>{
                                            @FrontModelExchange(modelType = DemoOrder.class) SearchParams searchParams) {
                 return super.list(pageRequest,searchParams);
         }
-        
-        @RequestMapping(value = "/excelTemplateDownload", method = { RequestMethod.GET, RequestMethod.POST })
+
+    @Override
+    public Object save(@RequestBody DemoOrder entity) {
+        JsonResponse jsonResp;
+        try {
+            demoOrderService.insert(entity);
+            jsonResp = this.buildSuccess(entity);
+        } catch (Exception var4) {
+            jsonResp = this.buildError("msg", var4.getMessage(), RequestStatusEnum.FAIL_FIELD);
+        }
+
+        return jsonResp;
+    }
+
+    @RequestMapping(value = "/excelTemplateDownload", method = { RequestMethod.GET, RequestMethod.POST })
         @ResponseBody
         public Map<String, String> excelTemplateDownload(HttpServletRequest request,
                         HttpServletResponse response) throws BusinessException {
@@ -94,7 +109,7 @@ public class DemoOrderController extends GenericController<DemoOrder>{
                                 }
                          }
                 }
-                        DemoOrderService.saveBatch(list);
+                        demoOrderService.saveBatch(list);
                         result.put("status", "success");
                         result.put("msg", "Excel导入成功");
                 } catch (Exception e) {
@@ -112,7 +127,7 @@ public class DemoOrderController extends GenericController<DemoOrder>{
 
            Map<String, String> result = new HashMap<String, String>();
            try {
-                  Page<DemoOrder> page = DemoOrderService.selectAllByPage(pageRequest, searchParams);
+                  Page<DemoOrder> page = demoOrderService.selectAllByPage(pageRequest, searchParams);
                   List list = page.getContent();
                   ExcelExportImportor.writeExcel(response, list, getExportHeadInfo(), "demo订单", "demo订单");
               result.put("status", "success");

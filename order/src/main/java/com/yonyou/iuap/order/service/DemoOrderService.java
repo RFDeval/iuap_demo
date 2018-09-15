@@ -47,14 +47,23 @@ public class DemoOrderService extends GenericIntegrateService<DemoOrder>{
     @BusiLogConfig(method="save",busiName="订单保存")
 	public DemoOrder save(DemoOrder entity) {
 		// TODO Auto-generated method stub
+
 		DemoOrder order =  super.save(entity);
 		this.sendMessage(entity);
 		return order;
 	}
 
+    @Override
+    @BusiLogConfig(method="save",busiName="订单保存")
+    public DemoOrder insert(DemoOrder entity) {
+        List<String> ids = DemoOrderMapper.getIds();
+        if(ids.contains(entity.getId())){
+            return super.update(entity);
+        }
+        return super.insert(entity);
+    }
 
-
-	@Override
+    @Override
     protected ServiceFeature[] getFeats() {
         return new ServiceFeature[]{ REFERENCE,ATTACHMENT,BPM,MULTI_TENANT,LOGICAL_DEL };
     }

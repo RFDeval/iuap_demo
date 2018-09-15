@@ -49,8 +49,9 @@
             <button class="u-button" data-bind="click:event.editBtnClicked">编辑</button>
             <button class="u-button" data-bind="click:event.viewBtnClicked">查看详情</button>
             <button class="u-button" data-bind="click: event.delRows">删除</button>
-            <button class="u-button" data-bind="click:event.addBtnClicked">提交</button>
-            <button class="u-button" data-bind="click:event.editBtnClicked">收回</button>
+            <button class="u-button" data-bind="click:flowEvent.submit">提交</button>
+            <button class="u-button" data-bind="click:flowEvent.recall">收回</button>
+            <button class="u-button" data-bind="click:flowEvent.doView">查看</button>
             <button class="u-button" data-bind="click: event.delRows">打印</button>
             <button class="u-button" data-bind="click:event.downTemplate">模板下载</button>
             <button class="u-button" data-bind="click:event.impExcelData">导入</button>
@@ -95,8 +96,7 @@
                 </div>
             </div>
         </div>
-        <div id="bpmhead" class="func_card_button_news">
-        </div>
+        <div id="bpmhead" class="func_card_button_news"></div>
         <br/>
         <!-- 表单体 addPage start -->
         <div id="form-div-body">
@@ -255,13 +255,12 @@
                 </div>
 
             </div>
-
-
-
+           
         </div>
         <!-- 表单体 addPage end -->
         <!--表单体 detailPage start -->
         <div id="form-div-body-view">
+            
             <div class="u-row margin-top-20">
                 <div class="u-col-md-4">
                     <div class="u-col-3 aline-right">
@@ -422,6 +421,19 @@
 
         </div>
         <!--表单体 detailPage end -->
-        <div id="bpmfoot"></div>
+        <div class="u-row margin-top-20">
+                <div class="u-tabs u-tabs-pill">
+                    <div class="u-tabs__tab-bar">
+                        <a href="#tab-pills-panel-1" class="u-tabs__tab is-active">
+                            <i class="uf uf-home"></i>通知附件</a>
+                    </div>
+                    <!--附件管理开始-->
+                    <div class="u-tabs__panel is-active" id="tab-pills-panel-1">
+
+                    </div>
+                    <!--附件管理结束-->
+                </div>
+        </div>
     </div>
 </div>
+<div id="bpmfoot"></div>

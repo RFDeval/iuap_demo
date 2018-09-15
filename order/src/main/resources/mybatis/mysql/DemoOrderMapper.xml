@@ -32,7 +32,10 @@
         <result column="tenant_id" property="tenantid" />
 
     </resultMap>
-
+        <select id="getIds" resultType="String">
+            select Id
+            from demo_order
+        </select>
 
         <select id="selectAllByPage"  resultMap="BaseResultMap">
                 SELECT  t.* FROM demo_order t WHERE t.dr=0
@@ -60,7 +63,7 @@
 
 
                             <if test="condition.searchMap.orderNo!=null and condition.searchMap.orderNo!='' ">
-                    and t.ORDER_NO = #{condition.searchMap.orderNo}
+                    and t.ORDER_NO like   CONCAT(CONCAT('%', #{condition.searchMap.orderNo}),'%')
                 </if>
 
 
@@ -90,7 +93,7 @@
 
 
                             <if test="condition.searchMap.deptCheckByName!=null and condition.searchMap.deptCheckByName!='' ">
-                    and t. = #{condition.searchMap.deptCheckByName}
+                    and t.dept_check_by = #{condition.searchMap.deptCheckByName}
                 </if>
 
 
@@ -108,7 +111,7 @@
 
 
                             <if test="condition.searchMap.purchaseDeptByName!=null and condition.searchMap.purchaseDeptByName!='' ">
-                    and t. = #{condition.searchMap.purchaseDeptByName}
+                    and t.purchase_dept_by = #{condition.searchMap.purchaseDeptByName}
                 </if>
 
 
@@ -132,7 +135,7 @@
 
 
                             <if test="condition.searchMap.orderName!=null and condition.searchMap.orderName!='' ">
-                    and t.ORDER_NAME = #{condition.searchMap.orderName}
+                    and t.ORDER_NAME like concat(concat('%',#{condition.searchMap.orderName}),'%') 
                 </if>
 
 

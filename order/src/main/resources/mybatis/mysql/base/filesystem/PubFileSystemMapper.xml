@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yonyou.iuap.base.filesystem.dao.PubFileSystemMapper">
+	<sql id="fieldList">
+		id,pkfile,filename,filepath,filesize,groupname,permission,
+		uploader,uploadtime,sysid,tenant,modular,url,secretkey,sourcetenant
+	</sql>
+	
+	<resultMap id="BaseResultMap" type="com.yonyou.iuap.base.filesystem.entity.PubFileSystem">
+		<id column="id" property="id" />
+		<result column="pkfile" property="pkfile" />
+		<result column="filename" property="filename" />
+		<result column="filepath" property="filepath" />
+		<result column="filesize" property="filesize" />
+		<result column="groupname" property="groupname" />
+		<result column="permission" property="permission" />
+		<result column="uploader" property="uploader" />
+		<result column="uploaderName" property="uploaderName" />
+		<result column="uploadtime" property="uploadtime" />
+		<result column="sysid" property="sysid" />
+		<result column="tenant" property="tenant" />
+		<result column="modular" property="modular" />
+		<result column="url" property="url" />
+		<result column="secretkey" property="secretkey" />
+		<result column="sourcetenant" property="sourcetenant" />
+	</resultMap>
+	
+	<select id="selectAllByPage" resultMap="BaseResultMap" resultType="java.util.List">
+		select
+		<include refid="fieldList" />
+		,(select name from app_user where app_user.id = pub_filesystem.uploader) uploaderName
+		from pub_filesystem where 1=1
+        <if test="search != null">
+            <if test="search.filepath!=null and search.filepath!='' ">
+                and filepath = #{search.filepath}
+            </if>
+        </if>
+	</select>
+	
+</mapper>

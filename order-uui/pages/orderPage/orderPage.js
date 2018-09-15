@@ -1,4 +1,6 @@
 define(['text!./orderPage.html',
+    "cookieOperation",
+    "/eiap-plus/pages/flow/bpmapproveref/bpmopenbill.js",
     "css!../../style/common.css",
     'css!./orderPage.css',
    '../../config/sys_const.js',
@@ -9,8 +11,8 @@ define(['text!./orderPage.html',
     '/iuap-saas-filesystem-service/resources/js/ossupload.js',
     'interfaceFileImpl'
 	],
-    function (template) {
-        var listRowUrl, saveRowUrl, delRowUrl, element;
+    function (template,cookie,bpmopenbill) {
+        var listRowUrl, saveRowUrl, delRowUrl,getUrl,submitUrl,recallUrl,auditUrl, element;
         function init(element) {
             element = element;
             $(element).html(template);
@@ -20,14 +22,31 @@ define(['text!./orderPage.html',
             downTemplateUrl="/demo_order/excelTemplateDownload"; //下载excel模板
             expDataUrl="/demo_order/toExportExcel";
             impDataUrl="/demo_order/toImportExcel";
+            getUrl = "/demo_order/get";
+            submitUrl = "/demo_order/submit";
+            recallUrl = "/demo_order/recall";
+            auditUrl  = "/demo_order";
 
-            viewModel.event.pageinit(element);
+            bpmBack = function(){
+                viewModel.formData.clear();
+                pjt.hideDiv('#form-div');
+            }
+           // viewModel.event.pageinit(element);
+            viewModel = $.extend({},viewModel,bpmopenbill.model);
+            if(cookie && cookie.vtype && cookie.vtype =="bpm"){
+                viewModel.flowEvent.initAuditPage(element,cookie);
+            }else{
+                viewModel.event.pageinit(element)
+            }
             //撑满高度布局
             $("#myLayout").height(document.body.scrollHeight);
+            
         }
 
         viewModel.event = {
             pageinit: function (element) {
+                pjt.createAttachment(viewModel, $('#myLayout'), $('.u-tabs__panel'));
+
                 viewModel.app = u.createApp({
                     el: element,
                     model: viewModel
@@ -84,6 +103,17 @@ define(['text!./orderPage.html',
                 viewModel.formData.clear();
                 viewModel.formData.createEmptyRow();
                 viewModel.formData.setRowSelect(0);
+
+                $("#uploadFile_btn").css("display","inline");
+                $("#delLoadFile_btn").css("display","inline");
+                viewModel.businessPk = pjt.newUuid();
+				var row = viewModel.formData.getCurrentRow();
+				row.setValue('id', viewModel.businessPk);
+                row.status = Row.STATUS.NEW;
+                if(viewModel.attachmentData){
+					viewModel.attachmentData.clear();
+                }
+                
                 pjt.showDiv('#form-div');
                 $("#form-div-body-view").css("display","none");
                 $("#form-div-body").css("display","inline");
@@ -95,6 +125,10 @@ define(['text!./orderPage.html',
                 var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
                 if (currentData != null && currentData != "") {
                     viewModel.formData.setSimpleData(currentData[0]);
+                    $("#uploadFile_btn").css("display","inline");
+                    $("#delLoadFile_btn").css("display","inline");
+					viewModel.businessPk=currentData[0].id;//设置主键用于附件上传关联
+					pjt.attaLoadData(viewModel);
                     viewModel.optType = 1;//编辑状态
                     pjt.showDiv('#form-div');
                     $("#form-div-body-view").css("display","none");
@@ -109,6 +143,11 @@ define(['text!./orderPage.html',
                 var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
                 if (currentData != null && currentData != "") {
                     viewModel.formData.setSimpleData(currentData[0]);
+                    $("#uploadFile_btn").css("display","none");
+                    $("#delLoadFile_btn").css("display","none");
+                    viewModel.businessPk=currentData[0].id;//设置主键用于附件上传关联
+                    pjt.attaLoadData(viewModel);
+                    
                     viewModel.optType = 2;//查看状态
                     pjt.showDiv('#form-div');
                     $("#form-div-body").css("display","none");
@@ -206,8 +245,99 @@ define(['text!./orderPage.html',
                     viewModel.event.queryData();
                 });  
             }
-
-            
+        }
+        viewModel.flowEvent = {
+            //提交工作流
+            submit:function(){
+                var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
+                if (currentData != null && currentData != "" && currentData.length === 1) {
+                    var checkUrl = "/eiap-plus/appResAllocate/queryBpmTemplateAllocate?funccode=" + getAppCode() + "&nodekey=order_001";
+                    pjt.ajaxQueryThridService(checkUrl, {}, function (data) {
+                        console.log("OK:", data);
+                        var processDefineCode = data.res_code;
+                        viewModel.flowEvent.submitBPMByProcessDefineCode(currentData, processDefineCode);
+                    }, function (data) {
+                        pjt.message("请求数据错误!");
+                    })
+                }else if(currentData.length > 1){
+                    pjt.message("请选择一条数据");
+                }else{
+                    pjt.message("请选择要提交的数据");
+                }
+            },
+            submitBPMByProcessDefineCode:function(selectedData, processDefineCode){
+                var postUrl = submitUrl + "?processDefineCode=" + processDefineCode;
+                pjt.ajaxSaveData(postUrl, selectedData, function (data) {
+                    pjt.message("流程提交成功");
+                    //TODO
+                }, function (data) {
+                    pjt.message("流程提交失败");
+                });
+            },
+            //查看工单
+            doView:function(){
+                var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
+                if (currentData != null && currentData != "") {
+                    pjt.ajaxQueryData(getUrl, {search_id:currentData[0].id}, function (data) {
+                        //加入bpm按钮
+                        viewModel.initBPMFromBill(currentData[0].id, viewModel);
+    
+                        viewModel.formData.clear();
+                        viewModel.formData.setSimpleData(data);
+                        // 把卡片页面变成不能编辑
+                        $("#form-div-body").css("display","none");
+                        $("#form-div-body-view").css("display","inline");
+                        document.getElementById("myTitle").innerHTML = "查看记录";
+                        $("#form-div-body-view").find('input').attr('placeholder','').attr('disabled','disabled').attr('readonly','readonly');
+                        pjt.showDiv('#form-div');
+                        pjt.hideDiv('#form-div-header');
+                    }, function (data) {
+                        console.log("error:", data);
+                    });
+                }else{
+                    pjt.message("请选择要查看的数据");
+                }
+            },
+            //撤回工单
+            recall:function(){
+                var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
+                if (currentData != null && currentData != "") {
+                    pjt.ajaxSaveData(recallUrl, currentData, function (data) {
+                        if(typeof(data.message)=="undefined"){
+                            pjt.message("撤回成功");
+                        }else{
+                            pjt.message(data.message);
+                        }
+                        
+                    }, function (data) {
+                        pjt.message(data.message);
+                    });
+                }else{
+                    pjt.message("请选择要撤回的数据");
+                }
+            },
+            //审批单据打开页面,这是从任务中心打开的
+            initAuditPage:function(){
+                var app = u.createApp({
+                    el: element,
+                    model: viewModel
+                });
+                viewModel.initBpmFromTask(arg, viewModel);					//初始化BPM相关内容(添加审批操作头部和审批相关弹出框的代码片段)
+                var url = getUrl + "?id=" + arg.id;
+                pjt.ajaxQueryData(url, null, function (data) {
+                    viewModel.formData.clear();
+                    viewModel.formData.setSimpleData(data);
+                    // 把卡片页面变成不能编辑
+                    $('#myForm').each(function (index, element) {
+                        $(element).find('input[type!="radio"]').attr('disabled', true);
+                        $(element).find('textarea').attr('disabled', true);
+                    });
+                    pjt.showDiv('#form-div');
+                    pjt.hideDiv('#form-div-header');
+                }, function (data) {
+                    alert(2);
+                });
+            }
 
         }
         return {
