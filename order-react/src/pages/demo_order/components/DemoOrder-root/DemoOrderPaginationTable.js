@@ -7,6 +7,7 @@ import Select from 'bee-select';
 import moment from "moment/moment";
 import Header from 'components/Header';
 import DemoOrderForm from '../DemoOrder-form';
+import AcExport from '../DemoOrder-export';
 import AcUpload from 'ac-upload';
 import 'ac-upload/build/ac-upload.css';
 import './index.less'
@@ -46,21 +47,9 @@ export default class DemoOrderPaginationTable extends Component {
                      width:200,
                 },
                 {
-                    title: "复核人员",
-                    dataIndex: "checkBy",
-                    key: "checkBy",
-                     width:200,
-                },
-                {
                     title: "订单编号",
                     dataIndex: "orderNo",
                     key: "orderNo",
-                     width:200,
-                },
-                {
-                    title: "部门审核人",
-                    dataIndex: "deptCheckBy",
-                    key: "deptCheckBy",
                      width:200,
                 },
                 {
@@ -70,9 +59,9 @@ export default class DemoOrderPaginationTable extends Component {
                      width:200,
                 },
                 {
-                    title: "请购人员",
-                    dataIndex: "orderBy",
-                    key: "orderBy",
+                    title: "复核人员",
+                    dataIndex: "checkByName",
+                    key: "checkByName",
                      width:200,
                 },
                 {
@@ -88,15 +77,15 @@ export default class DemoOrderPaginationTable extends Component {
                      width:200,
                 },
                 {
-                    title: "请购部门",
-                    dataIndex: "orderDept",
-                    key: "orderDept",
-                     width:200,
-                },
-                {
                     title: "订单金额",
                     dataIndex: "orderAmount",
                     key: "orderAmount",
+                     width:200,
+                },
+                {
+                    title: "请购人员",
+                    dataIndex: "orderByName",
+                    key: "orderByName",
                      width:200,
                 },
                 {
@@ -106,27 +95,21 @@ export default class DemoOrderPaginationTable extends Component {
                      width:200,
                 },
                 {
-                    title: "采购部审核人",
-                    dataIndex: "purchaseDeptBy",
-                    key: "purchaseDeptBy",
-                     width:200,
-                },
-                {
                     title: "请购时间",
                     dataIndex: "orderDate",
                     key: "orderDate",
                      width:200,
                 },
                 {
-                    title: "财务审核人",
-                    dataIndex: "financialAudit",
-                    key: "financialAudit",
-                     width:200,
-                },
-                {
                     title: "订单名称",
                     dataIndex: "orderName",
                     key: "orderName",
+                     width:200,
+                },
+                {
+                    title: "财务审核人员",
+                    dataIndex: "financialAuditName",
+                    key: "financialAuditName",
                      width:200,
                 },
                 {
@@ -202,11 +185,17 @@ export default class DemoOrderPaginationTable extends Component {
         actions.DemoOrder.loadList({
             pageSize: value
         })
+        actions.DemoOrder.updateState({
+            pageSize: value
+        })
     }
 
     // 分页组件点击页面数字索引执行函数
     onPageIndexSelect = value => {
         actions.DemoOrder.loadList({
+            pageIndex: value
+        })
+        actions.DemoOrder.updateState({
             pageIndex: value
         })
     }
@@ -234,7 +223,7 @@ export default class DemoOrderPaginationTable extends Component {
     // 撤回成功回调函数
     onRecallSuc = async ()=>{
         console.log("onRecallSuc 成功进入recall回调");
-        await actions.searchTable.loadList();
+        await actions.DemoOrder.loadList();
         actions.DemoOrder.updateState({showLine:false});
         Message.create({content: '单据撤回成功', color: 'success'});
 
@@ -301,7 +290,15 @@ export default class DemoOrderPaginationTable extends Component {
 
     // 导出
     exportExcel = () =>{
-        actions.DemoOrder.exportExcel(this.queryParams);
+        //actions.DemoOrder.exportExcel(this.queryParams);
+        let { selectData } = this.state;
+        if(selectData.length > 0) {
+            actions.DemoOrder.exportExcel({
+                dataList : selectData
+            });
+        }else {
+            Message.create({ content: '请选择导出数据', color : 'danger'  });
+        }
     }
 
     // 打印数据
@@ -337,6 +334,7 @@ export default class DemoOrderPaginationTable extends Component {
         const self=this;
         let { list, showLoading, pageIndex, pageSize, totalPages , total } = this.props;
         let {selectData,showModal} = this.state;
+        let exportProps = {total,pageIndex,pageSize,selectData};
         console.log("list",list)
         return (
             <div className='DemoOrder-root'>
@@ -388,9 +386,7 @@ export default class DemoOrderPaginationTable extends Component {
                     >
                         <Button className="ml5" colors="primary" size='sm'>导入</Button>
                     </AcUpload>
-                    <Button colors="primary" className="ml5" size='sm' onClick={() => { self.exportExcel() }}>
-                        导出
-                    </Button>
+                    <AcExport {...exportProps} className="ml5"/>
                 </div>
                 <PaginationTable
                         data={list}
