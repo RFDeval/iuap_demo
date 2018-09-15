@@ -60,6 +60,7 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
         }
 
 
+    @Condition(match=Match.EQ)
     @Column(name="ORDER_TYPE")
     private String orderType;        //订单类型
 
@@ -81,6 +82,7 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
     }
 
     @Column(name="CHECK_BY")
+    @Reference(code="bd_common_dept",srcProperties={ "name"}, desProperties={ "checkByName"})
     private String checkBy;        //复核人员
 
     public void setCheckBy(String checkBy){
@@ -90,6 +92,7 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
         return this.checkBy;
     }
 
+    @Condition(match=Match.LIKE)
     @Column(name="ORDER_NO")
     @CodingField(code="asval")
     private String orderNo;        //订单编号
@@ -102,6 +105,7 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
     }
 
     @Column(name="DEPT_CHECK_BY")
+    @Reference(code="checkbox_ref",srcProperties={ "peoname"}, desProperties={ "deptCheckByName"})
     private String deptCheckBy;        //部门审核人
 
     public void setDeptCheckBy(String deptCheckBy){
@@ -111,6 +115,7 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
         return this.deptCheckBy;
     }
 
+    @Condition(match=Match.GT)
     @Column(name="ORDER_COUNT")
     private Integer orderCount;        //商品数量
 
@@ -122,6 +127,7 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
     }
 
     @Column(name="ORDER_BY")
+    @Reference(code="common_ref_treecard",srcProperties={ "peoname"}, desProperties={ "orderByName"})
     private String orderBy;        //请购人员
 
     public void setOrderBy(String orderBy){
@@ -129,6 +135,16 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
     }
     public String getOrderBy(){
         return this.orderBy;
+    }
+
+    @Transient
+    private String checkByName;        //复核人员
+
+    public void setCheckByName(String checkByName){
+        this.checkByName = checkByName;
+    }
+    public String getCheckByName(){
+        return this.checkByName;
     }
 
     @Column(name="REMARK")
@@ -151,7 +167,9 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
         return this.deptCheckByName;
     }
 
+    @Condition(match=Match.EQ)
     @Column(name="ORDER_DEPT")
+    @Reference(code="neworganizition",srcProperties={ "name"}, desProperties={ "orderDeptName"})
     private String orderDept;        //请购部门
 
     public void setOrderDept(String orderDept){
@@ -161,14 +179,25 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
         return this.orderDept;
     }
 
+    @Condition(match=Match.GT)
     @Column(name="ORDER_AMOUNT")
-    private String orderAmount;        //订单金额
+    private BigDecimal orderAmount;        //订单金额
 
-    public void setOrderAmount(String orderAmount){
+    public void setOrderAmount(BigDecimal orderAmount){
         this.orderAmount = orderAmount;
     }
-    public String getOrderAmount(){
+    public BigDecimal getOrderAmount(){
         return this.orderAmount;
+    }
+
+    @Transient
+    private String orderByName;        //请购人员
+
+    public void setOrderByName(String orderByName){
+        this.orderByName = orderByName;
+    }
+    public String getOrderByName(){
+        return this.orderByName;
     }
 
     @Transient
@@ -182,6 +211,7 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
     }
 
     @Column(name="PURCHASE_DEPT_BY")
+    @Reference(code="common_ref_table",srcProperties={ "peoname"}, desProperties={ "purchaseDeptByName"})
     private String purchaseDeptBy;        //采购部审核人
 
     public void setPurchaseDeptBy(String purchaseDeptBy){
@@ -202,6 +232,7 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
     }
 
     @Column(name="FINANCIAL_AUDIT")
+    @Reference(code="common_ref",srcProperties={ "peoname"}, desProperties={ "financialAuditName"})
     private String financialAudit;        //财务审核人
 
     public void setFinancialAudit(String financialAudit){
@@ -211,6 +242,7 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
         return this.financialAudit;
     }
 
+    @Condition(match=Match.LIKE)
     @Column(name="ORDER_NAME")
     private String orderName;        //订单名称
 
@@ -219,6 +251,16 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
     }
     public String getOrderName(){
         return this.orderName;
+    }
+
+    @Transient
+    private String financialAuditName;        //财务审核人员
+
+    public void setFinancialAuditName(String financialAuditName){
+        this.financialAuditName = financialAuditName;
+    }
+    public String getFinancialAuditName(){
+        return this.financialAuditName;
     }
 
         @Override

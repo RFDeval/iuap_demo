@@ -32,6 +32,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.WordUtils;
 
 
 
@@ -105,15 +106,41 @@ public class DemoOrderController extends GenericController<DemoOrder>{
                 return result;
         }
         
-    @RequestMapping(value = "/toExportExcel",method = RequestMethod.GET)
+    @RequestMapping(value = "/toExportExcel",method = RequestMethod.POST)
         @ResponseBody
         public Object exportExcel(PageRequest pageRequest,
+                            @FrontModelExchange(modelType = DemoOrder.class) SearchParams searchParams,HttpServletResponse response,@RequestBody List<DemoOrder> dataList){
+
+           Map<String, String> result = new HashMap<String, String>();
+           try {
+                  List idsList = new ArrayList();
+          for (DemoOrder entity : dataList) {
+                 idsList.add(entity.getId());
+          }
+          List list = DemoOrderService.selectListByExcelData(idsList);
+          list= transformEnum(list);
+                  ExcelExportImportor.writeExcel(response, list, getExportHeadInfo(), "demo订单", "demo订单");
+              result.put("status", "success");
+              result.put("msg", "信息导出成功");
+              result.put("fileName", "demo订单");
+           } catch (Exception e) {
+              logger.error("Excel下载失败", e);
+              result.put("status", "failed");
+              result.put("msg", "Excel下载失败");
+           }
+           return result;
+        }
+        
+        @RequestMapping(value = "/toExportExcelAll",method = RequestMethod.GET)
+        @ResponseBody
+        public Object exportExcelAll(PageRequest pageRequest,
                             @FrontModelExchange(modelType = DemoOrder.class) SearchParams searchParams,HttpServletResponse response){
 
            Map<String, String> result = new HashMap<String, String>();
            try {
                   Page<DemoOrder> page = DemoOrderService.selectAllByPage(pageRequest, searchParams);
-                  List list = page.getContent();
+                  List list = page.getContent(); 
+          list= transformEnum(list);
                   ExcelExportImportor.writeExcel(response, list, getExportHeadInfo(), "demo订单", "demo订单");
               result.put("status", "success");
               result.put("msg", "信息导出成功");
@@ -126,12 +153,12 @@ public class DemoOrderController extends GenericController<DemoOrder>{
         }
         
         private Map<String, String> getExportHeadInfo() {
-            String values = "{'orderType':'订单类型','orderDeptName':'请购部门','checkBy':'复核人员','orderNo':'订单编号','deptCheckBy':'部门审核人','orderCount':'商品数量','orderBy':'请购人员','remark':'备注信息','deptCheckByName':'部门审核人','orderDept':'请购部门','orderAmount':'订单金额','purchaseDeptByName':'采购部审核人','purchaseDeptBy':'采购部审核人','orderDate':'请购时间','financialAudit':'财务审核人','orderName':'订单名称',}";
+            String values = "{'orderType':'订单类型','checkByName':'复核人员','orderNo':'订单编号','deptCheckByName':'部门审核人','orderCount':'商品数量','orderByName':'请购人员','remark':'备注信息','orderDeptName':'请购部门','orderAmount':'订单金额','purchaseDeptByName':'采购部审核人','orderDate':'请购时间','financialAuditName':'财务审核人','orderName':'订单名称',}";
             return getMapInfo(values);
     }
     
     private Map<String, String> getImportHeadInfo() {
-        String values = "{'orderType':'订单类型','orderDeptName':'请购部门','checkBy':'复核人员','orderNo':'订单编号','deptCheckBy':'部门审核人','orderCount':'商品数量','orderBy':'请购人员','remark':'备注信息','deptCheckByName':'部门审核人','orderDept':'请购部门','orderAmount':'订单金额','purchaseDeptByName':'采购部审核人','purchaseDeptBy':'采购部审核人','orderDate':'请购时间','financialAudit':'财务审核人','orderName':'订单名称',}";
+        String values = "{'orderType':'订单类型','checkBy':'复核人员','orderNo':'订单编号','deptCheckBy':'部门审核人','orderCount':'商品数量','orderBy':'请购人员','remark':'备注信息','orderDept':'请购部门','orderAmount':'订单金额','purchaseDeptBy':'采购部审核人','orderDate':'请购时间','financialAudit':'财务审核人','orderName':'订单名称',}";
             return getMapInfo(values);
     }
     
@@ -147,5 +174,23 @@ public class DemoOrderController extends GenericController<DemoOrder>{
             }
             return headInfo;
         }
+        
+        private List<DemoOrder> transformEnum(List<DemoOrder> list){
+        List<DemoOrder> resultList = new ArrayList<DemoOrder>();
+                Map<String, String> orderTypeMap = new HashMap<String, String>();
+                orderTypeMap.put("1", "办公用品");
+                orderTypeMap.put("2", "生活用品");
+                orderTypeMap.put("3", "学习用品");
+        for (DemoOrder entity : list) {
+                        if(entity.getOrderType() != null){
+                                String value = orderTypeMap.get(entity.getOrderType());
+                                entity.setOrderType(value);
+                        }
+                        resultList.add(entity);
+                }
+        
+        return resultList;
+    }
+        
 
 }
