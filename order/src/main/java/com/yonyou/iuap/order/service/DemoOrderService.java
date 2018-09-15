@@ -6,33 +6,36 @@ import com.alibaba.fastjson.JSONObject;
 import com.yonyou.iuap.base.utils.RestUtils;
 import com.yonyou.iuap.baseservice.intg.service.GenericIntegrateService;
 import com.yonyou.iuap.baseservice.intg.support.ServiceFeature;
+
 import com.yonyou.iuap.context.InvocationInfoProxy;
 import com.yonyou.iuap.message.CommonMessageSendService;
 import com.yonyou.iuap.message.MessageEntity;
 import com.yonyou.iuap.message.WebappMessageConst;
 import com.yonyou.iuap.order.dao.DemoOrderMapper;
 import com.yonyou.iuap.order.entity.DemoOrder;
+
 import com.yonyou.iuap.utils.PropertyUtil;
 import com.yonyou.uap.ieop.busilog.config.annotation.BusiLogConfig;
-import com.yonyou.uap.msg.sdk.MessageCenterUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.yonyou.iuap.baseservice.intg.support.ServiceFeature.*;
+import com.yonyou.iuap.baseservice.ref.service.RefCommonService;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.yonyou.iuap.baseservice.intg.support.ServiceFeature.*;
 @Service
 public class DemoOrderService extends GenericIntegrateService<DemoOrder>{
-	private Logger logger = LoggerFactory.getLogger(DemoOrderService.class);
-	
+    private Logger logger = LoggerFactory.getLogger(DemoOrderService.class);
+
     private DemoOrderMapper DemoOrderMapper;
+
     private CommonMessageSendService commonMessageSendService;
     @Autowired
     public void setDemoOrderMapper(DemoOrderMapper DemoOrderMapper,CommonMessageSendService commonMessageSendService) {
@@ -40,18 +43,25 @@ public class DemoOrderService extends GenericIntegrateService<DemoOrder>{
         this.commonMessageSendService = commonMessageSendService;
         super.setGenericMapper(DemoOrderMapper);
     }
+    @Autowired
+    private RefCommonService refService;
+
+    public List selectListByExcelData(List idsList) {
+        List list  = DemoOrderMapper.selectListByExcelData(idsList);
+        return refService.fillListWithRef(list);
+    }
 
 
 
     @Override
     @BusiLogConfig(method="save",busiName="订单保存")
-	public DemoOrder save(DemoOrder entity) {
-		// TODO Auto-generated method stub
+    public DemoOrder save(DemoOrder entity) {
+        // TODO Auto-generated method stub
 
-		DemoOrder order =  super.save(entity);
-		this.sendMessage(entity);
-		return order;
-	}
+        DemoOrder order =  super.save(entity);
+        this.sendMessage(entity);
+        return order;
+    }
 
     @Override
     @BusiLogConfig(method="save",busiName="订单保存")
@@ -67,8 +77,8 @@ public class DemoOrderService extends GenericIntegrateService<DemoOrder>{
     protected ServiceFeature[] getFeats() {
         return new ServiceFeature[]{ REFERENCE,ATTACHMENT,BPM,MULTI_TENANT,LOGICAL_DEL };
     }
-	
-	private void sendMessage(DemoOrder order) {
+
+    private void sendMessage(DemoOrder order) {
         MessageEntity msg = new MessageEntity();
         String userid = InvocationInfoProxy.getUserid();
         String userName = InvocationInfoProxy.getUsername();

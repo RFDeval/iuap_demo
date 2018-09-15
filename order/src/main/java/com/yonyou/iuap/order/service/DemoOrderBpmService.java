@@ -38,7 +38,7 @@ public class DemoOrderBpmService extends GenericBpmService<DemoOrder>{
             String title = userName + "提交的单据,单号是" + entity.getBpmBillCode() + ", 请审批";
             bpmform.setTitle(title);
             // 实例名
-            bpmform.setFunCode("Order");
+            bpmform.setFunCode("order");
             // 单据id
             bpmform.setFormId(entity.getId().toString());
             // 单据号
@@ -48,7 +48,7 @@ public class DemoOrderBpmService extends GenericBpmService<DemoOrder>{
             // 其他变量
             bpmform.setOtherVariables(buildEntityVars(entity));
             // 单据url
-            bpmform.setFormUrl("/react_example_fe/order/#/DemoOrder-edit?btnFlag=2&search_id="+entity.getId());  // 单据url
+            bpmform.setFormUrl("/react_example_fe/demo_order/#/DemoOrder-edit?btnFlag=2&search_id="+entity.getId());  // 单据url
             // 流程实例名称
             bpmform.setProcessInstanceName(title);                                                                              // 流程实例名称
             // 流程审批后，执行的业务处理类(controller对应URI前缀)
