@@ -3,8 +3,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 
-import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
-import com.yonyou.iuap.mvc.type.JsonResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +32,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.WordUtils;
 
 
 
@@ -42,170 +39,113 @@ import org.apache.commons.lang.WordUtils;
 @RequestMapping(value="/demo_order")
 public class DemoOrderController extends GenericController<DemoOrder>{
 
-    private Logger logger = LoggerFactory.getLogger(DemoOrderController.class);
+        private Logger logger = LoggerFactory.getLogger(DemoOrderController.class);
 
-    private DemoOrderService demoOrderService;
-
-    @Autowired
-    public void setDemoOrderService(DemoOrderService demoOrderService) {
-        this.demoOrderService = demoOrderService;
-        super.setService(demoOrderService);
+        private DemoOrderService DemoOrderService;
+        
+        @Autowired
+    public void setDemoOrderService(DemoOrderService DemoOrderService) {
+        this.DemoOrderService = DemoOrderService;
+        super.setService(DemoOrderService);
     }
 
-    @Override
-    public Object list(PageRequest pageRequest,
-                       @FrontModelExchange(modelType = DemoOrder.class) SearchParams searchParams) {
-        return super.list(pageRequest,searchParams);
-    }
+        @Override
+        public Object list(PageRequest pageRequest,
+                                           @FrontModelExchange(modelType = DemoOrder.class) SearchParams searchParams) {
+                return super.list(pageRequest,searchParams);
+        }
+        
+        @RequestMapping(value = "/excelTemplateDownload", method = { RequestMethod.GET, RequestMethod.POST })
+        @ResponseBody
+        public Map<String, String> excelTemplateDownload(HttpServletRequest request,
+                        HttpServletResponse response) throws BusinessException {
+                Map<String, String> result = new HashMap<String, String>();
 
-    @Override
-    public Object save(@RequestBody DemoOrder entity) {
-        JsonResponse jsonResp;
-        try {
-            demoOrderService.insert(entity);
-            jsonResp = this.buildSuccess(entity);
-        } catch (Exception var4) {
-            jsonResp = this.buildError("msg", var4.getMessage(), RequestStatusEnum.FAIL_FIELD);
+                try {
+                        ExcelExportImportor.downloadExcelTemplate(response, getImportHeadInfo(), "demo订单", "demo订单模板");
+                        result.put("status", "success");
+                        result.put("msg", "Excel模版下载成功");
+                } catch (Exception e) {
+                        logger.error("Excel模版下载失败", e);
+                        result.put("status", "failed");
+                        result.put("msg", "Excel模版下载失败");
+                }
+                return result;
         }
 
-        return jsonResp;
-    }
-
-    @RequestMapping(value = "/excelTemplateDownload", method = { RequestMethod.GET, RequestMethod.POST })
-    @ResponseBody
-    public Map<String, String> excelTemplateDownload(HttpServletRequest request,
-                                                     HttpServletResponse response) throws BusinessException {
-        Map<String, String> result = new HashMap<String, String>();
-
-        try {
-            ExcelExportImportor.downloadExcelTemplate(response, getImportHeadInfo(), "demo订单", "demo订单模板");
-            result.put("status", "success");
-            result.put("msg", "Excel模版下载成功");
-        } catch (Exception e) {
-            logger.error("Excel模版下载失败", e);
-            result.put("status", "failed");
-            result.put("msg", "Excel模版下载失败");
-        }
-        return result;
-    }
-
-    @RequestMapping(value = "/toImportExcel", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, String> importExcel(HttpServletRequest request) throws BusinessException {
-        Map<String, String> result = new HashMap<String, String>();
-        try {
-
-            List<DemoOrder> list = new ArrayList<DemoOrder>();
-            CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-            if(resolver.isMultipart(request)){
-                MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-                int size = multipartRequest.getMultiFileMap().size();
-                MultiValueMap<String, MultipartFile> multiValueMap = multipartRequest.getMultiFileMap();
-                if(multiValueMap !=null && size > 0){
-                    for(MultiValueMap.Entry<String, List<MultipartFile>> me : multiValueMap.entrySet()){
+        @RequestMapping(value = "/toImportExcel", method = RequestMethod.POST)
+        @ResponseBody
+        public Map<String, String> importExcel(HttpServletRequest request) throws BusinessException {
+                Map<String, String> result = new HashMap<String, String>();
+                try {
+                
+                        List<DemoOrder> list = new ArrayList<DemoOrder>();
+                CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+                if(resolver.isMultipart(request)){
+                         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+                         int size = multipartRequest.getMultiFileMap().size();
+                         MultiValueMap<String, MultipartFile> multiValueMap = multipartRequest.getMultiFileMap();
+                         if(multiValueMap !=null && size > 0){
+                                for(MultiValueMap.Entry<String, List<MultipartFile>> me : multiValueMap.entrySet()){
                         List<MultipartFile> multipartFile = me.getValue();
                         for(MultipartFile mult : multipartFile){
-                            list = ExcelExportImportor.loadExcel(mult.getInputStream(), getImportHeadInfo(), DemoOrder.class);
+                                list = ExcelExportImportor.loadExcel(mult.getInputStream(), getImportHeadInfo(), DemoOrder.class);
                         }
-                    }
+                                }
+                         }
                 }
-            }
-            demoOrderService.saveBatch(list);
-            result.put("status", "success");
-            result.put("msg", "Excel导入成功");
-        } catch (Exception e) {
-            logger.error("Excel导入失败", e);
-            result.put("status", "failed");
-            result.put("msg", "Excel导入失败");
+                        DemoOrderService.saveBatch(list);
+                        result.put("status", "success");
+                        result.put("msg", "Excel导入成功");
+                } catch (Exception e) {
+                        logger.error("Excel导入失败", e);
+                        result.put("status", "failed");
+                        result.put("msg", "Excel导入失败");
+                }
+                return result;
         }
-        return result;
-    }
+        
+    @RequestMapping(value = "/toExportExcel",method = RequestMethod.GET)
+        @ResponseBody
+        public Object exportExcel(PageRequest pageRequest,
+                            @FrontModelExchange(modelType = DemoOrder.class) SearchParams searchParams,HttpServletResponse response){
 
-    @RequestMapping(value = "/toExportExcel",method = RequestMethod.POST)
-    @ResponseBody
-    public Object exportExcel(PageRequest pageRequest,
-                              @FrontModelExchange(modelType = DemoOrder.class) SearchParams searchParams,HttpServletResponse response,@RequestBody List<DemoOrder> dataList){
-
-        Map<String, String> result = new HashMap<String, String>();
-        try {
-            List idsList = new ArrayList();
-            for (DemoOrder entity : dataList) {
-                idsList.add(entity.getId());
-            }
-            List list = demoOrderService.selectListByExcelData(idsList);
-            list= transformEnum(list);
-            ExcelExportImportor.writeExcel(response, list, getExportHeadInfo(), "demo订单", "demo订单");
-            result.put("status", "success");
-            result.put("msg", "信息导出成功");
-            result.put("fileName", "demo订单");
-        } catch (Exception e) {
-            logger.error("Excel下载失败", e);
-            result.put("status", "failed");
-            result.put("msg", "Excel下载失败");
+           Map<String, String> result = new HashMap<String, String>();
+           try {
+                  Page<DemoOrder> page = DemoOrderService.selectAllByPage(pageRequest, searchParams);
+                  List list = page.getContent();
+                  ExcelExportImportor.writeExcel(response, list, getExportHeadInfo(), "demo订单", "demo订单");
+              result.put("status", "success");
+              result.put("msg", "信息导出成功");
+           } catch (Exception e) {
+              logger.error("Excel下载失败", e);
+              result.put("status", "failed");
+              result.put("msg", "Excel下载失败");
+           }
+           return result;
         }
-        return result;
+        
+        private Map<String, String> getExportHeadInfo() {
+            String values = "{'orderType':'订单类型','orderDeptName':'请购部门','checkBy':'复核人员','orderNo':'订单编号','deptCheckBy':'部门审核人','orderCount':'商品数量','orderBy':'请购人员','remark':'备注信息','deptCheckByName':'部门审核人','orderDept':'请购部门','orderAmount':'订单金额','purchaseDeptByName':'采购部审核人','purchaseDeptBy':'采购部审核人','orderDate':'请购时间','financialAudit':'财务审核人','orderName':'订单名称',}";
+            return getMapInfo(values);
     }
-
-    @RequestMapping(value = "/toExportExcelAll",method = RequestMethod.GET)
-    @ResponseBody
-    public Object exportExcelAll(PageRequest pageRequest,
-                                 @FrontModelExchange(modelType = DemoOrder.class) SearchParams searchParams,HttpServletResponse response){
-
-        Map<String, String> result = new HashMap<String, String>();
-        try {
-            Page<DemoOrder> page = demoOrderService.selectAllByPage(pageRequest, searchParams);
-            List list = page.getContent();
-            list= transformEnum(list);
-            ExcelExportImportor.writeExcel(response, list, getExportHeadInfo(), "demo订单", "demo订单");
-            result.put("status", "success");
-            result.put("msg", "信息导出成功");
-        } catch (Exception e) {
-            logger.error("Excel下载失败", e);
-            result.put("status", "failed");
-            result.put("msg", "Excel下载失败");
-        }
-        return result;
-    }
-
-    private Map<String, String> getExportHeadInfo() {
-        String values = "{'orderType':'订单类型','checkByName':'复核人员','orderNo':'订单编号','deptCheckByName':'部门审核人','orderCount':'商品数量','orderByName':'请购人员','remark':'备注信息','orderDeptName':'请购部门','orderAmount':'订单金额','purchaseDeptByName':'采购部审核人','orderDate':'请购时间','financialAuditName':'财务审核人','orderName':'订单名称',}";
-        return getMapInfo(values);
-    }
-
+    
     private Map<String, String> getImportHeadInfo() {
-        String values = "{'orderType':'订单类型','checkBy':'复核人员','orderNo':'订单编号','deptCheckBy':'部门审核人','orderCount':'商品数量','orderBy':'请购人员','remark':'备注信息','orderDept':'请购部门','orderAmount':'订单金额','purchaseDeptBy':'采购部审核人','orderDate':'请购时间','financialAudit':'财务审核人','orderName':'订单名称',}";
-        return getMapInfo(values);
+        String values = "{'orderType':'订单类型','orderDeptName':'请购部门','checkBy':'复核人员','orderNo':'订单编号','deptCheckBy':'部门审核人','orderCount':'商品数量','orderBy':'请购人员','remark':'备注信息','deptCheckByName':'部门审核人','orderDept':'请购部门','orderAmount':'订单金额','purchaseDeptByName':'采购部审核人','purchaseDeptBy':'采购部审核人','orderDate':'请购时间','financialAudit':'财务审核人','orderName':'订单名称',}";
+            return getMapInfo(values);
     }
-
-    private Map<String, String> getMapInfo(String values){
-        String values_new = values.substring(0, values.length()-1);
-        if(values_new.endsWith(",")){
-            values = values_new.substring(0, values_new.length()-1)+"}";
-        }
+    
+    private Map<String, String> getMapInfo(String values){      
+                String values_new = values.substring(0, values.length()-1);
+                if(values_new.endsWith(",")){
+                        values = values_new.substring(0, values_new.length()-1)+"}";
+                }
         Map<String, String> headInfo = null;
-        if (headInfo == null) {
-            net.sf.json.JSONObject json = net.sf.json.JSONObject.fromObject(values);
-            headInfo = (Map<String, String>) json;
-        }
-        return headInfo;
-    }
-
-    private List<DemoOrder> transformEnum(List<DemoOrder> list){
-        List<DemoOrder> resultList = new ArrayList<DemoOrder>();
-        Map<String, String> orderTypeMap = new HashMap<String, String>();
-        orderTypeMap.put("1", "办公用品");
-        orderTypeMap.put("2", "生活用品");
-        orderTypeMap.put("3", "学习用品");
-        for (DemoOrder entity : list) {
-            if(entity.getOrderType() != null){
-                String value = orderTypeMap.get(entity.getOrderType());
-                entity.setOrderType(value);
+            if (headInfo == null) {
+                net.sf.json.JSONObject json = net.sf.json.JSONObject.fromObject(values);
+                headInfo = (Map<String, String>) json;
             }
-            resultList.add(entity);
+            return headInfo;
         }
-
-        return resultList;
-    }
-
 
 }
