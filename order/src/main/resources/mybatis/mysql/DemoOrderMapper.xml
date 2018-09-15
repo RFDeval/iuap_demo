@@ -11,15 +11,18 @@
         <result column="DEPT_CHECK_BY"  property="deptCheckBy" />
         <result column="ORDER_COUNT"  property="orderCount" />
         <result column="ORDER_BY"  property="orderBy" />
+        <result column=""  property="checkByName" />
         <result column="REMARK"  property="remark" />
         <result column=""  property="deptCheckByName" />
         <result column="ORDER_DEPT"  property="orderDept" />
         <result column="ORDER_AMOUNT"  property="orderAmount" />
+        <result column=""  property="orderByName" />
         <result column=""  property="purchaseDeptByName" />
         <result column="PURCHASE_DEPT_BY"  property="purchaseDeptBy" />
         <result column="ORDER_DATE"  property="orderDate" />
         <result column="FINANCIAL_AUDIT"  property="financialAudit" />
         <result column="ORDER_NAME"  property="orderName" />
+        <result column=""  property="financialAuditName" />
 
         <result column="dr" property="dr" />
         <result column="ts" property="ts" />
@@ -60,7 +63,7 @@
 
 
                             <if test="condition.searchMap.orderNo!=null and condition.searchMap.orderNo!='' ">
-                    and t.ORDER_NO = #{condition.searchMap.orderNo}
+                    and t.ORDER_NO LIKE CONCAT( CONCAT('%', #{condition.searchMap.orderNo}),'%')
                 </if>
 
 
@@ -72,13 +75,19 @@
 
 
                             <if test="condition.searchMap.orderCount!=null and condition.searchMap.orderCount!='' ">
-                    and t.ORDER_COUNT = #{condition.searchMap.orderCount}
+                    and t.ORDER_COUNT &gt; #{condition.searchMap.orderCount}
                 </if>
 
 
 
                             <if test="condition.searchMap.orderBy!=null and condition.searchMap.orderBy!='' ">
                     and t.ORDER_BY = #{condition.searchMap.orderBy}
+                </if>
+
+
+
+                            <if test="condition.searchMap.checkByName!=null and condition.searchMap.checkByName!='' ">
+                    and t. = #{condition.searchMap.checkByName}
                 </if>
 
 
@@ -102,7 +111,13 @@
 
 
                             <if test="condition.searchMap.orderAmount!=null and condition.searchMap.orderAmount!='' ">
-                    and t.ORDER_AMOUNT = #{condition.searchMap.orderAmount}
+                    and t.ORDER_AMOUNT &gt; #{condition.searchMap.orderAmount}
+                </if>
+
+
+
+                            <if test="condition.searchMap.orderByName!=null and condition.searchMap.orderByName!='' ">
+                    and t. = #{condition.searchMap.orderByName}
                 </if>
 
 
@@ -132,7 +147,13 @@
 
 
                             <if test="condition.searchMap.orderName!=null and condition.searchMap.orderName!='' ">
-                    and t.ORDER_NAME = #{condition.searchMap.orderName}
+                    and t.ORDER_NAME LIKE CONCAT( CONCAT('%', #{condition.searchMap.orderName}),'%')
+                </if>
+
+
+
+                            <if test="condition.searchMap.financialAuditName!=null and condition.searchMap.financialAuditName!='' ">
+                    and t. = #{condition.searchMap.financialAuditName}
                 </if>
 
 
@@ -141,14 +162,22 @@
                                     and t.tenant_id = #{condition.searchMap.tenantid}
                 </if>
                         </if>
+                        order by ts desc
                         <if test="page != null">
                                 <if test="page.sort!=null">
-                                        order by
+
                                         <foreach collection="page.sort" item="item" separator=" ">
-                        ${item.property}  ${item.direction}
+                        ,${item.property}  ${item.direction}
                                         </foreach>
                                 </if>
                         </if>
         </select>
-
+        <select id="selectListByExcelData"  resultMap="BaseResultMap" parameterType="java.util.List">
+                select t.* FROM demo_order t WHERE t.dr=0 and
+                t.id in
+                        <foreach collection="list" item="item" index="index"
+                                separator="," open="(" close=")">
+                                #{item}
+                        </foreach>
+    </select>
 </mapper>
