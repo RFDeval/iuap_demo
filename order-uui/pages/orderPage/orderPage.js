@@ -65,7 +65,7 @@ define(['text!./orderPage.html',
                 var searchinfo = viewModel.gridData.params;
                 for (var key in searchinfo) {
                     if (searchinfo[key] && searchinfo[key] != null) {
-                        queryParameters[key] = encodeURI(removeSpace(searchinfo[key]));
+                        queryParameters[key] = removeSpace(searchinfo[key]);
                     }
                 }
                 pjt.ajaxQueryData(listRowUrl, queryParameters, function (data) {
@@ -85,6 +85,8 @@ define(['text!./orderPage.html',
                 viewModel.formData.createEmptyRow();
                 viewModel.formData.setRowSelect(0);
                 pjt.showDiv('#form-div');
+                $("#form-div-body-view").css("display","none");
+                $("#form-div-body").css("display","inline");
                 document.getElementById("myTitle").innerHTML = "新增记录";
             },
 
@@ -95,12 +97,29 @@ define(['text!./orderPage.html',
                     viewModel.formData.setSimpleData(currentData[0]);
                     viewModel.optType = 1;//编辑状态
                     pjt.showDiv('#form-div');
+                    $("#form-div-body-view").css("display","none");
+                    $("#form-div-body").css("display","inline");
                     document.getElementById("myTitle").innerHTML = "编辑记录";
+                   // $("#form-div-body").find('input').attr('placeholder','').attr('disabled','disabled').attr('readonly','readonly');
                 } else {
                     pjt.message("请选择要编辑的数据！");
                 }
             },
-
+            viewBtnClicked:function(){
+                var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
+                if (currentData != null && currentData != "") {
+                    viewModel.formData.setSimpleData(currentData[0]);
+                    viewModel.optType = 2;//查看状态
+                    pjt.showDiv('#form-div');
+                    $("#form-div-body").css("display","none");
+                    $("#form-div-body-view").css("display","inline");
+                    document.getElementById("myTitle").innerHTML = "查看记录";
+                    $("#form-div-body-view").find('input').attr('placeholder','').attr('disabled','disabled').attr('readonly','readonly');
+                    
+                }else{
+                    pjt.message("请选择要查看的数据！");
+                }
+            },
             // 返回按钮点击
             backBtnClick: function () {
                 viewModel.formData.clear();
