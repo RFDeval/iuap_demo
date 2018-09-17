@@ -3,14 +3,16 @@ var meta = {
     id: { type: "string" },
     orderNo: { type: "string" },
     orderName: { type: "string" },
-    orderType: { type: "string" },
-    orderCount: { type: "string" },
-    orderAmount: { type: "string" },
+    orderType: { type: "string"  },
+    orderCount: { type:'integer', required:true},
+    orderAmount: { type:'float', },
     remark: { type: "string" },
-    orderDate: { type: "string" },
+    orderDate: { type:'datetime' },
     orderDept: { type: "string" },
+    orderDeptName: { type: "string",enable:false },
     orderBy: { type: "string" },
-    deptCheckBy: { type: "string" },
+    orderByName: { type: "string" ,enable:false },
+    deptCheckBy: { type: "string"},
     purchaseDeptBy: { type: "string" },
     financialAudit: { type: "string" },
     checkBy: { type: "string" },
@@ -26,6 +28,7 @@ var meta = {
   },
   forceDel:true
 };
+
 var fileDataMeta = {
 	meta: {
 		id: { type: 'string' },//主键
@@ -37,6 +40,7 @@ var fileDataMeta = {
 		url: { type: 'string' }//URL
 	}
 };
+
 var conditionMeta = {
   meta: {
     search_orderNo: { 
@@ -44,7 +48,23 @@ var conditionMeta = {
     },
     search_orderName: {
       type: "string"
-    }
+    },
+    search_orderType: { 
+      type: "string" 
+    },
+    search_orderDept: { 
+      type: "string" 
+    },
+    show_orderDeptName: { 
+      type: "string" 
+    },
+    search_orderCount: { 
+      type:'integer'
+    },
+    search_orderAmount: { 
+      type:'float'
+    },
+
   }
 };
 

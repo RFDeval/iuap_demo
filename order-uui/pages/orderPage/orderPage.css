@@ -1,3 +1,13 @@
+#form-div{
+    z-index: 1000;
+}
+
+
+/* 参照图标位置 */
+.refer{
+    padding-right: 35px;
+}
+
 #approveTypeRadio button{
     float:right;
 }
