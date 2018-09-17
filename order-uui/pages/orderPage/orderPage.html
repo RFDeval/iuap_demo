@@ -22,13 +22,14 @@
                                 <div class="u-col-4">
                                     <div class="u-col-4 u-col-sm-4">订单编号</div>
                                     <div class="u-col-8 u-col-sm-8" u-meta='{"id":"search_orderNo","type":"string","data":"condition","field":"search_orderNo"}'>
-                                        <input class="u-form-control search-enter" name="code" autocomplete="off" />
+                                        <input class="u-form-control search-enter" name="code" autocomplete="off"
+                                            placeholder="模糊查询" />
                                     </div>
                                 </div>
                                 <div class="u-col-4">
                                     <div class="u-col-4 u-col-sm-4">订单名称</div>
                                     <div class="u-col-8 u-col-sm-8" u-meta='{"id":"search_orderName","type":"string","data":"condition","field":"search_orderName"}'>
-                                        <input class="u-form-control search-enter" name="name" />
+                                        <input class="u-form-control search-enter" name="name" placeholder="模糊查询" />
                                     </div>
                                 </div>
                                 <div class="u-col-4">
@@ -37,7 +38,7 @@
                                         <div class="u-combo" id="search_combo1">
                                             <div class="u-input-group ">
                                                 <div u-meta='{"id":"search_orderType","type":"u-combobox","data":"condition","field":"search_orderType","datasource":"orderTypeE"}'>
-                                                    <input class="u-form-control" name="orderType" readonly="readonly" />
+                                                    <input class="u-form-control" name="orderType" disabled />
                                                     <span class="u-form-control-feedback uf uf-arrow-down" data-role="combo-button"></span>
                                                 </div>
                                             </div>
@@ -51,7 +52,7 @@
                                     <div class="u-col-4 u-col-sm-4">请购部门</div>
                                     <div class="u-col-8">
                                         <div u-meta='{"type":"u-text","data":"condition","field":"show_orderDeptName"}'>
-                                            <input type="text" class="u-form-control padding-left-20" placeholder="">
+                                            <input type="text" class="u-form-control padding-left-20" disabled />
                                             <span class="u-form-control-feedback fa fa-list-ul refer" data-bind="click: event.newRef1"></span>
                                         </div>
                                     </div>
@@ -60,13 +61,14 @@
                                 <div class="u-col-4">
                                     <div class="u-col-4 u-col-sm-4">商品数量</div>
                                     <div class="u-col-8 u-col-sm-8" u-meta='{"type":"string","data":"condition","field":"search_orderCount"}'>
-                                        <input class="u-form-control search-enter" name="orderCount" />
+                                        <input class="u-form-control search-enter" name="orderCount" placeholder="大于" />
                                     </div>
                                 </div>
                                 <div class="u-col-4">
                                     <div class="u-col-4 u-col-sm-4">订单金额</div>
                                     <div class="u-col-8 u-col-sm-8" u-meta='{"type":"string","data":"condition","field":"search_orderAmount"}'>
-                                        <input class="u-form-control search-enter" name="orderAmount" autocomplete="off" />
+                                        <input class="u-form-control search-enter" name="orderAmount" autocomplete="off"
+                                            placeholder="小于" />
                                     </div>
                                 </div>
 
@@ -97,19 +99,26 @@
             <button class="u-button" data-bind="click:event.editBtnClicked">编辑</button>
             <button class="u-button" data-bind="click:event.viewBtnClicked">查看详情</button>
             <button class="u-button" data-bind="click: event.delRows">删除</button>
-            <button class="u-button" data-bind="click:flowEvent.submit">提交</button>
-            <button class="u-button" data-bind="click:flowEvent.recall">收回</button>
-            <button class="u-button" data-bind="click:flowEvent.doView">查看</button>
             <button class="u-button" data-bind="click: event.printPage">打印</button>
-            <button class="u-button" data-bind="click:event.downTemplate">模板下载</button>
-            <button class="u-button" data-bind="click:event.impExcelData">导入</button>
-            <button class="u-button" data-bind="click: event.exportData">导出</button>
-            <!-- <button class="u-button" data-bind="click: event.newRef1">参照1</button>
-            <button class="u-button" data-bind="click: event.newRef2">参照2</button>
-            <button class="u-button" data-bind="click: event.newRef3">参照3</button>
-            <button class="u-button" data-bind="click: event.newRef4">参照4</button>
-            <button class="u-button" data-bind="click: event.newRef5">参照5</button>
-            <button class="u-button" data-bind="click: event.newRef6">参照6</button> -->
+            <button class="u-button u-button-info u-menu-button " id="bpmMenu">
+                <span>流程</span>
+                <span class="margin-left-10"> <i class="uf uf-arrow-down"></i> </span>
+            </button>
+            <ul class="u-menu u-menu-info2" for="bpmMenu">
+                <li class="u-menu-item" data-bind="click:flowEvent.submit"><a>提交单据</a></li>
+                <li class="u-menu-item" data-bind="click:flowEvent.recall"><a>收回单据</a></li>
+                <li class="u-menu-item" data-bind="click:flowEvent.doView"><a>单据状态</a></li>
+            </ul>
+
+            <button class="u-button u-button-info u-menu-button " id="templateMenu">
+                <span>导入导出</span>
+                <span class="margin-left-10"> <i class="uf uf-arrow-down"></i> </span>
+            </button>
+            <ul class="u-menu u-menu-info2" for="templateMenu">
+                <li class="u-menu-item" data-bind="click:event.downTemplate"><a>下载模板</a></li>
+                <li class="u-menu-item" data-bind="click:event.impExcelData"><a>导入excel</a></li>
+                <li class="u-menu-item" data-bind="click: event.exportData"><a>导出excle</a></li>
+            </ul>
         </div>
         <!-- 表格区域 -->
         <div type="text" id="gridDiv" class="padding-10" u-meta='{"id":"gridData","data":"gridData","type":"grid","editable":false,"editType":"default","rowHeight":"40px","multiSelect":true,"canDrag":false,"canSwap":false}'>
@@ -187,7 +196,7 @@
                                 <div class="u-combo" id="combo1">
                                     <div class="u-input-group ">
                                         <div u-meta='{"type":"u-combobox","data":"formData","field":"orderType","datasource":"orderTypeE"}'>
-                                            <input class="u-form-control" readonly="readonly" />
+                                            <input id="form_orderType" class="u-form-control" readonly="readonly" />
                                             <span class="u-form-control-feedback uf uf-arrow-down" data-role="combo-button"></span>
                                         </div>
                                     </div>
@@ -244,7 +253,8 @@
                             </div>
                             <div class="u-col-9">
                                 <div u-meta='{"type":"u-text","data":"formData","field":"orderDeptName"}'>
-                                    <input id="form_orderDeptName" type="text" class="u-form-control padding-left-20" placeholder="请选择">
+                                    <input id="form_orderDeptName" type="text" class="u-form-control padding-left-20"
+                                        placeholder="请选择">
                                     <span class="u-form-control-feedback fa fa-list-ul refer" data-bind="click: event.newRef1"></span>
                                 </div>
                             </div>
@@ -255,7 +265,8 @@
                             </div>
                             <div class="u-col-9">
                                 <div u-meta='{"type":"u-text","data":"formData","field":"orderByName"}'>
-                                    <input id="form_orderByName" type="text" class="u-form-control padding-left-20" readonly="readonly">
+                                    <input id="form_orderByName" type="text" class="u-form-control padding-left-20"
+                                        readonly="readonly">
                                     <span class="u-form-control-feedback fa fa-list-ul refer" data-bind="click: event.newRef2"></span>
                                 </div>
                             </div>
@@ -320,6 +331,19 @@
 
                 <!--表单体 detailPage end -->
                 <div id="bpmfoot"></div>
+
+                <div class="u-row margin-top-20">
+                    <div class="u-tabs u-tabs-pill">
+                        <div class="u-tabs__tab-bar">
+                            <a href="#tab-pills-panel-1" class="u-tabs__tab is-active">
+                                <i class="uf uf-home"></i>单据附件</a>
+                        </div>
+                        <!--附件管理开始-->
+                        <div class="u-tabs__panel is-active" id="tab-pills-panel-1">
+                        </div>
+                        <!--附件管理结束-->
+                    </div>
+                </div>
 
             </div>
         </div>

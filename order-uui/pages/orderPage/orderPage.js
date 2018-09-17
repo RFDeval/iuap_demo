@@ -119,28 +119,44 @@ define(['text!./orderPage.html',
         viewModel.formData.setRowSelect(0);
         viewModel.optType = 1;//新增状态
         pjt.showDiv('#form-div');
+
+        viewModel.businessPk = pjt.newUuid();
+        var row = viewModel.formData.getCurrentRow();
+        row.setValue('id', viewModel.businessPk);
+        row.status = Row.STATUS.NEW;
+        if (viewModel.attachmentData) {
+          viewModel.attachmentData.clear();
+        }
         document.getElementById("myTitle").innerHTML = "新增记录";
         $("#form-div-body").find('input').removeAttr("readOnly");
         $("#form-div-body").find('input').removeAttr("disabled");
         $("#orderInput").attr('readonly', 'readonly');
-        $("#form_orderDeptName").attr('disabled', 'disabled');
-        $("#form_orderByName").attr('disabled', 'disabled');
+        $("#form_orderType").attr('readonly', 'readonly');
+        $("#form_orderDeptName").attr('readonly', 'readonly');
+        $("#form_orderByName").attr('readonly', 'readonly');
       },
 
       //编辑按钮点击
       editBtnClicked: function () {
         var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
         if (currentData != null && currentData != "") {
+          if (currentData.length > 1) {
+            pjt.message("只能编辑一条记录！");
+            return;
+          }
           gEditRowData = currentData[0];//保存数据
           viewModel.formData.setSimpleData(currentData[0]);
+          viewModel.businessPk = currentData[0].id;//设置主键用于附件上传关联
+          pjt.attaLoadData(viewModel);
           viewModel.optType = 2;//编辑状态
           pjt.showDiv('#form-div');
           document.getElementById("myTitle").innerHTML = "编辑记录";
           $("#form-div-body").find('input').removeAttr("readOnly");
           $("#form-div-body").find('input').removeAttr("disabled");
           $("#orderInput").attr('readonly', 'readonly');
-          $("#form_orderDeptName").attr('disabled', 'disabled');
-          $("#form_orderByName").attr('disabled', 'disabled');
+          $("#form_orderType").attr('readonly', 'readonly');
+          $("#form_orderDeptName").attr('readonly', 'readonly');
+          $("#form_orderByName").attr('readonly', 'readonly');
         } else {
           pjt.message("请选择要编辑的数据！");
         }
@@ -148,12 +164,17 @@ define(['text!./orderPage.html',
       viewBtnClicked: function () {
         var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
         if (currentData != null && currentData != "") {
+          if (currentData.length > 1) {
+            pjt.message("只能查看一条记录！");
+            return;
+          }
           viewModel.formData.setSimpleData(currentData[0]);
           viewModel.optType = 3;//查看状态
           pjt.showDiv('#form-div');
           document.getElementById("myTitle").innerHTML = "查看记录";
           // $("#form-div-body").find('input').attr('placeholder', '').attr('disabled', 'disabled').attr('readonly', 'readonly');
           $("#form-div-body").find('input').attr('disabled', 'disabled').attr('readonly', 'readonly');
+          $("#form-div-body").find('button').attr('disabled', 'disabled').attr('readonly', 'readonly');
         } else {
           pjt.message("请选择要查看的数据！");
         }
@@ -217,6 +238,7 @@ define(['text!./orderPage.html',
       // 搜索
       search: function () {
         viewModel.gridData.clear();
+        viewModel.optType = 0;
         var conditions = viewModel.condition.getSimpleData();
         if (conditions != null && conditions != "") {
           viewModel.gridData.addParams(conditions[0]);
@@ -363,6 +385,9 @@ define(['text!./orderPage.html',
               default: {//过滤和查询条件
                 gConditionRow.setValue('search_orderDept', sels[0].refpk);
                 gConditionRow.setValue('show_orderDeptName', sels[0].refname);
+
+
+
                 break;
               }
             }
@@ -419,9 +444,6 @@ define(['text!./orderPage.html',
 
                 break;
             }
-
-
-
           },
           className: '',
         };
@@ -494,7 +516,7 @@ define(['text!./orderPage.html',
           },
           onSave: function (sels) {
             console.log(sels);
-            viewModel.formData.orderDept = "aaaa";
+
           },
           className: '',
         };
@@ -530,7 +552,7 @@ define(['text!./orderPage.html',
           },
           onSave: function (sels) {
             console.log(sels);
-            viewModel.formData.orderDept = "aaaa";
+
           },
           className: '',
         };
@@ -565,7 +587,7 @@ define(['text!./orderPage.html',
           },
           onSave: function (sels) {
             console.log(sels);
-            viewModel.formData.orderDept = "aaaa";
+
           },
           className: '',
         };
@@ -577,97 +599,97 @@ define(['text!./orderPage.html',
 
 
     viewModel.flowEvent = {
-        //提交工作流
-        submit:function(){
-            var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
-            if (currentData != null && currentData != "" && currentData.length === 1) {
-                var checkUrl = "/eiap-plus/appResAllocate/queryBpmTemplateAllocate?funccode=" + getAppCode() + "&nodekey=order_001";
-                pjt.ajaxQueryThridService(checkUrl, {}, function (data) {
-                    console.log("OK:", data);
-                    var processDefineCode = data.res_code;
-                    viewModel.flowEvent.submitBPMByProcessDefineCode(currentData, processDefineCode);
-                }, function (data) {
-                    pjt.message("请求数据错误!");
-                })
-            }else if(currentData.length > 1){
-                pjt.message("请选择一条数据");
-            }else{
-                pjt.message("请选择要提交的数据");
-            }
-        },
-        submitBPMByProcessDefineCode:function(selectedData, processDefineCode){
-            var postUrl = submitUrl + "?processDefineCode=" + processDefineCode;
-            pjt.ajaxSaveData(postUrl, selectedData, function (data) {
-                pjt.message("流程提交成功");
-                //TODO
-            }, function (data) {
-                pjt.message("流程提交失败");
-            });
-        },
-        //查看工单
-        doView:function(){
-            var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
-            if (currentData != null && currentData != "") {
-                pjt.ajaxQueryData(getUrl, {search_id:currentData[0].id}, function (data) {
-                    //加入bpm按钮
-                    viewModel.initBPMFromBill(currentData[0].id, viewModel);
-
-                    viewModel.formData.clear();
-                    viewModel.formData.setSimpleData(data);
-                    // 把卡片页面变成不能编辑
-                    $("#form-div-body").css("display","none");
-                    $("#form-div-body-view").css("display","inline");
-                    document.getElementById("myTitle").innerHTML = "查看记录";
-                    $("#form-div-body-view").find('input').attr('placeholder','').attr('disabled','disabled').attr('readonly','readonly');
-                    pjt.showDiv('#form-div');
-                    pjt.hideDiv('#form-div-header');
-                }, function (data) {
-                    console.log("error:", data);
-                });
-            }else{
-                pjt.message("请选择要查看的数据");
-            }
-        },
-        //撤回工单
-        recall:function(){
-            var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
-            if (currentData != null && currentData != "") {
-                pjt.ajaxSaveData(recallUrl, currentData, function (data) {
-                    if(typeof(data.message)=="undefined"){
-                        pjt.message("撤回成功");
-                    }else{
-                        pjt.message(data.message);
-                    }
-                    
-                }, function (data) {
-                    pjt.message(data.message);
-                });
-            }else{
-                pjt.message("请选择要撤回的数据");
-            }
-        },
-        //审批单据打开页面,这是从任务中心打开的
-        initAuditPage:function(){
-            var app = u.createApp({
-                el: element,
-                model: viewModel
-            });
-            viewModel.initBpmFromTask(arg, viewModel);					//初始化BPM相关内容(添加审批操作头部和审批相关弹出框的代码片段)
-            var url = getUrl + "?id=" + arg.id;
-            pjt.ajaxQueryData(url, null, function (data) {
-                viewModel.formData.clear();
-                viewModel.formData.setSimpleData(data);
-                // 把卡片页面变成不能编辑
-                $('#myForm').each(function (index, element) {
-                    $(element).find('input[type!="radio"]').attr('disabled', true);
-                    $(element).find('textarea').attr('disabled', true);
-                });
-                pjt.showDiv('#form-div');
-                pjt.hideDiv('#form-div-header');
-            }, function (data) {
-                alert(2);
-            });
+      //提交工作流
+      submit: function () {
+        var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
+        if (currentData != null && currentData != "" && currentData.length === 1) {
+          var checkUrl = "/eiap-plus/appResAllocate/queryBpmTemplateAllocate?funccode=" + getAppCode() + "&nodekey=order_001";
+          pjt.ajaxQueryThridService(checkUrl, {}, function (data) {
+            console.log("OK:", data);
+            var processDefineCode = data.res_code;
+            viewModel.flowEvent.submitBPMByProcessDefineCode(currentData, processDefineCode);
+          }, function (data) {
+            pjt.message("请求数据错误!");
+          })
+        } else if (currentData.length > 1) {
+          pjt.message("请选择一条数据");
+        } else {
+          pjt.message("请选择要提交的数据");
         }
+      },
+      submitBPMByProcessDefineCode: function (selectedData, processDefineCode) {
+        var postUrl = submitUrl + "?processDefineCode=" + processDefineCode;
+        pjt.ajaxSaveData(postUrl, selectedData, function (data) {
+          pjt.message("流程提交成功");
+          //TODO
+        }, function (data) {
+          pjt.message("流程提交失败");
+        });
+      },
+      //查看工单
+      doView: function () {
+        var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
+        if (currentData != null && currentData != "") {
+          pjt.ajaxQueryData(getUrl, { search_id: currentData[0].id }, function (data) {
+            //加入bpm按钮
+            viewModel.initBPMFromBill(currentData[0].id, viewModel);
+
+            viewModel.formData.clear();
+            viewModel.formData.setSimpleData(data);
+            // 把卡片页面变成不能编辑
+            $("#form-div-body").css("display", "none");
+            $("#form-div-body-view").css("display", "inline");
+            document.getElementById("myTitle").innerHTML = "查看记录";
+            $("#form-div-body-view").find('input').attr('placeholder', '').attr('disabled', 'disabled').attr('readonly', 'readonly');
+            pjt.showDiv('#form-div');
+            pjt.hideDiv('#form-div-header');
+          }, function (data) {
+            console.log("error:", data);
+          });
+        } else {
+          pjt.message("请选择要查看的数据");
+        }
+      },
+      //撤回工单
+      recall: function () {
+        var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
+        if (currentData != null && currentData != "") {
+          pjt.ajaxSaveData(recallUrl, currentData, function (data) {
+            if (typeof (data.message) == "undefined") {
+              pjt.message("撤回成功");
+            } else {
+              pjt.message(data.message);
+            }
+
+          }, function (data) {
+            pjt.message(data.message);
+          });
+        } else {
+          pjt.message("请选择要撤回的数据");
+        }
+      },
+      //审批单据打开页面,这是从任务中心打开的
+      initAuditPage: function () {
+        var app = u.createApp({
+          el: element,
+          model: viewModel
+        });
+        viewModel.initBpmFromTask(arg, viewModel);					//初始化BPM相关内容(添加审批操作头部和审批相关弹出框的代码片段)
+        var url = getUrl + "?id=" + arg.id;
+        pjt.ajaxQueryData(url, null, function (data) {
+          viewModel.formData.clear();
+          viewModel.formData.setSimpleData(data);
+          // 把卡片页面变成不能编辑
+          $('#myForm').each(function (index, element) {
+            $(element).find('input[type!="radio"]').attr('disabled', true);
+            $(element).find('textarea').attr('disabled', true);
+          });
+          pjt.showDiv('#form-div');
+          pjt.hideDiv('#form-div-header');
+        }, function (data) {
+          alert(2);
+        });
+      }
 
     }
     return {
