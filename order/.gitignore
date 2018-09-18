@@ -34,6 +34,9 @@ package-lock.json
 .settings
 target
 overlays
-src/main/resources
+src/main/resources/application.properties
+src/main/resources/authrbac-sdk.properties
+src/main/resources/msg-sdk.properties
+src/main/resources/redis-config.properties
 src/main/resources/logback.xml
 src/main/resources/generatorConfig.xml/cbc.iml

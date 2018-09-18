@@ -9,6 +9,10 @@ import java.util.List;
 
 @MyBatisRepository
 public interface DemoOrderMapper extends GenericExMapper<DemoOrder> {
+    /**
+     * 查询主键集合
+     * @return
+     */
     List<String> getIds();
     List selectListByExcelData(List list);
 }
