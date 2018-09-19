@@ -1,23 +1,20 @@
 
 SET FOREIGN_KEY_CHECKS=0;
 
-
 DROP TABLE IF EXISTS `demo_order`;
 CREATE TABLE `demo_order` (
   `ID` varchar(64) NOT NULL COMMENT '主键ID',
   `ORDER_NO` varchar(64) DEFAULT NULL COMMENT '订单编号-编码规则',
   `ORDER_NAME` varchar(64) DEFAULT NULL COMMENT '订单名称-输入框',
   `ORDER_TYPE` varchar(64) DEFAULT NULL COMMENT '订单类型-下拉框',
-  `ORDER_COUNT` decimal(10,0) DEFAULT NULL COMMENT '商品数量',
+  `ORDER_GOODS` varchar(100) DEFAULT NULL COMMENT '订单类型-下拉框',
+  `ORDER_GOODS_COUNT` decimal(10,0) DEFAULT NULL COMMENT '商品数量',
   `ORDER_AMOUNT` decimal(10,2) DEFAULT NULL COMMENT '订单金额',
   `REMARK` varchar(200) DEFAULT NULL COMMENT '备注信息',
   `ORDER_DATE` varchar(64) DEFAULT NULL COMMENT '请购时间',
   `ORDER_DEPT` varchar(64) DEFAULT NULL COMMENT '请购部门-1树',
-  `ORDER_BY` varchar(64) DEFAULT NULL COMMENT '请购人员-3树卡',
-  `DEPT_CHECK_BY` varchar(64) DEFAULT NULL COMMENT '部门审核人-4多选列表',
-  `PURCHASE_DEPT_BY` varchar(64) DEFAULT NULL COMMENT '采购部审核人-2单选',
-  `FINANCIAL_AUDIT` varchar(64) DEFAULT NULL COMMENT '财务审核人-5穿梭框',
-  `CHECK_BY` varchar(64) DEFAULT NULL COMMENT '复核人员-6多过滤',
+  `ORDER_BY` varchar(2000) DEFAULT NULL COMMENT '请购人员-5穿梭',
+  `DEPT_CHECK_BY` varchar(2000) DEFAULT NULL COMMENT '部门审核人-6多条件',
   `CREATE_TIME` varchar(64) DEFAULT NULL,
   `CREATE_USER` varchar(64) DEFAULT NULL,
   `LAST_MODIFIED` varchar(64) DEFAULT NULL,
