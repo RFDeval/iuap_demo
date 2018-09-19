@@ -1,21 +1,41 @@
+#form-div{
+    z-index: 1000;
+}
+
+
+/* 参照图标位置 */
+.refer{
+    padding-right: 35px;
+}
+
 #approveTypeRadio button{
     float:right;
 }
 #billImgBpm{
     float: right;
 }
-.u-tabs{
-    margin-left:20px;
+
+  
+.u-tabs__tab {
+    height: 40px;
+    line-height: 40px;
 }
+
+.u-tabs-pill .u-tabs__tab.is-active {
+    color:black !important;
+    background-color: white;
+}
+
+
+.u-row {
+    margin-left: -2px !important;
+    margin-right: -2px !important;
+    box-sizing: border-box;
+}
+
 .backbutton{
     color: rgb(3,155,229) !important;
     background-color:#ffffff !important;  
     float: left !important;
     border:0px !important;
 }
-/*
-#approveTypeRadio .pap-title .backbutton {
-    display: none;
-    background:#ffffff
-}
-*/

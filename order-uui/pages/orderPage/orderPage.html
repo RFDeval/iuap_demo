@@ -20,16 +20,70 @@
                         <div class="u-widget-body" id="collapse-body" style="display:none;">
                             <div class="u-row">
                                 <div class="u-col-4">
-                                    <div class="u-col-4 u-col-sm-4">编码:</div>
+                                    <div class="u-col-4 u-col-sm-4">订单编号</div>
                                     <div class="u-col-8 u-col-sm-8" u-meta='{"id":"search_orderNo","type":"string","data":"condition","field":"search_orderNo"}'>
-                                        <input class="u-form-control search-enter" name="code" autocomplete="off" />
+                                        <input class="u-form-control search-enter" name="code" autocomplete="off"
+                                            placeholder="模糊查询" />
                                     </div>
                                 </div>
                                 <div class="u-col-4">
-                                    <div class="u-col-4 u-col-sm-4">名称:</div>
+                                    <div class="u-col-4 u-col-sm-4">订单名称</div>
                                     <div class="u-col-8 u-col-sm-8" u-meta='{"id":"search_orderName","type":"string","data":"condition","field":"search_orderName"}'>
-                                        <input class="u-form-control search-enter" name="name" />
+                                        <input class="u-form-control search-enter" name="name" placeholder="模糊查询" />
                                     </div>
+                                </div>
+                                <div class="u-col-4">
+                                    <div class="u-col-4 u-col-sm-4">订单类型</div>
+                                    <div class="u-col-8">
+                                        <div class="u-combo" id="search_combo1">
+                                            <div class="u-input-group ">
+                                                <div u-meta='{"id":"search_orderType","type":"u-combobox","data":"condition","field":"search_orderType","datasource":"orderTypeE"}'>
+                                                    <input class="u-form-control" name="orderType" disabled />
+                                                    <span class="u-form-control-feedback uf uf-arrow-down" data-role="combo-button"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="u-row margin-top-20">
+                                <div class="u-col-4">
+                                    <div class="u-col-4 u-col-sm-4">请购部门</div>
+                                    <div class="u-col-8">
+                                        <div u-meta='{"type":"u-text","data":"condition","field":"show_orderDeptName"}'>
+                                            <input type="text" class="u-form-control padding-left-20" disabled />
+                                            <span class="u-form-control-feedback fa fa-list-ul refer" data-bind="click: event.newRef1"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="u-col-4">
+                                    <div class="u-col-4 u-col-sm-4">请购人员</div>
+                                    <div class="u-col-8">
+                                    <div u-meta='{"type":"u-text","data":"condition","field":"show_orderByName"}'>
+                                            <input id="form_orderByName" type="text" class="u-form-control padding-left-20" disabled>
+                                            <span class="u-form-control-feedback fa fa-list-ul refer" data-bind="click: event.newRef5"></span>
+                                        </div>
+                                    </div>
+
+                                    
+                                </div>
+                                <div class="u-col-4">
+                                    <div class="u-col-4 u-col-sm-4">订单金额</div>
+                                    <div class="u-col-8 u-col-sm-8" u-meta='{"type":"string","data":"condition","field":"search_orderAmount"}'>
+                                        <input class="u-form-control search-enter" name="orderAmount" autocomplete="off"
+                                            placeholder="大于" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="u-row margin-top-20">
+                                <div class="u-col-4">
+
+                                </div>
+                                <div class="u-col-4">
+
                                 </div>
                                 <div class="u-col-4">
                                     <div class=" float-right">
@@ -38,409 +92,250 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- 按钮区域 -->
-        <div class="padding-5" id="user_list_button_2">
+        <div class="padding-left-10 margin-top-10" id="user_list_button_2">
             <button class="u-button" data-bind="click:event.addBtnClicked">增加</button>
             <button class="u-button" data-bind="click:event.editBtnClicked">编辑</button>
             <button class="u-button" data-bind="click:event.viewBtnClicked">查看详情</button>
             <button class="u-button" data-bind="click: event.delRows">删除</button>
-            <button class="u-button" data-bind="click:flowEvent.submit">提交</button>
-            <button class="u-button" data-bind="click:flowEvent.recall">收回</button>
-            <button class="u-button" data-bind="click:flowEvent.doView">查看</button>
-            <button class="u-button" data-bind="click: event.delRows">打印</button>
-            <button class="u-button" data-bind="click:event.downTemplate">模板下载</button>
-            <button class="u-button" data-bind="click:event.impExcelData">导入</button>
-            <button class="u-button" data-bind="click: event.exportData">导出</button>
+            <button class="u-button" data-bind="click: event.printPage">打印</button>
+            <button class="u-button u-button-info u-menu-button " id="bpmMenu">
+                <span>流程</span>
+                <span class="margin-left-10"> <i class="uf uf-arrow-down"></i> </span>
+            </button>
+            <ul class="u-menu u-menu-info2" for="bpmMenu">
+                <li class="u-menu-item" data-bind="click:flowEvent.submit"><a>提交单据</a></li>
+                <li class="u-menu-item" data-bind="click:flowEvent.recall"><a>收回单据</a></li>
+                <li class="u-menu-item" data-bind="click:flowEvent.doView"><a>单据状态</a></li>
+            </ul>
+
+            <button class="u-button u-button-info u-menu-button " id="templateMenu">
+                <span>导入导出</span>
+                <span class="margin-left-10"> <i class="uf uf-arrow-down"></i> </span>
+            </button>
+            <ul class="u-menu u-menu-info2" for="templateMenu">
+                <li class="u-menu-item" data-bind="click:event.downTemplate"><a>下载模板</a></li>
+                <li class="u-menu-item" data-bind="click:event.impExcelData"><a>导入excel</a></li>
+                <li class="u-menu-item" data-bind="click: event.exportDataCurrentPage"><a>导出当前页</a></li>
+                <li class="u-menu-item" data-bind="click: event.exportDataSelected"><a>导出选中项</a></li>
+                <li class="u-menu-item" data-bind="click: event.exportDataAll"><a>导出全部</a></li>
+            </ul>
         </div>
         <!-- 表格区域 -->
-        <div type="text" id="gridDiv" class="padding-3" u-meta='{"id":"gridData","data":"gridData","type":"grid","editable":false,"editType":"default","rowHeight":"40px","multiSelect":true,"canDrag":false,"canSwap":false}'>
+        <div type="text" id="gridDiv" class="padding-10" u-meta='{"id":"gridData","data":"gridData","type":"grid","editable":false,"editType":"default","rowHeight":"40px","multiSelect":true,"canDrag":false,"canSwap":false}'>
             <div options='{"field":"orderNo","dataType":"String","title":"订单编号"}'></div>
             <div options='{"field":"orderName","dataType":"String","title":"订单名称"}'></div>
-            <div options='{"field":"orderType","dataType":"String","title":"订单类型"}'></div>
-            <div options='{"field":"orderCount","dataType":"String","title":"商品数量"}'></div>
+            <div options='{"field":"orderType","dataType":"String","title":"订单类型","renderType":"event.showOrderType"}'></div>
+            <div options='{"field":"orderGoods","dataType":"String","title":"商品名称"}'></div>
+            <div options='{"field":"orderGoodsCount","dataType":"String","title":"商品数量"}'></div>
             <div options='{"field":"orderAmount","dataType":"String","title":"订单金额"}'></div>
             <div options='{"field":"remark","dataType":"String","title":"备注"}'></div>
             <div options='{"field":"orderDate","dataType":"String","title":"请购时间"}'></div>
-            <div options='{"field":"orderDept","dataType":"String","title":"请购部门"}'></div>
-            <div options='{"field":"orderBy","dataType":"String","title":"请购人员"}'></div>
-            <div options='{"field":"deptCheckBy","dataType":"String","title":"部门审核人"}'></div>
-            <div options='{"field":"purchaseDeptBy","dataType":"String","title":"采购部审核人"}'></div>
-            <div options='{"field":"financialAudit","dataType":"String","title":"财务审核人"}'></div>
-            <div options='{"field":"checkBy","dataType":"String","title":"复核人员"}'></div>
+            <div options='{"field":"orderDeptName","dataType":"String","title":"请购部门"}'></div>
+            <div options='{"field":"orderByName","dataType":"String","title":"请购人员"}'></div>
+            <div options='{"field":"deptCheckByName","dataType":"String","title":"审核人"}'></div>
             <div options='{"field":"bpmState","dataType":"String","title":"审批状态"}'></div>
         </div>
         <!-- 分页区域 -->
         <div class="aline-center margin-top-5">
             <div id='mainPagingtion' class='u-pagination pagination' u-meta='{"type":"pagination","data":"gridData","pageChange":"event.pageChange","sizeChange":"event.sizeChange"}'></div>
         </div>
-    </div>
-    <!-- 隐藏的表单区域 -->
-    <div id="form-div" style="display: none">
-        <!-- 固定头部 -->
-        <div id="form-div-header">
-            <div class="u-row">
-                <div class="u-col-md-4 aline-let paddingL30 ">
-                    <button id ="goback" type="button " class="goback" data-bind="click:event.backBtnClick">
-                        <i class="uf uf-arrow-left"></i>返回</button>
-                </div>
-                <div class="u-col-md-4 aline-center">
-                    <h4 id="myTitle"></h4>
-                </div>
-                <div class="u-col-md-4 aline-right paddingR30 ">
-                    <button id="save" type="button" class="u-button" data-bind="click:event.saveClick">保存</button>
+
+        <!-- 隐藏的表单区域 -->
+        <div id="form-div" style="display: none">
+            <!-- 固定头部 -->
+            <div id="form-div-header">
+                <div class="u-row">
+                    <div class="u-col-md-4 aline-let paddingL30 ">
+                        <button  id ="goback" type="button " class="goback" data-bind="click:event.backBtnClick">
+                            <i class="uf uf-arrow-left"></i>返回</button>
+                    </div>
+                    <div class="u-col-md-4 aline-center">
+                        <h4 id="myTitle">新增记录</h4>
+                    </div>
+                    <div class="u-col-md-4 aline-right paddingR30 ">
+                        <button id="save" type="button" class="u-button" data-bind="click:event.saveClick">保存</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!--流程头信息 start-->
-        <div id="bpmhead" class="func_card_button_news"></div>
-        <br/>
-        <!--流程头信息 end -->
-        
-        <!-- 表单体 addPage start -->
-        <div id="form-div-body">
 
-            
-            <div class="u-row margin-top-20">
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        订单编码
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"id":"orderNo","type":"u-text","data":"formData","field":"orderNo"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="" disabled="true">
-                        </div>
-                    </div>
+            <!-- 表单体 addPage start -->
+            <div id="form-div-body">
+                <div id="bpmhead" class="func_card_button_news">
                 </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        订单名称
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"orderName"}'>
-                            <input type="text" class="u-form-control" placeholder="">
+                <br />
+                <div id="myForm">
+                    <div class="u-row margin-top-20">
+                        <div class="u-col-md-4">
+                            <div class="u-col-3 aline-right">
+                                订单编码
+                            </div>
+                            <div class="u-col-9">
+                                <div u-meta='{"id":"orderNo","type":"u-text","data":"formData","field":"orderNo"}'>
+                                    <input id="form_orderNo" type="text" class="u-form-control padding-left-20"
+                                        placeholder="" />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        订单类型
-                    </div>
-                    <div class="u-col-9 ">
-                        <div class="u-combo" id="combo1">
-                            <div class="u-input-group ">
-                                <div u-meta='{"type":"u-combobox","data":"formData","field":"orderType","datasource":"orderTypeE"}'>
-                                    <input class="u-form-control" />
-                                    <span class="u-form-control-feedback uf uf-arrow-down" data-role="combo-button"></span>
+                        <div class="u-col-md-4">
+                            <div class="u-col-3 aline-right">
+                                订单名称
+                            </div>
+                            <div class="u-col-9">
+                                <div u-meta='{"type":"u-text","data":"formData","field":"orderName"}'>
+                                    <input type="text" class="u-form-control" placeholder="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="u-col-md-4">
+                            <div class="u-col-3 aline-right">
+                                订单类型
+                            </div>
+                            <div class="u-col-9 ">
+                                <div class="u-combo" id="combo1">
+                                    <div class="u-input-group ">
+                                        <div u-meta='{"type":"u-combobox","data":"formData","field":"orderType","datasource":"orderTypeE"}'>
+                                            <input id="form_orderType" class="u-form-control" readonly="readonly" />
+                                            <span class="u-form-control-feedback uf uf-arrow-down" data-role="combo-button"></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="u-row margin-top-20">
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        商品数量
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"orderCount"}'>
-                            <input type="text" class="u-form-control" placeholder="">
-                        </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        订单金额
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"orderAmount"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="">
-                        </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">备注</div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"remark"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="备注">
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+                    <div class="u-row margin-top-20">
 
 
-            <div class="u-row margin-top-20">
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        请购时间
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"orderDate"}'>
-                            <input type="text" class="u-form-control" placeholder="">
-                        </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        请购部门
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"orderDept"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="">
-                        </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">请购人员</div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"orderBy"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="u-row margin-top-20">
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        部门审核
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"deptCheckBy"}'>
-                            <input type="text" class="u-form-control" placeholder="">
-                        </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        采购审核
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"purchaseDeptBy"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="">
-                        </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">财务审核</div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"financialAudit"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="u-row margin-top-20">
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        复核人员
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"checkBy"}'>
-                            <input type="text" class="u-form-control" placeholder="">
-                        </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        流程状态
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"bpmState"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="">
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-            
-        <!-- 表单体 addPage end -->
-        <!--表单体 detailPage start -->
-        <div id="form-div-body-view">
-            
-            <div class="u-row margin-top-20">
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        订单编码
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"id":"orderNo","type":"u-text","data":"formData","field":"orderNo"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="" disabled="true">
-                        </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        订单名称
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"orderName"}'>
-                            <input type="text" class="u-form-control" placeholder="">
-                        </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        订单类型
-                    </div>
-                    <div class="u-col-9 ">
-                        <div class="u-combo" id="combo1">
-                            <div class="u-input-group ">
-                                <div u-meta='{"type":"u-combobox","data":"formData","field":"orderType","datasource":"orderTypeE"}'>
-                                    <input class="u-form-control" />
-                                    <span class="u-form-control-feedback uf uf-arrow-down" data-role="combo-button"></span>
+                        <div class="u-col-md-4">
+                            <div class="u-col-3 aline-right">
+                                商品名称
+                            </div>
+                            <div class="u-col-9">
+                                <div u-meta='{"type":"u-text","data":"formData","field":"orderGoods"}'>
+                                    <input type="text" class="u-form-control" placeholder="">
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="u-row margin-top-20">
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        商品数量
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"orderCount"}'>
-                            <input type="text" class="u-form-control" placeholder="">
+                        <div class="u-col-md-4">
+                            <div class="u-col-3 aline-right">
+                                商品数量
+                            </div>
+                            <div class="u-col-9">
+                                <div u-meta='{"type":"u-text","data":"formData","field":"orderGoodsCount"}'>
+                                    <input type="text" class="u-form-control" placeholder="">
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        订单金额
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"orderAmount"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="">
+                        <div class="u-col-md-4">
+                            <div class="u-col-3 aline-right">
+                                订单金额
+                            </div>
+                            <div class="u-col-9">
+                                <div u-meta='{"type":"u-text","data":"formData","field":"orderAmount"}'>
+                                    <input type="text" class="u-form-control padding-left-20" placeholder="">
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">备注</div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"remark"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="备注">
-                        </div>
-                    </div>
-                </div>
-            </div>
 
+                    </div>
 
-            <div class="u-row margin-top-20">
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        请购时间
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"orderDate"}'>
-                            <input type="text" class="u-form-control" placeholder="">
+                    <div class="u-row margin-top-20">
+                        <div class="u-col-md-4">
+                            <div class="u-col-3 aline-right">备注</div>
+                            <div class="u-col-9">
+                                <div u-meta='{"type":"u-text","data":"formData","field":"remark"}'>
+                                    <input type="text" class="u-form-control padding-left-20" placeholder="备注">
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        请购部门
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"orderDept"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="">
+                        <div class="u-col-md-4">
+                            <div class="u-col-3 aline-right">
+                                请购时间
+                            </div>
+                            <div class="u-col-9">
+                                <div u-meta='{"type":"u-datetime","data":"formData","field":"orderDate"}'>
+                                    <input type="text" class="u-form-control" placeholder="">
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">请购人员</div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"orderBy"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="">
+                        <div class="u-col-md-4">
+                            <div class="u-col-3 aline-right">
+                                请购部门
+                            </div>
+                            <div class="u-col-9">
+                                <div u-meta='{"type":"u-text","data":"formData","field":"orderDeptName"}'>
+                                    <input id="form_orderDeptName" type="text" class="u-form-control padding-left-20"
+                                        placeholder="请选择">
+                                    <span class="u-form-control-feedback fa fa-list-ul refer" data-bind="click: event.newRef1"></span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="u-row margin-top-20">
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        部门审核
                     </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"deptCheckBy"}'>
-                            <input type="text" class="u-form-control" placeholder="">
-                        </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        采购审核
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"purchaseDeptBy"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="">
-                        </div>
-                    </div>
-                </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">财务审核</div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"financialAudit"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="">
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-
-            <div class="u-row margin-top-20">
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        复核人员
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"checkBy"}'>
-                            <input type="text" class="u-form-control" placeholder="">
+                    <div class="u-row margin-top-20">
+                        <div class="u-col-md-4">
+                            <div class="u-col-3 aline-right">
+                                请购人员
+                            </div>
+                            <div class="u-col-9">
+                                <div u-meta='{"type":"u-text","data":"formData","field":"orderByName"}'>
+                                    <input id="form_orderByName" type="text" class="u-form-control padding-left-20">
+                                    <span class="u-form-control-feedback fa fa-list-ul refer" data-bind="click: event.newRef5"></span>
+                                </div>
+                            </div>
                         </div>
+                        <div class="u-col-md-4">
+                            <div class="u-col-3 aline-right">
+                                部门审核
+                            </div>
+                            <div class="u-col-9">
+                                <div u-meta='{"type":"u-text","data":"formData","field":"deptCheckByName"}'>
+                                    <input id="form_orderCheckByName" type="text" class="u-form-control">
+                                    <span class="u-form-control-feedback fa fa-list-ul refer" data-bind="click: event.newRef6"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="u-col-md-4">
+                            <div class="u-col-3 aline-right">
+                                流程状态
+                            </div>
+                            <div class="u-col-9">
+                                <div u-meta='{"type":"u-text","data":"formData","field":"bpmState"}'>
+                                    <input id="form_bpmState" type="text" class="u-form-control padding-left-20">
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                <div class="u-col-md-4">
-                    <div class="u-col-3 aline-right">
-                        流程状态
-                    </div>
-                    <div class="u-col-9">
-                        <div u-meta='{"type":"u-text","data":"formData","field":"bpmState"}'>
-                            <input type="text" class="u-form-control padding-left-20" placeholder="">
+
+                <!--表单体 detailPage end -->
+                <div id="bpmfoot"></div>
+
+                <div class="u-row margin-top-20">
+                    <div class="u-tabs u-tabs-pill">
+                        <div class="u-tabs__tab-bar">
+                            <a href="#tab-pills-panel-1" class="u-tabs__tab is-active">
+                                <i class="uf uf-home"></i>单据附件</a>
                         </div>
+                        <!--附件管理开始-->
+                        <div class="u-tabs__panel is-active" id="tab-pills-panel-1">
+                        </div>
+                        <!--附件管理结束-->
                     </div>
                 </div>
 
             </div>
-
-
-
         </div>
-        <!--表单体 detailPage end -->
-        <div class="u-row margin-top-20">
-                <div class="u-tabs u-tabs-pill">
-                    <div class="u-tabs__tab-bar">
-                        <a href="#tab-pills-panel-1" class="u-tabs__tab is-active">
-                            <i class="uf uf-home"></i>通知附件</a>
-                    </div>
-                    <!--附件列表开始-->
-                    <div class="u-tabs__panel is-active" id="tab-pills-panel-1">
 
-                    </div>
-                    <!--附件列表结束-->
-                </div>
-        </div>
     </div>
 </div>
-<!-- bpm 流程脚部分-->
-<div id="bpmfoot" style="overflow-y: auto"></div>
-<!-- bpm 流程脚部分-->

@@ -320,9 +320,6 @@ pjt.expData = function (url) {
 
 
 
-
-
-
 /**
  * 模板打印
  * @param templateCode	模板编码
@@ -754,10 +751,10 @@ pjt.createAttachment = function(viewModel,mainPage,depend){
 	};
 	
 	viewModel.event.loadAtta = function(){
-		/*if(viewModel.businessPk==null || viewModel.businessPk ==""){
+		if(viewModel.businessPk==null || viewModel.businessPk ==""){
 			pjt.messge("请设置业务单据主键！");
 			return ;
-		} */
+		}
 		var queryData = {};
     	queryData["search_filepath"] = viewModel.businessPk;
     	queryData["pageIndex"] = viewModel.attachmentData.pageIndex();
@@ -786,13 +783,13 @@ pjt.createAttachment = function(viewModel,mainPage,depend){
 	var fileHtml = '<div class="u-row">'+
 				   '	<div class="u-col-12">'+
 				   '		<div class="u-widget" style="background-color:transparent;margin-left: 0;">'+
-				   '			<button id="uploadFile_btn" class="u-button raised " data-bind="click: event.uploadFile">'+
+				   '			<button class="u-button raised " data-bind="click: event.uploadFile">'+
 				   '				<span class="operation">上传</span>'+
 				   '			</button>'+
-				   '			<button id="downLoadFile_btn" class="u-button raised" data-bind="click: event.downLoadFile">'+
+				   '			<button class="u-button raised" data-bind="click: event.downLoadFile">'+
 				   '				<span class="operation">下载</span>'+
 				   '			</button>'+
-				   '			<button id="delLoadFile_btn" class="u-button raised" data-bind="click: event.delLoadFile">'+
+				   '			<button class="u-button raised" data-bind="click: event.delLoadFile">'+
 				   '				<span class="operation">删除</span>'+
 				   '			</button>'+
 				   '		</div>'+
