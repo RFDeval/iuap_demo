@@ -49,7 +49,12 @@ public class DemoOrderController extends GenericController<DemoOrder>{
         super.setService(demoOrderService);
     }
 
-        @Override
+    @Override
+    public Object save(DemoOrder entity) {
+        return demoOrderService.insert(entity);
+    }
+
+    @Override
         public Object list(PageRequest pageRequest,
                                            @FrontModelExchange(modelType = DemoOrder.class) SearchParams searchParams) {
                 return super.list(pageRequest,searchParams);
