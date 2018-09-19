@@ -6,23 +6,18 @@
         <id column="id" jdbcType="VARCHAR" property="id" />
         <result column="ORDER_TYPE"  property="orderType" />
         <result column=""  property="orderDeptName" />
-        <result column="CHECK_BY"  property="checkBy" />
         <result column="ORDER_NO"  property="orderNo" />
         <result column="DEPT_CHECK_BY"  property="deptCheckBy" />
-        <result column="ORDER_COUNT"  property="orderCount" />
+        <result column="ORDER_GOODS_COUNT"  property="orderGoodsCount" />
         <result column="ORDER_BY"  property="orderBy" />
-        <result column=""  property="checkByName" />
+        <result column="ORDER_GOODS"  property="orderGoods" />
         <result column="REMARK"  property="remark" />
         <result column=""  property="deptCheckByName" />
         <result column="ORDER_DEPT"  property="orderDept" />
         <result column="ORDER_AMOUNT"  property="orderAmount" />
         <result column=""  property="orderByName" />
-        <result column=""  property="purchaseDeptByName" />
-        <result column="PURCHASE_DEPT_BY"  property="purchaseDeptBy" />
         <result column="ORDER_DATE"  property="orderDate" />
-        <result column="FINANCIAL_AUDIT"  property="financialAudit" />
         <result column="ORDER_NAME"  property="orderName" />
-        <result column=""  property="financialAuditName" />
 
         <result column="dr" property="dr" />
         <result column="ts" property="ts" />
@@ -35,153 +30,119 @@
         <result column="tenant_id" property="tenantid" />
 
     </resultMap>
-    <select id="getIds" resultType="String">
-            select Id
-            from demo_order
+
+
+        <select id="selectAllByPage"  resultMap="BaseResultMap">
+                SELECT  t.* FROM demo_order t WHERE t.dr=0
+                         
+                        <if test="condition != null">
+                <if test="condition.searchMap.id!=null and condition.searchMap.id!='' ">
+                    and t.ID = #{condition.searchMap.id}
+                </if>
+                            <if test="condition.searchMap.orderType!=null and condition.searchMap.orderType!='' ">
+                    and t.ORDER_TYPE = #{condition.searchMap.orderType}
+                </if>
+
+
+
+                            <if test="condition.searchMap.orderDeptName!=null and condition.searchMap.orderDeptName!='' ">
+                    and t. = #{condition.searchMap.orderDeptName}
+                </if>
+
+
+
+                            <if test="condition.searchMap.orderNo!=null and condition.searchMap.orderNo!='' ">
+                    and t.ORDER_NO LIKE CONCAT( CONCAT('%', #{condition.searchMap.orderNo}),'%')
+                </if>
+
+
+
+                            <if test="condition.searchMap.deptCheckBy!=null and condition.searchMap.deptCheckBy!='' ">
+                    and t.DEPT_CHECK_BY = #{condition.searchMap.deptCheckBy}
+                </if>
+
+
+
+                            <if test="condition.searchMap.orderGoodsCount!=null and condition.searchMap.orderGoodsCount!='' ">
+                    and t.ORDER_GOODS_COUNT = #{condition.searchMap.orderGoodsCount}
+                </if>
+
+
+
+                            <if test="condition.searchMap.orderBy!=null and condition.searchMap.orderBy!='' ">
+                    and t.ORDER_BY = #{condition.searchMap.orderBy}
+                </if>
+
+
+
+                            <if test="condition.searchMap.orderGoods!=null and condition.searchMap.orderGoods!='' ">
+                    and t.ORDER_GOODS = #{condition.searchMap.orderGoods}
+                </if>
+
+
+
+                            <if test="condition.searchMap.remark!=null and condition.searchMap.remark!='' ">
+                    and t.REMARK = #{condition.searchMap.remark}
+                </if>
+
+
+
+                            <if test="condition.searchMap.deptCheckByName!=null and condition.searchMap.deptCheckByName!='' ">
+                    and t. = #{condition.searchMap.deptCheckByName}
+                </if>
+
+
+
+                            <if test="condition.searchMap.orderDept!=null and condition.searchMap.orderDept!='' ">
+                    and t.ORDER_DEPT = #{condition.searchMap.orderDept}
+                </if>
+
+
+
+                            <if test="condition.searchMap.orderAmount!=null and condition.searchMap.orderAmount!='' ">
+                    and t.ORDER_AMOUNT &gt; #{condition.searchMap.orderAmount}
+                </if>
+
+
+
+                            <if test="condition.searchMap.orderByName!=null and condition.searchMap.orderByName!='' ">
+                    and t. = #{condition.searchMap.orderByName}
+                </if>
+
+
+
+                            <if test="condition.searchMap.orderDate!=null and condition.searchMap.orderDate!='' ">
+                    and t.ORDER_DATE = #{condition.searchMap.orderDate}
+                </if>
+
+
+
+                            <if test="condition.searchMap.orderName!=null and condition.searchMap.orderName!='' ">
+                    and t.ORDER_NAME LIKE CONCAT( CONCAT('%', #{condition.searchMap.orderName}),'%')
+                </if>
+
+
+
+                            <if test="condition.searchMap.tenantid!=null and condition.searchMap.tenantid!='' ">
+                                    and t.tenant_id = #{condition.searchMap.tenantid}
+                </if>
+                        </if>
+                        order by ts desc
+                        <if test="page != null">
+                                <if test="page.sort!=null">
+
+                                        <foreach collection="page.sort" item="item" separator=" ">
+                        ,${item.property}  ${item.direction}
+                                        </foreach>
+                                </if>
+                        </if>
         </select>
-
-    <select id="selectAllByPage"  resultMap="BaseResultMap">
-        SELECT  t.* FROM demo_order t WHERE t.dr=0
-
-        <if test="condition != null">
-            <if test="condition.searchMap.id!=null and condition.searchMap.id!='' ">
-                and t.ID = #{condition.searchMap.id}
-            </if>
-            <if test="condition.searchMap.orderType!=null and condition.searchMap.orderType!='' ">
-                and t.ORDER_TYPE = #{condition.searchMap.orderType}
-            </if>
-
-
-
-            <if test="condition.searchMap.orderDeptName!=null and condition.searchMap.orderDeptName!='' ">
-                and t. = #{condition.searchMap.orderDeptName}
-            </if>
-
-
-
-            <if test="condition.searchMap.checkBy!=null and condition.searchMap.checkBy!='' ">
-                and t.CHECK_BY = #{condition.searchMap.checkBy}
-            </if>
-
-
-
-            <if test="condition.searchMap.orderNo!=null and condition.searchMap.orderNo!='' ">
-
-                and t.ORDER_NO LIKE CONCAT( CONCAT('%', #{condition.searchMap.orderNo}),'%')
-            </if>
-
-
-
-            <if test="condition.searchMap.deptCheckBy!=null and condition.searchMap.deptCheckBy!='' ">
-                and t.DEPT_CHECK_BY = #{condition.searchMap.deptCheckBy}
-            </if>
-
-
-
-            <if test="condition.searchMap.orderCount!=null and condition.searchMap.orderCount!='' ">
-                and t.ORDER_COUNT &gt; #{condition.searchMap.orderCount}
-            </if>
-
-
-
-            <if test="condition.searchMap.orderBy!=null and condition.searchMap.orderBy!='' ">
-                and t.ORDER_BY = #{condition.searchMap.orderBy}
-            </if>
-
-
-
-            <if test="condition.searchMap.checkByName!=null and condition.searchMap.checkByName!='' ">
-                and t. = #{condition.searchMap.checkByName}
-            </if>
-
-
-
-            <if test="condition.searchMap.remark!=null and condition.searchMap.remark!='' ">
-                and t.REMARK = #{condition.searchMap.remark}
-            </if>
-
-
-
-            <if test="condition.searchMap.deptCheckByName!=null and condition.searchMap.deptCheckByName!='' ">
-                and t.dept_check_by = #{condition.searchMap.deptCheckByName}
-            </if>
-
-
-
-            <if test="condition.searchMap.orderDept!=null and condition.searchMap.orderDept!='' ">
-                and t.ORDER_DEPT = #{condition.searchMap.orderDept}
-            </if>
-
-
-
-            <if test="condition.searchMap.orderAmount!=null and condition.searchMap.orderAmount!='' ">
-                and t.ORDER_AMOUNT &gt; #{condition.searchMap.orderAmount}
-            </if>
-
-
-
-            <if test="condition.searchMap.orderByName!=null and condition.searchMap.orderByName!='' ">
-                and t. = #{condition.searchMap.orderByName}
-            </if>
-
-
-
-            <if test="condition.searchMap.purchaseDeptByName!=null and condition.searchMap.purchaseDeptByName!='' ">
-                and t.purchase_dept_by = #{condition.searchMap.purchaseDeptByName}
-            </if>
-
-
-
-            <if test="condition.searchMap.purchaseDeptBy!=null and condition.searchMap.purchaseDeptBy!='' ">
-                and t.PURCHASE_DEPT_BY = #{condition.searchMap.purchaseDeptBy}
-            </if>
-
-
-
-            <if test="condition.searchMap.orderDate!=null and condition.searchMap.orderDate!='' ">
-                and t.ORDER_DATE = #{condition.searchMap.orderDate}
-            </if>
-
-
-
-            <if test="condition.searchMap.financialAudit!=null and condition.searchMap.financialAudit!='' ">
-                and t.FINANCIAL_AUDIT = #{condition.searchMap.financialAudit}
-            </if>
-
-
-
-            <if test="condition.searchMap.orderName!=null and condition.searchMap.orderName!='' ">
-                and t.ORDER_NAME LIKE CONCAT( CONCAT('%', #{condition.searchMap.orderName}),'%')
-            </if>
-
-
-
-            <if test="condition.searchMap.financialAuditName!=null and condition.searchMap.financialAuditName!='' ">
-                and t. = #{condition.searchMap.financialAuditName}
-            </if>
-
-
-
-            <if test="condition.searchMap.tenantid!=null and condition.searchMap.tenantid!='' ">
-                and t.tenant_id = #{condition.searchMap.tenantid}
-            </if>
-        </if>
-        order by ts desc
-        <if test="page != null">
-            <if test="page.sort!=null">
-
-                <foreach collection="page.sort" item="item" separator=" ">
-                    ,${item.property}  ${item.direction}
-                </foreach>
-            </if>
-        </if>
-    </select>
-    <select id="selectListByExcelData"  resultMap="BaseResultMap" parameterType="java.util.List">
-        select t.* FROM demo_order t WHERE t.dr=0 and
-        t.id in
-        <foreach collection="list" item="item" index="index"
-                 separator="," open="(" close=")">
-            #{item}
-        </foreach>
+        <select id="selectListByExcelData"  resultMap="BaseResultMap" parameterType="java.util.List">
+                select t.* FROM demo_order t WHERE t.dr=0 and
+                t.id in
+                        <foreach collection="list" item="item" index="index"
+                                separator="," open="(" close=")">
+                                #{item}
+                        </foreach>
     </select>
 </mapper>
