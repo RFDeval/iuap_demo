@@ -50,7 +50,7 @@ public class DemoOrderController extends GenericController<DemoOrder>{
     }
 
     @Override
-    public Object save(DemoOrder entity) {
+    public Object save(@RequestBody DemoOrder entity) {
         return demoOrderService.insert(entity);
     }
 
