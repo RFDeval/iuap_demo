@@ -3,8 +3,6 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.yonyou.iuap.baseservice.bpm.entity.AbsBpmModel;
-import com.yonyou.iuap.baseservice.attachment.entity.AttachmentEntity;
-import com.yonyou.iuap.baseservice.attachment.entity.Attachmentable;
 import com.yonyou.iuap.baseservice.print.entity.Printable;      
 import com.yonyou.iuap.baseservice.multitenant.entity.MultiTenant;
 import com.yonyou.iuap.baseservice.entity.annotation.Reference;
@@ -34,7 +32,7 @@ import java.math.BigDecimal;
 @Table(name = "demo_order")
 
 @CodingEntity(codingField="orderNo")
-public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentable,MultiTenant,Printable
+public class DemoOrder extends AbsBpmModel  implements Serializable,MultiTenant,Printable
 {
     @Id
     @GeneratedValue(strategy=Strategy.UUID)
@@ -81,17 +79,6 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
         return this.orderDeptName;
     }
 
-    @Column(name="CHECK_BY")
-    @Reference(code="bd_common_dept",srcProperties={ "name"}, desProperties={ "checkByName"})
-    private String checkBy;        //复核人员
-
-    public void setCheckBy(String checkBy){
-        this.checkBy = checkBy;
-    }
-    public String getCheckBy(){
-        return this.checkBy;
-    }
-
     @Condition(match=Match.LIKE)
     @Column(name="ORDER_NO")
     @CodingField(code="asval")
@@ -105,8 +92,8 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
     }
 
     @Column(name="DEPT_CHECK_BY")
-    @Reference(code="checkbox_ref",srcProperties={ "peoname"}, desProperties={ "deptCheckByName"})
-    private String deptCheckBy;        //部门审核人
+    @Reference(code="bd_common_user",srcProperties={ "name"}, desProperties={ "deptCheckByName"})
+    private String deptCheckBy;        //审核人
 
     public void setDeptCheckBy(String deptCheckBy){
         this.deptCheckBy = deptCheckBy;
@@ -115,19 +102,19 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
         return this.deptCheckBy;
     }
 
-    @Condition(match=Match.GT)
-    @Column(name="ORDER_COUNT")
-    private Integer orderCount;        //商品数量
+    @Column(name="ORDER_GOODS_COUNT")
+    private Integer orderGoodsCount;        //商品数量
 
-    public void setOrderCount(Integer orderCount){
-        this.orderCount = orderCount;
+    public void setOrderGoodsCount(Integer orderGoodsCount){
+        this.orderGoodsCount = orderGoodsCount;
     }
-    public Integer getOrderCount(){
-        return this.orderCount;
+    public Integer getOrderGoodsCount(){
+        return this.orderGoodsCount;
     }
 
+    @Condition(match=Match.EQ)
     @Column(name="ORDER_BY")
-    @Reference(code="common_ref_treecard",srcProperties={ "peoname"}, desProperties={ "orderByName"})
+    @Reference(code="common_ref",srcProperties={ "peoname"}, desProperties={ "orderByName"})
     private String orderBy;        //请购人员
 
     public void setOrderBy(String orderBy){
@@ -137,14 +124,14 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
         return this.orderBy;
     }
 
-    @Transient
-    private String checkByName;        //复核人员
+    @Column(name="ORDER_GOODS")
+    private String orderGoods;        //商品名称
 
-    public void setCheckByName(String checkByName){
-        this.checkByName = checkByName;
+    public void setOrderGoods(String orderGoods){
+        this.orderGoods = orderGoods;
     }
-    public String getCheckByName(){
-        return this.checkByName;
+    public String getOrderGoods(){
+        return this.orderGoods;
     }
 
     @Column(name="REMARK")
@@ -158,7 +145,7 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
     }
 
     @Transient
-    private String deptCheckByName;        //部门审核人
+    private String deptCheckByName;        //审核人
 
     public void setDeptCheckByName(String deptCheckByName){
         this.deptCheckByName = deptCheckByName;
@@ -170,7 +157,7 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
     @Condition(match=Match.EQ)
     @Column(name="ORDER_DEPT")
     @Reference(code="neworganizition",srcProperties={ "name"}, desProperties={ "orderDeptName"})
-    private String orderDept;        //请购部门
+    private String orderDept;        //请购单位
 
     public void setOrderDept(String orderDept){
         this.orderDept = orderDept;
@@ -200,27 +187,6 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
         return this.orderByName;
     }
 
-    @Transient
-    private String purchaseDeptByName;        //采购部审核人
-
-    public void setPurchaseDeptByName(String purchaseDeptByName){
-        this.purchaseDeptByName = purchaseDeptByName;
-    }
-    public String getPurchaseDeptByName(){
-        return this.purchaseDeptByName;
-    }
-
-    @Column(name="PURCHASE_DEPT_BY")
-    @Reference(code="common_ref_table",srcProperties={ "peoname"}, desProperties={ "purchaseDeptByName"})
-    private String purchaseDeptBy;        //采购部审核人
-
-    public void setPurchaseDeptBy(String purchaseDeptBy){
-        this.purchaseDeptBy = purchaseDeptBy;
-    }
-    public String getPurchaseDeptBy(){
-        return this.purchaseDeptBy;
-    }
-
     @Column(name="ORDER_DATE")
     private String orderDate;        //请购时间
 
@@ -229,17 +195,6 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
     }
     public String getOrderDate(){
         return this.orderDate;
-    }
-
-    @Column(name="FINANCIAL_AUDIT")
-    @Reference(code="common_ref",srcProperties={ "peoname"}, desProperties={ "financialAuditName"})
-    private String financialAudit;        //财务审核人
-
-    public void setFinancialAudit(String financialAudit){
-        this.financialAudit = financialAudit;
-    }
-    public String getFinancialAudit(){
-        return this.financialAudit;
     }
 
     @Condition(match=Match.LIKE)
@@ -253,29 +208,11 @@ public class DemoOrder extends AbsBpmModel  implements Serializable,Attachmentab
         return this.orderName;
     }
 
-    @Transient
-    private String financialAuditName;        //财务审核人员
-
-    public void setFinancialAuditName(String financialAuditName){
-        this.financialAuditName = financialAuditName;
-    }
-    public String getFinancialAuditName(){
-        return this.financialAuditName;
-    }
-
         @Override
         public String getBpmBillCode() {
         return getOrderNo();
         }
 
-        @Transient
-        private List<AttachmentEntity> attachment;
-        public List<AttachmentEntity> getAttachment() {
-        return attachment;
-    }
-    public void setAttachment(List<AttachmentEntity> attachment) {
-        this.attachment = attachment;
-    }
 
 
     @Column(name="TENANT_ID")

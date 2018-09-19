@@ -26,6 +26,4 @@ public class DemoOrderBpmController extends GenericBpmController<DemoOrder>{
         super.setService(service);
     }
 
-
-
 }
