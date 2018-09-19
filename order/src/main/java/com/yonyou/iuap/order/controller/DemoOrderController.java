@@ -51,7 +51,13 @@ public class DemoOrderController extends GenericController<DemoOrder>{
 
     @Override
     public Object save(@RequestBody DemoOrder entity) {
-        return demoOrderService.insert(entity);
+        try{
+            demoOrderService.insert(entity);
+            return buildSuccess();
+        }catch(Exception e){
+            return buildGlobalError("保存失败");
+        }
+
     }
 
     @Override
