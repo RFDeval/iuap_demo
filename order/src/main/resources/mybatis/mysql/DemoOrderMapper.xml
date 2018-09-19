@@ -30,7 +30,9 @@
         <result column="tenant_id" property="tenantid" />
 
     </resultMap>
-
+        <select id="getIds" resultType="java.lang.String">
+            select id from demo_order
+        </select>
 
         <select id="selectAllByPage"  resultMap="BaseResultMap">
                 SELECT  t.* FROM demo_order t WHERE t.dr=0
