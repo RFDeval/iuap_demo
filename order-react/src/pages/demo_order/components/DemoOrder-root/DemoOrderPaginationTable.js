@@ -54,14 +54,14 @@ export default class DemoOrderPaginationTable extends Component {
                 },
                 {
                     title: "商品数量",
-                    dataIndex: "orderCount",
-                    key: "orderCount",
+                    dataIndex: "orderGoodsCount",
+                    key: "orderGoodsCount",
                      width:200,
                 },
                 {
-                    title: "复核人员",
-                    dataIndex: "checkByName",
-                    key: "checkByName",
+                    title: "商品名称",
+                    dataIndex: "orderGoods",
+                    key: "orderGoods",
                      width:200,
                 },
                 {
@@ -71,7 +71,7 @@ export default class DemoOrderPaginationTable extends Component {
                      width:200,
                 },
                 {
-                    title: "部门审核人",
+                    title: "审核人",
                     dataIndex: "deptCheckByName",
                     key: "deptCheckByName",
                      width:200,
@@ -89,12 +89,6 @@ export default class DemoOrderPaginationTable extends Component {
                      width:200,
                 },
                 {
-                    title: "采购部审核人",
-                    dataIndex: "purchaseDeptByName",
-                    key: "purchaseDeptByName",
-                     width:200,
-                },
-                {
                     title: "请购时间",
                     dataIndex: "orderDate",
                     key: "orderDate",
@@ -104,12 +98,6 @@ export default class DemoOrderPaginationTable extends Component {
                     title: "订单名称",
                     dataIndex: "orderName",
                     key: "orderName",
-                     width:200,
-                },
-                {
-                    title: "财务审核人员",
-                    dataIndex: "financialAuditName",
-                    key: "financialAuditName",
                      width:200,
                 },
                 {
@@ -401,7 +389,6 @@ export default class DemoOrderPaginationTable extends Component {
                         onTableSelectedData={this.onTableSelectedData}
                         onPageSizeSelect={this.onPageSizeSelect}
                         onPageIndexSelect={this.onPageIndexSelect}
-                        scroll={{x: this.getCloumnsScroll(this.state.column), y: 500}}
                 />
                 <Modal
                         show={showModal}

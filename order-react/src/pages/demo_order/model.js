@@ -77,22 +77,19 @@ export default {
                         res.content[i].orderDeptName = temp.orderDeptName+"";
                     
                         
-                        res.content[i].checkBy = temp.checkBy+"";
-                    
-                        
                         res.content[i].orderNo = temp.orderNo+"";
                     
                         
                         res.content[i].deptCheckBy = temp.deptCheckBy+"";
                     
                         
-                        res.content[i].orderCount = temp.orderCount+"";
+                        res.content[i].orderGoodsCount = temp.orderGoodsCount+"";
                     
                         
                         res.content[i].orderBy = temp.orderBy+"";
                     
                         
-                        res.content[i].checkByName = temp.checkByName+"";
+                        res.content[i].orderGoods = temp.orderGoods+"";
                     
                         
                         res.content[i].remark = temp.remark+"";
@@ -110,22 +107,10 @@ export default {
                         res.content[i].orderByName = temp.orderByName+"";
                     
                         
-                        res.content[i].purchaseDeptByName = temp.purchaseDeptByName+"";
-                    
-                        
-                        res.content[i].purchaseDeptBy = temp.purchaseDeptBy+"";
-                    
-                        
                         res.content[i].orderDate = temp.orderDate+"";
                     
                         
-                        res.content[i].financialAudit = temp.financialAudit+"";
-                    
-                        
                         res.content[i].orderName = temp.orderName+"";
-                    
-                        
-                        res.content[i].financialAuditName = temp.financialAuditName+"";
                     
                     }
                 }

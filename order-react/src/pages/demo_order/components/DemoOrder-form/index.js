@@ -18,23 +18,18 @@ class DemoOrderForm extends Component {
         this.state = {
             orderType: '',
             orderDeptName: '',
-            refKeyArraycheckBy:"",
             orderNo: '',
             refKeyArraydeptCheckBy:"",
-            orderCount: '',
+            orderGoodsCount: '',
             refKeyArrayorderBy:"",
-            checkByName: '',
+            orderGoods: '',
             remark: '',
             deptCheckByName: '',
             refKeyArrayorderDept:"",
             orderAmount: '',
             orderByName: '',
-            purchaseDeptByName: '',
-            refKeyArraypurchaseDeptBy:"",
             orderDate: '',
-            refKeyArrayfinancialAudit:"",
             orderName: '',
-            financialAuditName: '',
         }
     }
     componentWillMount(){
@@ -50,18 +45,10 @@ class DemoOrderForm extends Component {
             values.pageIndex = this.props.pageIndex || 0;
             values.pageSize = this.props.pageSize || 10;
             let {
-                refKeyArraycheckBy,
                 refKeyArraydeptCheckBy,
                 refKeyArrayorderBy,
                 refKeyArrayorderDept,
-                refKeyArraypurchaseDeptBy,
-                refKeyArrayfinancialAudit,
             } = this.state;
-            if(refKeyArraycheckBy){
-                values.checkBy = refKeyArraycheckBy
-            }else {
-                values.checkBy = "";
-            }
             if(refKeyArraydeptCheckBy){
                 values.deptCheckBy = refKeyArraydeptCheckBy
             }else {
@@ -85,16 +72,6 @@ class DemoOrderForm extends Component {
                 delete values.orderAmount 
                 }
             }
-            if(refKeyArraypurchaseDeptBy){
-                values.purchaseDeptBy = refKeyArraypurchaseDeptBy
-            }else {
-                values.purchaseDeptBy = "";
-            }
-            if(refKeyArrayfinancialAudit){
-                values.financialAudit = refKeyArrayfinancialAudit
-            }else {
-                values.financialAudit = "";
-            }
             await actions.DemoOrder.loadList(values);
         });
 
@@ -107,29 +84,21 @@ class DemoOrderForm extends Component {
         this.setState({
             orderType:'',
             orderDeptName:'',
-            refKeyArraycheckBy:'',
-            checkBy:'',
             orderNo:'',
             refKeyArraydeptCheckBy:'',
             deptCheckBy:'',
-            orderCount:'',
+            orderGoodsCount:'',
             refKeyArrayorderBy:'',
             orderBy:'',
-            checkByName:'',
+            orderGoods:'',
             remark:'',
             deptCheckByName:'',
             refKeyArrayorderDept:'',
             orderDept:'',
             orderAmount:'',
             orderByName:'',
-            purchaseDeptByName:'',
-            refKeyArraypurchaseDeptBy:'',
-            purchaseDeptBy:'',
             orderDate:'',
-            refKeyArrayfinancialAudit:'',
-            financialAudit:'',
             orderName:'',
-            financialAuditName:'',
         })
     }
     render(){
@@ -137,12 +106,9 @@ class DemoOrderForm extends Component {
         let { orderTypes } = this.props;
         let self = this;
         let {
-            refKeyArraycheckBy,
             refKeyArraydeptCheckBy,
             refKeyArrayorderBy,
             refKeyArrayorderDept,
-            refKeyArraypurchaseDeptBy,
-            refKeyArrayfinancialAudit,
         } = this.state;
         return (
             <SearchPanel
@@ -187,30 +153,42 @@ class DemoOrderForm extends Component {
                             </Col>
                             <Col md={4} xs={6}>
                                 <FormItem>
-                                    <Label>商品数量</Label>
+                                    <Label>请购人员</Label>
 
 
-                                    <InputNumber
-                                        iconStyle="one"
-                                        min={0}
-                                        step ={1}
-                                        
-                                        {
-                                            ...getFieldProps('orderCount', {
-                                                    initialValue:  '0',
-                                                    rules: [{type: 'string',message: '请输入数字'}],
+                                    <RefWithInput option={options({
+                                                  title: '请购人员',
+                                        refType: 5,//1:树形 2.单表 3.树卡型 4.多选 5.default
+                                        className: '',
+                                        param: {//url请求参数
+                                            refCode: 'common_ref',
+                                            tenantId: '',
+                                            sysId: '',
+                                            transmitParam: '5',
+                                        },
+                                        keyList:(refKeyArrayorderBy && refKeyArrayorderBy.split(',')) || [],//选中的key
+                                        onSave: function (sels) {
+                                            console.log(sels);
+                                            var temp = sels.map(v => v.id)
+                                            console.log("temp",temp);
+                                            self.setState({
+                                                refKeyArrayorderBy: temp.join(),
                                             })
-                                        }
-                                    />
+                                        },
+                                        showKey:'peoname',
+                                        verification:true,//是否进行校验
+                                        verKey:'orderBy',//校验字段
+                                        verVal:""
+                                    })} form={this.props.form}/>
                                 </FormItem>
                             </Col>
                             <Col md={4} xs={6}>
                                 <FormItem>
-                                    <Label>请购部门</Label>
+                                    <Label>请购单位</Label>
 
 
                                     <RefWithInput option={options({
-                                                  title: '请购部门',
+                                                  title: '请购单位',
                                         refType: 1,//1:树形 2.单表 3.树卡型 4.多选 5.default
                                         className: '',
                                         param: {//url请求参数

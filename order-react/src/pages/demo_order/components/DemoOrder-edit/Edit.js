@@ -4,7 +4,6 @@ import { actions } from "mirrorx";
 import queryString from 'query-string';
 import { Switch, InputNumber,Loading, Table, Button, Col, Row, Icon, InputGroup, FormControl, Checkbox, Modal, Panel, PanelGroup, Label, Message, Radio } from "tinper-bee";
 import { BpmTaskApprovalWrap } from 'yyuap-bpm';
-import AcUpload from 'ac-upload';
 import Header from "components/Header";
 import options from "components/RefOption";
 import DatePicker from 'bee-datepicker';
@@ -26,12 +25,9 @@ class Edit extends Component {
         super(props);
         this.state = {
             rowData: {},
-                refKeyArraycheckBy:[],
                 refKeyArraydeptCheckBy:[],
                 refKeyArrayorderBy:[],
                 refKeyArrayorderDept:[],
-                refKeyArraypurchaseDeptBy:[],
-                refKeyArrayfinancialAudit:[],
             fileNameData: props.rowData.attachment || [],//上传附件数据
         }
     }
@@ -55,7 +51,7 @@ class Edit extends Component {
         this.props.form.validateFields(async (err, values) => {
             values.attachment = this.state.fileNameData;
             let numArray = [
-                "orderCount",
+                "orderGoodsCount",
                 "orderAmount",
             ];
             for(let i=0,len=numArray.length; i<len; i++ ) {
@@ -67,23 +63,17 @@ class Edit extends Component {
                 Message.create({ content: '数据填写错误', color: 'danger' });
             } else {
                 let {rowData,
-                    refKeyArraycheckBy,
                     refKeyArraydeptCheckBy,
                     refKeyArrayorderBy,
                     refKeyArrayorderDept,
-                    refKeyArraypurchaseDeptBy,
-                    refKeyArrayfinancialAudit,
                 } = this.state;
                 if (rowData && rowData.id) {
                     values.id = rowData.id;
                     values.ts = rowData.ts;
                 }
-                values.checkBy = refKeyArraycheckBy.join();
                 values.deptCheckBy = refKeyArraydeptCheckBy.join();
                 values.orderBy = refKeyArrayorderBy.join();
                 values.orderDept = refKeyArrayorderDept.join();
-                values.purchaseDeptBy = refKeyArraypurchaseDeptBy.join();
-                values.financialAudit = refKeyArrayfinancialAudit.join();
                 values.orderDate = values.orderDate.format(format);
 
                 await actions.DemoOrder.save(
@@ -99,30 +89,21 @@ class Edit extends Component {
         if(tempRowData){
 
             let {
-                checkBy,checkByName,
                 deptCheckBy,deptCheckByName,
                 orderBy,orderByName,
                 orderDept,orderDeptName,
-                purchaseDeptBy,purchaseDeptByName,
-                financialAudit,financialAuditName,
             } = tempRowData;
 
             this.setState({
-                refKeyArraycheckBy: checkBy?checkBy.split(','):[],
                 refKeyArraydeptCheckBy: deptCheckBy?deptCheckBy.split(','):[],
                 refKeyArrayorderBy: orderBy?orderBy.split(','):[],
                 refKeyArrayorderDept: orderDept?orderDept.split(','):[],
-                refKeyArraypurchaseDeptBy: purchaseDeptBy?purchaseDeptBy.split(','):[],
-                refKeyArrayfinancialAudit: financialAudit?financialAudit.split(','):[],
             })
             rowData = Object.assign({},tempRowData,
                 {
-                    checkBy:checkByName,
                     deptCheckBy:deptCheckByName,
                     orderBy:orderByName,
                     orderDept:orderDeptName,
-                    purchaseDeptBy:purchaseDeptByName,
-                    financialAudit:financialAuditName,
                 }
             )
         }
@@ -137,34 +118,6 @@ class Edit extends Component {
     onChangeHead = (btnFlag) => {
         let titleArr = ["新增","编辑","详情"];
         return titleArr[btnFlag]||'新增';
-    }
-    //上传成功后的回调
-    handlerUploadSuccess = (res) => {
-        Message.create({content: '上传成功', color: 'success'});
-
-        this.setState(({ fileNameData }) => {
-            //拿到当前原始对象
-            let newFileList = [];
-            //找到历史数据合并
-            newFileList = newFileList.concat(fileNameData,res.data);
-
-            return {
-                fileNameData: newFileList
-            };
-        });
-    }
-    //删除文件的回调
-    handlerUploadDelete = (file) => {
-        this.setState(({ fileNameData }) => {
-            for (let i = 0; i < fileNameData.length; i++) {
-                if (fileNameData[i].originalFileName == file.name) {
-                    fileNameData[i]['del'] = 'del';
-                }
-            }
-            return {
-                fileNameData
-            }
-        });
     }
 
     // 跳转到流程图
@@ -243,17 +196,14 @@ class Edit extends Component {
         let { btnFlag,appType, id, processDefinitionId, processInstanceId } = queryString.parse(this.props.location.search);
         btnFlag = Number(btnFlag);
         let {rowData,
-                    refKeyArraycheckBy,
                     refKeyArraydeptCheckBy,
                     refKeyArrayorderBy,
                     refKeyArrayorderDept,
-                    refKeyArraypurchaseDeptBy,
-                    refKeyArrayfinancialAudit,
         } = this.state;
 
 
         let title = this.onChangeHead(btnFlag);
-        let { orderType,orderDeptName,checkBy,orderNo,deptCheckBy,orderCount,orderBy,checkByName,remark,deptCheckByName,orderDept,orderAmount,orderByName,purchaseDeptByName,purchaseDeptBy,orderDate,financialAudit,orderName,financialAuditName, } = rowData;
+        let { orderType,orderDeptName,orderNo,deptCheckBy,orderGoodsCount,orderBy,orderGoods,remark,deptCheckByName,orderDept,orderAmount,orderByName,orderDate,orderName, } = rowData;
         const { getFieldProps, getFieldError } = this.props.form;
 
         return (
@@ -302,42 +252,6 @@ class Edit extends Component {
                             </Col>
                             <Col md={4} xs={6}>
                                 <Label>
-                                    复核人员：
-                                </Label>
-                                    <RefWithInput disabled={btnFlag == 2} option={options({
-                                                  title: '复核人员',
-                                        refType: 6,//1:树形 2.单表 3.树卡型 4.多选 5.default
-                                        className: '',
-                                        param: {//url请求参数
-                                            refCode: 'bd_common_dept',
-                                            tenantId: '',
-                                            sysId: '',
-                                            transmitParam: '6',
-                                            locale:getCookie('u_locale'),
-                                        },
-
-                                        keyList:refKeyArraycheckBy,//选中的key
-                                        onSave: function (sels) {
-                                            console.log(sels);
-                                            var temp = sels.map(v => v.id)
-                                            console.log("temp",temp);
-                                            self.setState({
-                                                refKeyArraycheckBy: temp,
-                                            })
-                                        },
-                                        showKey:'name',
-                                        verification:true,//是否进行校验
-                                        verKey:'checkBy',//校验字段
-                                        verVal:checkBy
-                                    })} form={this.props.form}/>
-
-
-                                <span className='error'>
-                                    {getFieldError('checkBy')}
-                                </span>
-                            </Col>
-                            <Col md={4} xs={6}>
-                                <Label>
                                     订单编号：
                                 </Label>
                                     <FormControl disabled={btnFlag == 2||true}
@@ -359,17 +273,17 @@ class Edit extends Component {
                             </Col>
                             <Col md={4} xs={6}>
                                 <Label>
-                                    部门审核人：
+                                    审核人：
                                 </Label>
                                     <RefWithInput disabled={btnFlag == 2} option={options({
-                                                  title: '部门审核人',
-                                        refType: 4,//1:树形 2.单表 3.树卡型 4.多选 5.default
+                                                  title: '审核人',
+                                        refType: 6,//1:树形 2.单表 3.树卡型 4.多选 5.default
                                         className: '',
                                         param: {//url请求参数
-                                            refCode: 'checkbox_ref',
+                                            refCode: 'bd_common_user',
                                             tenantId: '',
                                             sysId: '',
-                                            transmitParam: '4',
+                                            transmitParam: '6',
                                             locale:getCookie('u_locale'),
                                         },
 
@@ -382,7 +296,7 @@ class Edit extends Component {
                                                 refKeyArraydeptCheckBy: temp,
                                             })
                                         },
-                                        showKey:'peoname',
+                                        showKey:'name',
                                         verification:true,//是否进行校验
                                         verKey:'deptCheckBy',//校验字段
                                         verVal:deptCheckBy
@@ -405,15 +319,15 @@ class Edit extends Component {
                                         className={"input-number-int"}
                                         disabled={btnFlag == 2}
                                         {
-                                            ...getFieldProps('orderCount', {
-                                                    initialValue: orderCount && (orderCount+"")|| '0',
+                                            ...getFieldProps('orderGoodsCount', {
+                                                    initialValue: orderGoodsCount && (orderGoodsCount+"")|| '0',
                                                     rules: [{type: 'string',message: '请输入数字'}],
                                             })
                                         }
                                     />
 
                                 <span className='error'>
-                                    {getFieldError('orderCount')}
+                                    {getFieldError('orderGoodsCount')}
                                 </span>
                             </Col>
                             <Col md={4} xs={6}>
@@ -422,13 +336,13 @@ class Edit extends Component {
                                 </Label>
                                     <RefWithInput disabled={btnFlag == 2} option={options({
                                                   title: '请购人员',
-                                        refType: 3,//1:树形 2.单表 3.树卡型 4.多选 5.default
+                                        refType: 5,//1:树形 2.单表 3.树卡型 4.多选 5.default
                                         className: '',
                                         param: {//url请求参数
-                                            refCode: 'common_ref_treecard',
+                                            refCode: 'common_ref',
                                             tenantId: '',
                                             sysId: '',
-                                            transmitParam: '3',
+                                            transmitParam: '5',
                                             locale:getCookie('u_locale'),
                                         },
 
@@ -454,6 +368,27 @@ class Edit extends Component {
                             </Col>
                             <Col md={4} xs={6}>
                                 <Label>
+                                    商品名称：
+                                </Label>
+                                    <FormControl disabled={btnFlag == 2||false}
+                                        {
+                                        ...getFieldProps('orderGoods', {
+                                            validateTrigger: 'onBlur',
+                                            initialValue: orderGoods || '',
+                                            rules: [{
+                                                type:'string',required: true, message: '请输入商品名称',
+                                            }],
+                                        }
+                                        )}
+                                    />
+
+
+                                <span className='error'>
+                                    {getFieldError('orderGoods')}
+                                </span>
+                            </Col>
+                            <Col md={4} xs={6}>
+                                <Label>
                                     备注信息：
                                 </Label>
                                     <FormControl disabled={btnFlag == 2||false}
@@ -475,10 +410,10 @@ class Edit extends Component {
                             </Col>
                             <Col md={4} xs={6}>
                                 <Label>
-                                    请购部门：
+                                    请购单位：
                                 </Label>
                                     <RefWithInput disabled={btnFlag == 2} option={options({
-                                                  title: '请购部门',
+                                                  title: '请购单位',
                                         refType: 1,//1:树形 2.单表 3.树卡型 4.多选 5.default
                                         className: '',
                                         param: {//url请求参数
@@ -532,42 +467,6 @@ class Edit extends Component {
                                 </span>
                             </Col>
                             <Col md={4} xs={6}>
-                                <Label>
-                                    采购部审核人：
-                                </Label>
-                                    <RefWithInput disabled={btnFlag == 2} option={options({
-                                                  title: '采购部审核人',
-                                        refType: 2,//1:树形 2.单表 3.树卡型 4.多选 5.default
-                                        className: '',
-                                        param: {//url请求参数
-                                            refCode: 'common_ref_table',
-                                            tenantId: '',
-                                            sysId: '',
-                                            transmitParam: '2',
-                                            locale:getCookie('u_locale'),
-                                        },
-
-                                        keyList:refKeyArraypurchaseDeptBy,//选中的key
-                                        onSave: function (sels) {
-                                            console.log(sels);
-                                            var temp = sels.map(v => v.id)
-                                            console.log("temp",temp);
-                                            self.setState({
-                                                refKeyArraypurchaseDeptBy: temp,
-                                            })
-                                        },
-                                        showKey:'peoname',
-                                        verification:true,//是否进行校验
-                                        verKey:'purchaseDeptBy',//校验字段
-                                        verVal:purchaseDeptBy
-                                    })} form={this.props.form}/>
-
-
-                                <span className='error'>
-                                    {getFieldError('purchaseDeptBy')}
-                                </span>
-                            </Col>
-                            <Col md={4} xs={6}>
                                 <Label class="datepicker">
                                     请购时间：
                                 </Label>
@@ -591,42 +490,6 @@ class Edit extends Component {
                             </Col>
                             <Col md={4} xs={6}>
                                 <Label>
-                                    财务审核人：
-                                </Label>
-                                    <RefWithInput disabled={btnFlag == 2} option={options({
-                                                  title: '财务审核人',
-                                        refType: 5,//1:树形 2.单表 3.树卡型 4.多选 5.default
-                                        className: '',
-                                        param: {//url请求参数
-                                            refCode: 'common_ref',
-                                            tenantId: '',
-                                            sysId: '',
-                                            transmitParam: '5',
-                                            locale:getCookie('u_locale'),
-                                        },
-
-                                        keyList:refKeyArrayfinancialAudit,//选中的key
-                                        onSave: function (sels) {
-                                            console.log(sels);
-                                            var temp = sels.map(v => v.id)
-                                            console.log("temp",temp);
-                                            self.setState({
-                                                refKeyArrayfinancialAudit: temp,
-                                            })
-                                        },
-                                        showKey:'peoname',
-                                        verification:true,//是否进行校验
-                                        verKey:'financialAudit',//校验字段
-                                        verVal:financialAudit
-                                    })} form={this.props.form}/>
-
-
-                                <span className='error'>
-                                    {getFieldError('financialAudit')}
-                                </span>
-                            </Col>
-                            <Col md={4} xs={6}>
-                                <Label>
                                     订单名称：
                                 </Label>
                                     <FormControl disabled={btnFlag == 2||false}
@@ -646,36 +509,6 @@ class Edit extends Component {
                                     {getFieldError('orderName')}
                                 </span>
                             </Col>
-                        <Col md={4} xs={6}>
-                            <Label>
-                                附件：
-                            </Label>
-                            {
-                                (btnFlag < 2) ? (<AcUpload
-                                    title={"附件上传"}
-                                    action={`${GROBAL_HTTP_CTX}/fileMananger/fastDfs/imgUpload`}
-                                    multiple={false}
-                                    defaultFileList={this.state.fileNameData}
-                                    onError={() => console.log('上传报错了')}
-                                    onSuccess={this.handlerUploadSuccess}
-                                    onDelete={this.handlerUploadDelete}
-                                >
-                                    <Button colors="info">上传</Button>
-                                </AcUpload>) : (
-                                        <AcUpload
-                                            title={"查看附件"}
-                                            action={`${GROBAL_HTTP_CTX}/fileMananger/fastDfs/imgUpload`}
-                                            defaultFileList={this.state.fileNameData}
-                                            multiple={false}
-                                            isView={true}
-                                            onError={() => console.log('上传报错了')}
-                                            onSuccess={this.handlerUploadSuccess}
-                                        >
-                                            <Button colors="info">查看</Button>
-                                        </AcUpload>
-                                    )
-                            }
-                        </Col>
                 </Row>
 
 

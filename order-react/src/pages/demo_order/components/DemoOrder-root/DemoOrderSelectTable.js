@@ -54,27 +54,21 @@ export default class DemoOrderSelectTable extends Component {
                     width: 100,
                 },
                 {
-                    title: "复核人员",
-                    dataIndex: "checkBy",
-                    key: "checkBy",
-                    width: 100,
-                },
-                {
                     title: "订单编号",
                     dataIndex: "orderNo",
                     key: "orderNo",
                     width: 100,
                 },
                 {
-                    title: "部门审核人",
+                    title: "审核人",
                     dataIndex: "deptCheckBy",
                     key: "deptCheckBy",
                     width: 100,
                 },
                 {
                     title: "商品数量",
-                    dataIndex: "orderCount",
-                    key: "orderCount",
+                    dataIndex: "orderGoodsCount",
+                    key: "orderGoodsCount",
                     width: 100,
                 },
                 {
@@ -84,9 +78,9 @@ export default class DemoOrderSelectTable extends Component {
                     width: 100,
                 },
                 {
-                    title: "复核人员",
-                    dataIndex: "checkByName",
-                    key: "checkByName",
+                    title: "商品名称",
+                    dataIndex: "orderGoods",
+                    key: "orderGoods",
                     width: 100,
                 },
                 {
@@ -96,13 +90,13 @@ export default class DemoOrderSelectTable extends Component {
                     width: 100,
                 },
                 {
-                    title: "部门审核人",
+                    title: "审核人",
                     dataIndex: "deptCheckByName",
                     key: "deptCheckByName",
                     width: 100,
                 },
                 {
-                    title: "请购部门",
+                    title: "请购单位",
                     dataIndex: "orderDept",
                     key: "orderDept",
                     width: 100,
@@ -120,39 +114,15 @@ export default class DemoOrderSelectTable extends Component {
                     width: 100,
                 },
                 {
-                    title: "采购部审核人",
-                    dataIndex: "purchaseDeptByName",
-                    key: "purchaseDeptByName",
-                    width: 100,
-                },
-                {
-                    title: "采购部审核人",
-                    dataIndex: "purchaseDeptBy",
-                    key: "purchaseDeptBy",
-                    width: 100,
-                },
-                {
                     title: "请购时间",
                     dataIndex: "orderDate",
                     key: "orderDate",
                     width: 100,
                 },
                 {
-                    title: "财务审核人",
-                    dataIndex: "financialAudit",
-                    key: "financialAudit",
-                    width: 100,
-                },
-                {
                     title: "订单名称",
                     dataIndex: "orderName",
                     key: "orderName",
-                    width: 100,
-                },
-                {
-                    title: "财务审核人员",
-                    dataIndex: "financialAuditName",
-                    key: "financialAuditName",
                     width: 100,
                 },
             {
