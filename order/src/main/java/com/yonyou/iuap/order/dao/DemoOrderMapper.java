@@ -7,6 +7,8 @@ import java.util.List;
 
 @MyBatisRepository
 public interface DemoOrderMapper extends GenericExMapper<DemoOrder> {
-        List selectListByExcelData(List list);
+    List selectListByExcelData(List list);
+
+    List<String> getIds();
 }
 

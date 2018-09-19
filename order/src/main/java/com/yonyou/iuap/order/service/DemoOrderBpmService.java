@@ -48,13 +48,15 @@ public class DemoOrderBpmService extends GenericBpmService<DemoOrder>{
             // 其他变量
             bpmform.setOtherVariables(buildEntityVars(entity));
             // 单据url
-            bpmform.setFormUrl("/react_example_fe/demo_order/#/DemoOrder-edit?btnFlag=2&search_id="+entity.getId());  // 单据url
+            //bpmform.setFormUrl("/react_example_fe/demo_order/#/DemoOrder-edit?btnFlag=2&search_id="+entity.getId());  // 单据url
+            bpmform.setFormUrl("/OrderPage/order-uui/pages/orderPage/orderPage.js");
             // 流程实例名称
             bpmform.setProcessInstanceName(title);                                                                              // 流程实例名称
             // 流程审批后，执行的业务处理类(controller对应URI前缀)
-            bpmform.setServiceClass("/react_example/demo_order");// 流程审批后，执行的业务处理类(controller对应URI前缀)
+            bpmform.setServiceClass("/order/demo_order");// 流程审批后，执行的业务处理类(controller对应URI前缀)
             //设置单据打开类型 uui/react
-            bpmform.setFormType(BPMFormJSON.FORMTYPE_REACT);
+           // bpmform.setFormType(BPMFormJSON.FORMTYPE_REACT);
+            bpmform.setFormType(BPMFormJSON.FORMTYPE_UUI);
             return bpmform;
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage());
