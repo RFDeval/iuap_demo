@@ -1,5 +1,4 @@
 define(['text!./orderPage.html',
-  "cookieOperation",
   "/eiap-plus/pages/flow/bpmapproveref/bpmopenbill.js",
   "css!../../style/common.css",
   'css!./orderPage.css',
@@ -11,13 +10,13 @@ define(['text!./orderPage.html',
   '/iuap-saas-filesystem-service/resources/js/ossupload.js',
   'interfaceFileImpl',
 ],
-  function (template, cookie, bpmopenbill) {
+  function (template, bpmopenbill) {
     var listRowUrl, saveRowUrl, delRowUrl, getUrl, submitUrl, recallUrl, auditUrl, element;
 
     var gNewRow = null;
     var gEditRowData = null;
     var gConditionRow = null;
-    function init(element) {
+    function init(element,args) {
       element = element;
       $(element).html(template);
       listRowUrl = "/demo_order/list"; //列表查询URL
@@ -37,13 +36,16 @@ define(['text!./orderPage.html',
       auditUrl = "/demo_order";
 
       bpmBack = function () {
-        viewModel.formData.clear();
-        pjt.hideDiv('#form-div');
+        if ($('#bpmDisplayBill').length > 0) {
+          $('#bpmDisplayBill').modal('hide');
+        } else {
+            viewModel.event.backBtnClick();
+        }
       }
       // viewModel.event.pageinit(element);
       viewModel = $.extend({}, viewModel, bpmopenbill.model);
-      if (cookie && cookie.vtype && cookie.vtype == "bpm") {
-        viewModel.flowEvent.initAuditPage(element, cookie);
+      if (args && args.vtype && args.vtype == "bpm") {
+        viewModel.flowEvent.initAuditPage(element, args);
       } else {
         viewModel.event.pageinit(element)
       }
@@ -116,7 +118,7 @@ define(['text!./orderPage.html',
         gNewRow = viewModel.formData.createEmptyRow();
         viewModel.formData.setRowSelect(0);
         viewModel.optType = 1;//新增状态
-        pjt.showDiv('#form-div');
+        
         viewModel.businessPk = pjt.newUuid();
         var row = viewModel.formData.getCurrentRow();
         row.setValue('id', viewModel.businessPk);
@@ -124,8 +126,11 @@ define(['text!./orderPage.html',
         if (viewModel.attachmentData) {
           viewModel.attachmentData.clear();
         }
+
+
         document.getElementById("myTitle").innerHTML = "新增记录";
-        $("#form-div-body").find('input').removeAttr("readOnly");
+        pjt.showDiv('#form-div');
+        $("#form-div-body").find('input').removeAttr("readonly");
         $("#form-div-body").find('input').removeAttr("disabled");
         $("#form_orderNo").attr('readonly', 'readonly');       //设置订单编号为只读
         $("#form_orderType").attr('readonly', 'readonly');     //设置订单类型为只读
@@ -133,6 +138,13 @@ define(['text!./orderPage.html',
         $("#form_orderByName").attr('readonly', 'readonly');   //设置请购人为只读
         $("#form_orderCheckByName").attr('readonly', 'readonly');//设置审核人为只读
         $("#form_bpmState").attr('readonly', 'readonly');        //设置流程状态为只读
+        $("#myForm").find('span').removeClass("hide");
+        //显示保存按钮
+        $("#save").show();
+        /**附件按钮设置为可编辑 */
+        $("#pjt_btn_uploadFile").removeAttr("disabled");
+        $("#pjt_btn_downloadFile").removeAttr("disabled");
+        $("#pjt_btn_delLoadFile").removeAttr("disabled");
       },
 
       //编辑按钮点击
@@ -160,6 +172,15 @@ define(['text!./orderPage.html',
           $("#form_orderByName").attr('readonly', 'readonly');    //设置请购人为只读
           $("#form_orderCheckByName").attr('readonly', 'readonly');//设置审核人为只读
           $("#form_bpmState").attr('readonly', 'readonly');        //设置流程状态为只读
+          $("#myForm").find('span').removeClass("hide");
+          //显示保存按钮
+          $("#save").show();
+
+           /**附件按钮设置为不可编辑 */
+          $("#pjt_btn_uploadFile").removeAttr("disabled");
+          $("#pjt_btn_downloadFile").removeAttr("disabled");
+          $("#pjt_btn_delLoadFile").removeAttr("disabled");
+
         } else {
           pjt.message("请选择要编辑的数据！");
         }
@@ -173,11 +194,19 @@ define(['text!./orderPage.html',
           }
           viewModel.formData.setSimpleData(currentData[0]);
           viewModel.optType = 3;//查看状态
+          viewModel.businessPk = currentData[0].id;//设置主键用于附件上传关联
+          pjt.attaLoadData(viewModel);
+
           pjt.showDiv('#form-div');
           document.getElementById("myTitle").innerHTML = "查看记录";
           // $("#form-div-body").find('input').attr('placeholder', '').attr('disabled', 'disabled').attr('readonly', 'readonly');
           $("#form-div-body").find('input').attr('disabled', 'disabled').attr('readonly', 'readonly');
           $("#form-div-body").find('button').attr('disabled', 'disabled').attr('readonly', 'readonly');
+          $("#myForm").find('span').addClass("hide");
+          //隐藏保存按钮
+          $("#save").hide();
+          /**附件下载按钮设置为可编辑 */
+          $("#pjt_btn_downloadFile").removeAttr("disabled");
         } else {
           pjt.message("请选择要查看的数据！");
         }
@@ -559,13 +588,20 @@ define(['text!./orderPage.html',
 
             viewModel.formData.clear();
             viewModel.formData.setSimpleData(data);
+
+            viewModel.businessPk = currentData[0].id;//设置主键用于附件上传关联
+            pjt.attaLoadData(viewModel);
+
             // 把卡片页面变成不能编辑
-            $("#form-div-body").css("display", "none");
-            $("#form-div-body-view").css("display", "inline");
             document.getElementById("myTitle").innerHTML = "查看记录";
-            $("#form-div-body-view").find('input').attr('placeholder', '').attr('disabled', 'disabled').attr('readonly', 'readonly');
+            $("#form-div-body").find('input').attr('placeholder', '').attr('disabled', 'disabled').attr('readonly', 'readonly');
+            $("#form-div-body").find('button').attr('disabled', 'disabled').attr('readonly', 'readonly');
+            $("#myForm").find('span').addClass("hide");
             pjt.showDiv('#form-div');
             pjt.hideDiv('#form-div-header');
+              /**附件下载按钮设置为可编辑 */
+            $("#pjt_btn_downloadFile").removeAttr("disabled");
+
           }, function (data) {
             console.log("error:", data);
           });
@@ -592,23 +628,33 @@ define(['text!./orderPage.html',
         }
       },
       //审批单据打开页面,这是从任务中心打开的
-      initAuditPage: function () {
+      initAuditPage: function (element,arg) {
+        pjt.createAttachment(viewModel, $('#myLayout'), $('.u-tabs__panel'));
         var app = u.createApp({
           el: element,
           model: viewModel
         });
+
         viewModel.initBpmFromTask(arg, viewModel);					//初始化BPM相关内容(添加审批操作头部和审批相关弹出框的代码片段)
-        var url = getUrl + "?id=" + arg.id;
+        viewModel.businessPk=arg.id;//设置主键用于附件上传关联
+        pjt.attaLoadData(viewModel);
+
+        var url = getUrl + "?search_id=" + arg.id;
         pjt.ajaxQueryData(url, null, function (data) {
           viewModel.formData.clear();
           viewModel.formData.setSimpleData(data);
-          // 把卡片页面变成不能编辑
-          $('#myForm').each(function (index, element) {
-            $(element).find('input[type!="radio"]').attr('disabled', true);
-            $(element).find('textarea').attr('disabled', true);
-          });
+
+          
+          $('#myForm').find('input').attr('placeholder', '').attr('disabled', 'disabled').attr('readonly', 'readonly');
+          $("#myForm").find('span').addClass("hide");
+          pjt.hideDiv("#main-div");
           pjt.showDiv('#form-div');
           pjt.hideDiv('#form-div-header');
+
+            /**附件按钮设置为不可编辑 */
+          $("#pjt_btn_uploadFile").attr('disabled','disabled').attr('readonly', 'readonly');
+          $("#pjt_btn_downloadFile").removeAttr("disabled");
+          $("#pjt_btn_delLoadFile").attr('disabled','disabled').attr('readonly', 'readonly');
         }, function (data) {
           alert(2);
         });

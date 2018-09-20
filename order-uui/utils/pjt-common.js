@@ -783,13 +783,13 @@ pjt.createAttachment = function(viewModel,mainPage,depend){
 	var fileHtml = '<div class="u-row">'+
 				   '	<div class="u-col-12">'+
 				   '		<div class="u-widget" style="background-color:transparent;margin-left: 0;">'+
-				   '			<button class="u-button raised " data-bind="click: event.uploadFile">'+
+				   '			<button id="pjt_btn_uploadFile" class="u-button raised " data-bind="click: event.uploadFile">'+
 				   '				<span class="operation">上传</span>'+
 				   '			</button>'+
-				   '			<button class="u-button raised" data-bind="click: event.downLoadFile">'+
+				   '			<button id="pjt_btn_downloadFile" class="u-button raised" data-bind="click: event.downLoadFile">'+
 				   '				<span class="operation">下载</span>'+
 				   '			</button>'+
-				   '			<button class="u-button raised" data-bind="click: event.delLoadFile">'+
+				   '			<button id="pjt_btn_delLoadFile" class="u-button raised" data-bind="click: event.delLoadFile">'+
 				   '				<span class="operation">删除</span>'+
 				   '			</button>'+
 				   '		</div>'+
