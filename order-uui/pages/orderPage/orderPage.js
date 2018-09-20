@@ -311,13 +311,13 @@ define(['text!./orderPage.html',
         viewModel.event.postExcelFile(param, url);
       },
       exportDataCurrentPage: function () {
-        expDataUrl = expDataUrl + "?1=1&pageIndex=" + viewModel.gridData.pageIndex() + "&pageSize=" + viewModel.gridData.pageSize();
-        pjt.expData(expDataUrl);
+        var url = expDataUrl + "?1=1&pageIndex=" + viewModel.gridData.pageIndex() + "&pageSize=" + viewModel.gridData.pageSize();
+        pjt.expData(url);
       },
       exportDataAll: function () {
         var totalSize = viewModel.gridData.pageSize() * viewModel.gridData.totalPages();
-        expDataUrl = expDataUrl + "?1=1&pageIndex=" + viewModel.gridData.pageIndex() + "&pageSize=" + totalSize;
-        pjt.expData(expDataUrl);
+        var url  = expDataUrl + "?1=1&pageIndex=" + viewModel.gridData.pageIndex() + "&pageSize=" + totalSize;
+        pjt.expData(url);
       },
       //   导入数据
       impExcelData: function () {
