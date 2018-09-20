@@ -581,7 +581,7 @@ define(['text!./orderPage.html',
       //查看工单
       doView: function () {
         var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
-        if (currentData != null && currentData != "") {
+        if (currentData != null && currentData != "" && currentData.length == 1) {
           pjt.ajaxQueryData(getUrl, { search_id: currentData[0].id }, function (data) {
             //加入bpm按钮
             viewModel.initBPMFromBill(currentData[0].id, viewModel);
@@ -605,6 +605,8 @@ define(['text!./orderPage.html',
           }, function (data) {
             console.log("error:", data);
           });
+        } else if(currentData.length > 1){
+          pjt.message("请选择一条数据");
         } else {
           pjt.message("请选择要查看的数据");
         }
@@ -612,7 +614,7 @@ define(['text!./orderPage.html',
       //撤回工单
       recall: function () {
         var currentData = viewModel.gridData.getSimpleData({ type: 'select' });
-        if (currentData != null && currentData != "") {
+        if (currentData != null && currentData != "" && currentData.length == 1) {
           pjt.ajaxSaveData(recallUrl, currentData, function (data) {
             if (typeof (data.message) == "undefined") {
               pjt.message("撤回成功");
@@ -623,6 +625,8 @@ define(['text!./orderPage.html',
           }, function (data) {
             pjt.message(data.message);
           });
+        }else if(currentData.length > 1){
+          pjt.message("请选择一条数据");
         } else {
           pjt.message("请选择要撤回的数据");
         }
