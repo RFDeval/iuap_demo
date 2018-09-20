@@ -20,7 +20,7 @@ define(['text!./orderPage.html',
       element = element;
       $(element).html(template);
       listRowUrl = "/demo_order/list"; //列表查询URL
-      saveRowUrl = "/demo_order/save"; //新增和修改URL， 有id为修改 无id为新增
+      saveRowUrl = "/demo_order/uui_save"; //新增和修改URL， 有id为修改 无id为新增
       delRowUrl = "/demo_order/deleteBatch"; //刪除URL
       downTemplateUrl = "/demo_order/excelTemplateDownload"; //下载excel模板
       //  expDataUrl = "/demo_order/toExportExcel";
