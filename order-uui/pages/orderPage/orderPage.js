@@ -5,10 +5,10 @@ define(['text!./orderPage.html',
   '../../config/sys_const.js',
   "../../utils/utils.js",
   "../../utils/pjt-common.js",
-  "./viewModel.js",
-  '/iuap-saas-filesystem-service/resources/js/ajaxfileupload.js',
-  '/iuap-saas-filesystem-service/resources/js/ossupload.js',
-  'interfaceFileImpl',
+  "./viewModel.js"
+//  '/iuap-saas-filesystem-service/resources/js/ajaxfileupload.js',
+//  '/iuap-saas-filesystem-service/resources/js/ossupload.js',
+//  'interfaceFileImpl',
 ],
   function (template, bpmopenbill) {
     var listRowUrl, saveRowUrl, delRowUrl, getUrl, submitUrl, recallUrl, auditUrl, element;
@@ -20,7 +20,7 @@ define(['text!./orderPage.html',
       element = element;
       $(element).html(template);
       listRowUrl = "/demo_order/list"; //列表查询URL
-      saveRowUrl = "/demo_order/uui_save"; //新增和修改URL， 有id为修改 无id为新增
+      saveRowUrl = "/demo_order/save"; //新增和修改URL， 有id为修改 无id为新增
       delRowUrl = "/demo_order/deleteBatch"; //刪除URL
       downTemplateUrl = "/demo_order/excelTemplateDownload"; //下载excel模板
       //  expDataUrl = "/demo_order/toExportExcel";
@@ -56,7 +56,7 @@ define(['text!./orderPage.html',
 
     viewModel.event = {
       pageinit: function (element) {
-        pjt.createAttachment(viewModel, $('#myLayout'), $('.u-tabs__panel'));
+       // pjt.createAttachment(viewModel, $('#myLayout'), $('.u-tabs__panel'));
 
         viewModel.app = u.createApp({
           el: element,
@@ -141,10 +141,11 @@ define(['text!./orderPage.html',
         $("#myForm").find('span').removeClass("hide");
         //显示保存按钮
         $("#save").show();
-        /**附件按钮设置为可编辑 */
+        /*附件按钮设置为可编辑 
         $("#pjt_btn_uploadFile").removeAttr("disabled");
         $("#pjt_btn_downloadFile").removeAttr("disabled");
         $("#pjt_btn_delLoadFile").removeAttr("disabled");
+		*/
       },
 
       //编辑按钮点击
@@ -176,11 +177,11 @@ define(['text!./orderPage.html',
           //显示保存按钮
           $("#save").show();
 
-           /**附件按钮设置为不可编辑 */
+           /*附件按钮设置为不可编辑 
           $("#pjt_btn_uploadFile").removeAttr("disabled");
           $("#pjt_btn_downloadFile").removeAttr("disabled");
           $("#pjt_btn_delLoadFile").removeAttr("disabled");
-
+		  */
         } else {
           pjt.message("请选择要编辑的数据！");
         }
@@ -205,8 +206,9 @@ define(['text!./orderPage.html',
           $("#myForm").find('span').addClass("hide");
           //隐藏保存按钮
           $("#save").hide();
-          /**附件下载按钮设置为可编辑 */
+          /*附件下载按钮设置为可编辑 
           $("#pjt_btn_downloadFile").removeAttr("disabled");
+		  */
         } else {
           pjt.message("请选择要查看的数据！");
         }
@@ -598,9 +600,9 @@ define(['text!./orderPage.html',
             $("#myForm").find('span').addClass("hide");
             pjt.showDiv('#form-div');
             pjt.hideDiv('#form-div-header');
-              /**附件下载按钮设置为可编辑 */
+              /*附件下载按钮设置为可编辑 
             $("#pjt_btn_downloadFile").removeAttr("disabled");
-
+			*/
           }, function (data) {
             console.log("error:", data);
           });
@@ -632,7 +634,7 @@ define(['text!./orderPage.html',
       },
       //审批单据打开页面,这是从任务中心打开的
       initAuditPage: function (element,arg) {
-        pjt.createAttachment(viewModel, $('#myLayout'), $('.u-tabs__panel'));
+       // pjt.createAttachment(viewModel, $('#myLayout'), $('.u-tabs__panel'));
         var app = u.createApp({
           el: element,
           model: viewModel
@@ -654,10 +656,11 @@ define(['text!./orderPage.html',
           pjt.showDiv('#form-div');
           pjt.hideDiv('#form-div-header');
 
-            /**附件按钮设置为不可编辑 */
+            /*附件按钮设置为不可编辑 
           $("#pjt_btn_uploadFile").attr('disabled','disabled').attr('readonly', 'readonly');
           $("#pjt_btn_downloadFile").removeAttr("disabled");
           $("#pjt_btn_delLoadFile").attr('disabled','disabled').attr('readonly', 'readonly');
+		  */
         }, function (data) {
 
         });
