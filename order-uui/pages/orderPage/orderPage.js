@@ -471,7 +471,6 @@ define(['text!./orderPage.html',
                 break;
               }
               default://过滤和查询条件
-                alert(111);
                 gConditionRow.setValue('search_orderBy', pks);
                 gConditionRow.setValue('show_orderByName', names);
                 break;
@@ -660,7 +659,7 @@ define(['text!./orderPage.html',
           $("#pjt_btn_downloadFile").removeAttr("disabled");
           $("#pjt_btn_delLoadFile").attr('disabled','disabled').attr('readonly', 'readonly');
         }, function (data) {
-          alert(2);
+
         });
       }
 
