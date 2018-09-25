@@ -49,16 +49,6 @@ public class DemoOrderController extends GenericController<DemoOrder>{
         super.setService(demoOrderService);
     }
 
-    @RequestMapping(value = "/uui_save",method = {RequestMethod.POST})
-    public Object saveUUI(@RequestBody DemoOrder entity) {
-        try{
-            DemoOrder order = demoOrderService.insert(entity);
-            return buildSuccess(order);
-        }catch(Exception e){
-            return buildGlobalError("保存失败");
-        }
-
-    }
 
     @Override
     public Object list(PageRequest pageRequest,

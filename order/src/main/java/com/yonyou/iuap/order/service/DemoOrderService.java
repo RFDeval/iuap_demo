@@ -71,18 +71,6 @@ public class DemoOrderService extends GenericIntegrateService<DemoOrder>{
             return order;
         }
 
-        @Override
-        @BusiLogConfig(method="order_save",busiName="订单保存")
-        public DemoOrder insert(DemoOrder entity) {
-            List<String> ids = DemoOrderMapper.getIds();
-            /**
-             * 判断传入的主键是否已经在表中存在,如果存在,则执行update方法,否则执行insert方法
-             */
-            if(ids.contains(entity.getId())){
-                return super.update(entity);
-            }
-            return super.insert(entity);
-        }
 
         private void sendMessage(DemoOrder order) {
             MessageEntity msg = new MessageEntity();
