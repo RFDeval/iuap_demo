@@ -6,9 +6,6 @@ define(['text!./orderPage.html',
   "../../utils/utils.js",
   "../../utils/pjt-common.js",
   "./viewModel.js"
-//  '/iuap-saas-filesystem-service/resources/js/ajaxfileupload.js',
-//  '/iuap-saas-filesystem-service/resources/js/ossupload.js',
-//  'interfaceFileImpl',
 ],
   function (template, bpmopenbill) {
     var listRowUrl, saveRowUrl, delRowUrl, getUrl, submitUrl, recallUrl, auditUrl, element;
@@ -56,7 +53,6 @@ define(['text!./orderPage.html',
 
     viewModel.event = {
       pageinit: function (element) {
-       // pjt.createAttachment(viewModel, $('#myLayout'), $('.u-tabs__panel'));
 
         viewModel.app = u.createApp({
           el: element,
@@ -118,15 +114,6 @@ define(['text!./orderPage.html',
         gNewRow = viewModel.formData.createEmptyRow();
         viewModel.formData.setRowSelect(0);
         viewModel.optType = 1;//新增状态
-        
-       // viewModel.businessPk = pjt.newUuid();
-       // var row = viewModel.formData.getCurrentRow();
-      //  row.setValue('id', viewModel.businessPk);
-       // row.status = Row.STATUS.NEW;
-       // if (viewModel.attachmentData) {
-     //     viewModel.attachmentData.clear();
-      //  }
-
 
         document.getElementById("myTitle").innerHTML = "新增记录";
         pjt.showDiv('#form-div');
@@ -141,11 +128,6 @@ define(['text!./orderPage.html',
         $("#myForm").find('span').removeClass("hide");
         //显示保存按钮
         $("#save").show();
-        /*附件按钮设置为可编辑 
-        $("#pjt_btn_uploadFile").removeAttr("disabled");
-        $("#pjt_btn_downloadFile").removeAttr("disabled");
-        $("#pjt_btn_delLoadFile").removeAttr("disabled");
-		*/
       },
 
       //编辑按钮点击
@@ -176,12 +158,6 @@ define(['text!./orderPage.html',
           $("#myForm").find('span').removeClass("hide");
           //显示保存按钮
           $("#save").show();
-
-           /*附件按钮设置为不可编辑 
-          $("#pjt_btn_uploadFile").removeAttr("disabled");
-          $("#pjt_btn_downloadFile").removeAttr("disabled");
-          $("#pjt_btn_delLoadFile").removeAttr("disabled");
-		  */
         } else {
           pjt.message("请选择要编辑的数据！");
         }
@@ -195,8 +171,6 @@ define(['text!./orderPage.html',
           }
           viewModel.formData.setSimpleData(currentData[0]);
           viewModel.optType = 3;//查看状态
-      //    viewModel.businessPk = currentData[0].id;//设置主键用于附件上传关联
-      //    pjt.attaLoadData(viewModel);
 
           pjt.showDiv('#form-div');
           document.getElementById("myTitle").innerHTML = "查看记录";
@@ -206,9 +180,7 @@ define(['text!./orderPage.html',
           $("#myForm").find('span').addClass("hide");
           //隐藏保存按钮
           $("#save").hide();
-          /*附件下载按钮设置为可编辑 
-          $("#pjt_btn_downloadFile").removeAttr("disabled");
-		  */
+		  
         } else {
           pjt.message("请选择要查看的数据！");
         }
@@ -590,9 +562,6 @@ define(['text!./orderPage.html',
             viewModel.formData.clear();
             viewModel.formData.setSimpleData(data);
 
-          //  viewModel.businessPk = currentData[0].id;//设置主键用于附件上传关联
-         //   pjt.attaLoadData(viewModel);
-
             // 把卡片页面变成不能编辑
             document.getElementById("myTitle").innerHTML = "查看记录";
             $("#form-div-body").find('input').attr('placeholder', '').attr('disabled', 'disabled').attr('readonly', 'readonly');
@@ -641,8 +610,6 @@ define(['text!./orderPage.html',
         });
 
         viewModel.initBpmFromTask(arg, viewModel);					//初始化BPM相关内容(添加审批操作头部和审批相关弹出框的代码片段)
-     //   viewModel.businessPk=arg.id;//设置主键用于附件上传关联
-     //   pjt.attaLoadData(viewModel);
 
         var url = getUrl + "?search_id=" + arg.id;
         pjt.ajaxQueryData(url, null, function (data) {
@@ -656,11 +623,6 @@ define(['text!./orderPage.html',
           pjt.showDiv('#form-div');
           pjt.hideDiv('#form-div-header');
 
-            /*附件按钮设置为不可编辑 
-          $("#pjt_btn_uploadFile").attr('disabled','disabled').attr('readonly', 'readonly');
-          $("#pjt_btn_downloadFile").removeAttr("disabled");
-          $("#pjt_btn_delLoadFile").attr('disabled','disabled').attr('readonly', 'readonly');
-		  */
         }, function (data) {
 
         });
