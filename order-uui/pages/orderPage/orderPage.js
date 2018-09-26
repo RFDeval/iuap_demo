@@ -20,12 +20,9 @@ define(['text!./orderPage.html',
       saveRowUrl = "/demo_order/save"; //新增和修改URL， 有id为修改 无id为新增
       delRowUrl = "/demo_order/deleteBatch"; //刪除URL
       downTemplateUrl = "/demo_order/excelTemplateDownload"; //下载excel模板
-      //  expDataUrl = "/demo_order/toExportExcel";
-
+      //expDataUrl = "/demo_order/toExportExcel";
       expDataUrl_selected = "/demo_order/toExportExcel";
       expDataUrl = "/demo_order/toExportExcelAll";
-
-
       impDataUrl = "/demo_order/toImportExcel";
       getUrl = "/demo_order/get";
       submitUrl = "/demo_order/submit";
@@ -114,7 +111,6 @@ define(['text!./orderPage.html',
         gNewRow = viewModel.formData.createEmptyRow();
         viewModel.formData.setRowSelect(0);
         viewModel.optType = 1;//新增状态
-
         document.getElementById("myTitle").innerHTML = "新增记录";
         pjt.showDiv('#form-div');
         $("#form-div-body").find('input').removeAttr("readonly");
@@ -139,16 +135,14 @@ define(['text!./orderPage.html',
             return;
           }
           gEditRowData = currentData[0];//保存数据
-
-
           viewModel.formData.setSimpleData(currentData[0]);
-        //  viewModel.businessPk = currentData[0].id;//设置主键用于附件上传关联
-       //   pjt.attaLoadData(viewModel);
           viewModel.optType = 2;//编辑状态
           pjt.showDiv('#form-div');
           document.getElementById("myTitle").innerHTML = "编辑记录";
           $("#form-div-body").find('input').removeAttr("readOnly");
           $("#form-div-body").find('input').removeAttr("disabled");
+          $("#form-div-body").find('button').removeAttr("readOnly");
+          $("#form-div-body").find('button').removeAttr("disabled");
           $("#form_orderNo").attr('readonly', 'readonly');        //设置订单编号为只读
           $("#form_orderType").attr('readonly', 'readonly');      //设置订单类型为只读
           $("#form_orderDeptName").attr('readonly', 'readonly');  //设置请购部门为只读
