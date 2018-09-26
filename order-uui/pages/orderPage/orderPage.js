@@ -115,6 +115,8 @@ define(['text!./orderPage.html',
         pjt.showDiv('#form-div');
         $("#form-div-body").find('input').removeAttr("readonly");
         $("#form-div-body").find('input').removeAttr("disabled");
+        $("#form-div-body").find('button').removeAttr("readOnly");
+        $("#form-div-body").find('button').removeAttr("disabled");
         $("#form_orderNo").attr('readonly', 'readonly');       //设置订单编号为只读
         $("#form_orderType").attr('readonly', 'readonly');     //设置订单类型为只读
         $("#form_orderDeptName").attr('readonly', 'readonly'); //设置请购部门为只读
