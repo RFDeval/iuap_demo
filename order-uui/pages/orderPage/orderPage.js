@@ -128,6 +128,8 @@ define(['text!./orderPage.html',
         $("#myForm").find('span').removeClass("hide");
         //显示保存按钮
         $("#save").show();
+        $("form-div-header").show();
+        $("#bpmhead").hide();
       },
 
       //编辑按钮点击
@@ -158,6 +160,8 @@ define(['text!./orderPage.html',
           $("#myForm").find('span').removeClass("hide");
           //显示保存按钮
           $("#save").show();
+          $("form-div-header").show();
+          $("#bpmhead").hide();
         } else {
           pjt.message("请选择要编辑的数据！");
         }
@@ -180,7 +184,7 @@ define(['text!./orderPage.html',
           $("#myForm").find('span').addClass("hide");
           //隐藏保存按钮
           $("#save").hide();
-		  
+          $("#bpmhead").hide();
         } else {
           pjt.message("请选择要查看的数据！");
         }
@@ -569,6 +573,7 @@ define(['text!./orderPage.html',
             $("#myForm").find('span').addClass("hide");
             pjt.showDiv('#form-div');
             pjt.hideDiv('#form-div-header');
+            $("#bpmhead").show();
               /*附件下载按钮设置为可编辑 
             $("#pjt_btn_downloadFile").removeAttr("disabled");
 			*/
@@ -622,6 +627,7 @@ define(['text!./orderPage.html',
           pjt.hideDiv("#main-div");
           pjt.showDiv('#form-div');
           pjt.hideDiv('#form-div-header');
+          $("#bpmhead").show();
 
         }, function (data) {
 
