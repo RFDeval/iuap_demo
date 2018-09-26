@@ -388,7 +388,7 @@ define(['text!./orderPage.html',
 
       newRef5: function () {
         var option = {
-          title: '选人员5',
+          title: '选取人员',
           refType: 5,
           isRadio: true,
           hasPage: false,
@@ -453,7 +453,7 @@ define(['text!./orderPage.html',
 
       newRef6: function (refModel) {
         var option = {
-          title: '选人员6',
+          title: '选取人员',
           refType: 6,
           isRadio: true,
           hasPage: false,
