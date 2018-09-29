@@ -1,0 +1,112 @@
+<div id="myDiv">
+    <div class="padding-10 margin-10">
+        <hr style=" height:2px;border:none;border-top:2px dotted #185598;" />
+        <label>缓存服务组件使用：</label><br />
+        <div class="u-row margin-top-20">
+            <div class="u-col-md-8">
+                <div class="u-col-3 aline-right">
+                    设置值：
+                </div>
+                <div class="u-col-3">
+                    <div u-meta='{"type":"u-text","data":"formData","field":"rkey1"}'>
+                        <input type="text" class="u-form-control padding-left-20" placeholder="请输入key" />
+                    </div>
+                </div>
+                <div class="u-col-3">
+                    <div u-meta='{"type":"u-text","data":"formData","field":"rvalue1"}'>
+                        <input type="text" class="u-form-control padding-left-20" placeholder="请输入value" />
+                    </div>
+                </div>
+                <div class="u-col-3">
+                    <button class="u-button" data-bind="click:event.redisSetValue">设定值</button>
+                </div>
+            </div>
+        </div>
+        <div class="u-row margin-top-10">
+            <div class="u-col-md-8">
+                <div class="u-col-3 aline-right">
+                    获取值：
+                </div>
+                <div class="u-col-3">
+                    <div u-meta='{"type":"u-text","data":"formData","field":"rkey2"}'>
+                        <input type="text" class="u-form-control padding-left-20" placeholder="请输入key" />
+                    </div>
+                </div>
+                <div class="u-col-3">
+                    <div u-meta='{"type":"u-text","data":"formData","field":"rvalue2"}'>
+                        <input type="text" class="u-form-control padding-left-20" placeholder="" disabled />
+                    </div>
+                </div>
+                <div class="u-col-3">
+                    <button class="u-button" data-bind="click:event.redisGetValue">获取值</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="padding-10 margin-10">
+        <hr style=" height:2px;border:none;border-top:2px dotted #185598;" />
+        <label>消息组件使用：</label><br />
+        <div class="u-row margin-top-20">
+            <div class="u-col-md-8">
+                <div class="u-col-3 aline-right">
+                    站内消息:
+                </div>
+                <div class="u-col-3">
+                    <div u-meta='{"type":"u-text","data":"formData","field":"msgNo1"}'>
+                        <input type="text" class="u-form-control padding-left-20" placeholder="填写单据号" />
+                    </div>
+                </div>
+                <div class="u-col-3">
+                    <div u-meta='{"type":"u-text","data":"formData","field":"msgName1"}'>
+                        <input type="text" class="u-form-control padding-left-20" placeholder="填写单据名称" />
+                    </div>
+                </div>
+                <div class="u-col-3">
+                    <button class="u-button" data-bind="click:event.sendMsg">发送</button>
+                </div>
+            </div>
+        </div>
+        <div class="u-row margin-top-10">
+            <div class="u-col-md-8">
+                <div class="u-col-3 aline-right">
+                    发送邮件:
+                </div>
+                <div class="u-col-3">
+                    <div u-meta='{"type":"u-text","data":"formData","field":"emailTitle"}'>
+                        <input type="text" class="u-form-control padding-left-20" placeholder="填写邮件标题" />
+                    </div>
+                </div>
+                <div class="u-col-3">
+                    <div u-meta='{"type":"u-text","data":"formData","field":"emailContent"}'>
+                        <input type="text" class="u-form-control padding-left-20" placeholder="填写邮件内容" />
+                    </div>
+                </div>
+                <div class="u-col-3">
+                    <button class="u-button" data-bind="click:event.sendEmail">发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="padding-10 margin-10">
+        <hr style=" height:2px;border:none;border-top:2px dotted #185598;" />
+        <label>业务日志组件使用：</label><br />
+        <div class="u-row margin-top-10">
+                <div class="u-col-md-8">
+                    <div class="u-col-3 aline-right">
+                        业务日志:
+                    </div>
+                    <div class="u-col-6">
+                        <div u-meta='{"type":"u-text","data":"formData","field":"bussContent"}'>
+                            <input type="text" class="u-form-control padding-left-20" placeholder="填写邮件标题" />
+                        </div>
+                    </div>
+                  
+                    <div class="u-col-3">
+                        <button class="u-button" data-bind="click:event.sendBussLog">生成日志</button>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

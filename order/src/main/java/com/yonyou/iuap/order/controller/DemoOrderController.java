@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yonyou.iuap.baseservice.controller.GenericController;
 import com.yonyou.iuap.order.entity.DemoOrder;
 import com.yonyou.iuap.order.service.DemoOrderService;
 import com.yonyou.iuap.mvc.annotation.FrontModelExchange;
+import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
+import com.yonyou.iuap.mvc.type.JsonResponse;
 import com.yonyou.iuap.mvc.type.SearchParams;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +34,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import java.util.List;
 import java.util.Map;
-
+import com.yonyou.iuap.cache.CacheManager;
 
 
 @Controller
@@ -40,7 +43,9 @@ public class DemoOrderController extends GenericController<DemoOrder>{
 
         private final static  Logger LOG = LoggerFactory.getLogger(DemoOrderController.class);
 
-
+    	@Autowired
+    	private CacheManager cacheManager;
+    	
         private DemoOrderService demoOrderService;
 
         @Autowired
@@ -192,5 +197,99 @@ public class DemoOrderController extends GenericController<DemoOrder>{
     return resultList;
 }
         
+    
+    @RequestMapping(value = "/redisSetValue", method = {RequestMethod.POST })
+    @ResponseBody
+    public Object redisSetValue(@RequestBody String param) {
+		JsonResponse jsonResp;
+		System.out.println(param);
+		JSONObject jo=new JSONObject();
+		Map<String, Object> m=(Map<String, Object> )jo.parse(param); 
+		String rk=(String) m.get("rk");
+		String rv=(String) m.get("rv");
+		try {
+			cacheManager.set(rk, rv);
+			jsonResp = this.buildSuccess("");
+		} catch (Exception var4) {
+			jsonResp = this.buildError("msg", var4.getMessage(), RequestStatusEnum.FAIL_FIELD);
+		}
+		return jsonResp;
+	}
+
+    @RequestMapping(value = "/redisGetValue", method = {RequestMethod.POST })
+    @ResponseBody
+    public Object redisGetValue(@RequestBody String param) {
+		JsonResponse jsonResp;
+		System.out.println(param);
+		JSONObject jo=new JSONObject();
+		Map<String, Object> m=(Map<String, Object> )jo.parse(param); 
+		String rk=(String) m.get("rk");
+		try {
+		String rv=cacheManager.get(rk);
+			jsonResp = this.buildSuccess(rv);
+		} catch (Exception var4) {
+			jsonResp = this.buildError("msg", var4.getMessage(), RequestStatusEnum.FAIL_FIELD);
+		}
+		return jsonResp;
+	}
+
+    @RequestMapping(value = "/sendTextMsg", method = {RequestMethod.POST })
+    @ResponseBody
+    public Object sendTextMsg(@RequestBody String param) {
+		JsonResponse jsonResp;
+		System.out.println(param);
+		JSONObject jo=new JSONObject();
+		Map<String, Object> m=(Map<String, Object> )jo.parse(param); 
+		String no=(String) m.get("no");
+		String name=(String) m.get("name");
+		
+		System.out.println(name);
+		try {
+			demoOrderService.sendMessage(no, name);
+			jsonResp = this.buildSuccess("");
+		} catch (Exception var4) {
+			jsonResp = this.buildError("msg", var4.getMessage(), RequestStatusEnum.FAIL_FIELD);
+		}
+		return jsonResp;
+	}
+    
+    @RequestMapping(value = "/sendEmail", method = {RequestMethod.POST })
+    @ResponseBody
+    public Object sendEmail(@RequestBody String param) {
+		JsonResponse jsonResp;
+		System.out.println(param);
+		JSONObject jo=new JSONObject();
+		Map<String, Object> m=(Map<String, Object> )jo.parse(param); 
+		String title=(String) m.get("title");
+		String content=(String) m.get("content");
+		try {
+			demoOrderService.sendEmail(title, content);
+			jsonResp = this.buildSuccess("");
+		} catch (Exception var4) {
+			jsonResp = this.buildError("msg", var4.getMessage(), RequestStatusEnum.FAIL_FIELD);
+		}
+		return jsonResp;
+	}
+    
+    
+    
+    @RequestMapping(value = "/saveBussLog", method = {RequestMethod.POST })
+    @ResponseBody
+    public Object saveBussLog(@RequestBody String param) {
+		JsonResponse jsonResp;
+		System.out.println(param);
+		JSONObject jo=new JSONObject();
+		Map<String, Object> m=(Map<String, Object> )jo.parse(param); 
+		String bussContent=(String) m.get("bussContent");
+		try {
+			demoOrderService.saveBussLog(bussContent);
+			jsonResp = this.buildSuccess("");
+		} catch (Exception var4) {
+			jsonResp = this.buildError("msg", var4.getMessage(), RequestStatusEnum.FAIL_FIELD);
+		}
+		return jsonResp;	
+	}
+
+
 
 }
