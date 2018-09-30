@@ -1,4 +1,4 @@
-define(['text!./extHello.html',
+define(['text!./components.html',
   "./viewModel.js",
   '../../config/sys_const.js',
   "../../utils/utils.js",
@@ -14,11 +14,11 @@ define(['text!./extHello.html',
     function init(element) {
       element = element;
       $(element).html(template);
-      redisSetUrl = "/demo_order/redisSetValue"; 
-      redisGetUrl = "/demo_order/redisGetValue";
-      msgSendUrl = "/demo_order/sendTextMsg"; 
-      emailSendUrl = "/demo_order/sendEmail"; 
-      bussLogUrl = "/demo_order/saveBussLog"; 
+      redisSetUrl = "/component_example/redisSetValue"; 
+      redisGetUrl = "/component_example/redisGetValue";
+      msgSendUrl = "/component_example/sendTextMsg"; 
+      emailSendUrl = "/component_example/sendEmail"; 
+      bussLogUrl = "/component_example/saveBussLog"; 
       viewModel.event.pageinit(element);
     }
     viewModel.event = {
